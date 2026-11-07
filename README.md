@@ -19,9 +19,28 @@ Proven on **The Bridge That Fell for a Song**, a 67 s short about the 1831 Broug
 | `references/sheets/` | 20 contact sheets, one per reference short, 60 frames each (1,200 frames) |
 
 ## Install
-1. Copy this folder to `~/.claude/skills/cartoon-3d-short/` (clone it there, or download the ZIP).
-2. You need [Remotion](https://www.remotion.dev/) with `@remotion/three`, plus Node, Python 3 and ffmpeg.
-3. In Claude Code, say: *"Use the cartoon short skill and make a short about …"*.
+Quick install (Linux, macOS, or Git Bash/WSL on Windows; needs Node 18+, Python 3 and ffmpeg):
+```bash
+git clone https://github.com/maung5678/claude-animated-shorts.git
+cd claude-animated-shorts && ./install.sh            # or: ./install.sh /path/to/project
+```
+It does three things:
+1. Installs the skill to `~/.claude/skills/cartoon-3d-short/`.
+2. Creates a Remotion + three.js project at `~/shorts-studio` with the bridge short registered as `BridgeShort` (React 18, R3F 8, `@react-three/postprocessing` 2, three 0.169, a tested stack).
+3. Copies the sound pipeline to `~/bridge-short/audio/` and installs numpy, scipy and pillow.
+
+Check that it works:
+```bash
+cd ~/shorts-studio
+npx tsc --noEmit                                        # typecheck
+node scripts/bridge-stills.mjs out/test_ 600,1500 0.5   # two test stills (~40 s bundle + ~30 s each on CPU)
+npx remotion studio                                     # preview in the browser
+```
+Optional: drop the Kenney CC0 `.glb` props listed in `public/bridge/kenney/README.txt` into that folder. Without them the world still builds and the trees, stalls and similar props are left out.
+
+Rendering options: `CHROME_PATH` picks a Chrome binary, and `REMOTION_GL` picks the WebGL backend (`angle` with a GPU on Windows, `swangle` for CPU on Linux, which is the default there).
+
+Then in Claude Code say: *"Use the cartoon short skill and make a short about …"*.
 
 Claude then follows `SKILL.md`: topic and facts, then script, then voice, then the shot plan in `story.ts`, then stills, then renders. Agents check your frames against the reports and the frames, and you get the final 2K render and sound mix.
 

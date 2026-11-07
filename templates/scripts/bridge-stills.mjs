@@ -8,8 +8,10 @@ import { bundle } from "@remotion/bundler";
 import { renderStill, selectComposition } from "@remotion/renderer";
 import path from "node:path";
 const [prefix, frames, scale = "0.5"] = process.argv.slice(2);
-const browserExecutable = "C:/Program Files/Google/Chrome/Application/chrome.exe";
-const chromiumOptions = { gl: "angle" };
+// CHROME_PATH: a Chrome/Chromium binary (optional; Remotion downloads its own headless shell otherwise).
+// REMOTION_GL: angle (Windows GPU, default there), swangle (Linux/no GPU, default elsewhere), egl, vulkan...
+const browserExecutable = process.env.CHROME_PATH || (process.platform === "win32" && fs.existsSync("C:/Program Files/Google/Chrome/Application/chrome.exe") ? "C:/Program Files/Google/Chrome/Application/chrome.exe" : null);
+const chromiumOptions = { gl: process.env.REMOTION_GL || (process.platform === "win32" ? "angle" : "swangle") };
 const serveUrl = await bundle({ entryPoint: path.resolve(process.env.BRIDGE_ENTRY || "src/index.ts"), publicDir: path.resolve("public") });
 const composition = await selectComposition({ serveUrl, id: "BridgeShort", browserExecutable, chromiumOptions });
 const onBrowserLog = (l) => { if (l.type === "error" || l.type === "warning") console.log(`[${l.type}]`, l.text.slice(0, 300)); };
