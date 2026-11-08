@@ -1,0 +1,473 @@
+<title>Snow Queen Storyboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a storyboard desk. Header with what changes, a colour script strip, then numbered panels in reading order. */
+:root {
+  --paper: #f3f1ec;
+  --card: #fffdf8;
+  --ink: #1f1b2b;
+  --muted: #625c72;
+  --line: #d9d4ca;
+  --accent: #e8642c;     /* safety orange, the hard hats */
+  --sea: #13879b;
+  --chip: #fbe3d5;
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #17151d; --card: #211e29; --ink: #f1ede6; --muted: #aba4b8; --line: #3a3546; --accent: #ff8a4f; --sea: #4cc3d4; --chip: #3d2a22; color-scheme: dark } }
+:root[data-theme="dark"] { --paper: #17151d; --card: #211e29; --ink: #f1ede6; --muted: #aba4b8; --line: #3a3546; --accent: #ff8a4f; --sea: #4cc3d4; --chip: #3d2a22; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 40px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 6vw, 60px); line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; margin: 0 0 14px; text-wrap: balance; }
+.lede { max-width: 68ch; color: var(--muted); margin: 0; }
+.fixes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.fix { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
+.fix h3 { margin: 0 0 4px; font-size: 16px; }
+.fix .was { color: var(--muted); font-size: 13.5px; margin: 0 0 8px; }
+.fix ul { margin: 0; padding-left: 18px; font-size: 14px; }
+.script { display: grid; grid-template-columns: repeat(17, minmax(0, 1fr)); gap: 3px; border-radius: 8px; overflow: hidden; }
+.sw { height: 74px; display: flex; flex-direction: column; }
+.sw span { flex: 1; }
+.swl { display: grid; grid-template-columns: repeat(17, minmax(0, 1fr)); gap: 3px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); text-align: center; margin-top: 6px; }
+.scriptnote { font-size: 13.5px; color: var(--muted); margin: 10px 0 0; max-width: 80ch; }
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px 18px; }
+.panel { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.frame { position: relative; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 6px; overflow: hidden; border: 2px solid var(--ink); background: #ccc; }
+.frame svg { display: block; width: 100%; height: 100%; }
+.num { position: absolute; top: 6px; left: 6px; font-family: var(--font-mono); font-size: 11px; background: rgba(20,18,28,.78); color: #fff; padding: 1px 6px; border-radius: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 500; }
+.vo { font-style: italic; margin: 0; font-size: 14px; }
+.vo::before { content: "VO "; font-style: normal; font-family: var(--font-mono); font-size: 11px; color: var(--sea); }
+dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; font-size: 13.5px; }
+dt { color: var(--muted); }
+dd { margin: 0; min-width: 0; }
+.tag { display: inline-block; background: var(--chip); color: var(--ink); font-size: 12px; border-radius: 999px; padding: 0 8px; margin: 2px 4px 0 0; }
+.engine { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.engine div { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; min-width: 0; }
+.engine h3 { margin: 0 0 6px; font-size: 15px; }
+.engine ul { margin: 0; padding-left: 18px; font-size: 14px; }
+.next { border-left: 4px solid var(--accent); padding: 4px 0 4px 16px; max-width: 72ch; }
+.next p { margin: 0 0 6px; }
+@media (max-width: 640px) { .script, .swl { grid-template-columns: repeat(9, minmax(0, 1fr)); } .sw { height: 54px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Snow Queen of Bethel · storyboard v1 · 68.7 s · 1080×1920</div>
+    <h1>Snow Queen Storyboard</h1>
+    <p class="lede">สตอรี่บอร์ดเรื่องตุ๊กตาหิมะที่สูงที่สุดในโลก (Bethel, Maine, 2008) มี 23 ช่อง เรียงตามเสียงพากย์ที่ทำเสร็จแล้ว (68.7 วินาที) ใช้หลักเดียวกับ v2 ของเรื่องวาฬ คือสีสด ทุกช็อตมีแอ็กชัน และสีหน้าเปลี่ยนตรงคำพากย์ ภาพในช่องเป็นภาพร่างไว้ดูจังหวะ ท่า และสี</p>
+  </header>
+
+  <section class="fixes" aria-label="หลักของเรื่องนี้">
+    <div class="fix"><h3>โทนภาพ</h3><p class="was">ฤดูหนาวที่สว่างและสดใส ไม่เทาหม่น</p>
+      <ul><li>หิมะขาวอมฟ้า เงาม่วงน้ำเงิน ฟ้าใส และบ้านไม้หลากสีหลังคาขาว</li><li>ใช้สีจุดเด่นของตุ๊กตาหิมะ: ปากยางแดง ตาพวงหรีดเขียว ขนตาสกีหลากสี</li><li>ฉากย้อนปี 1999 เป็นฟ้าหม่น ฉากอธิบายเป็นไดอะแกรมสีน้ำแข็ง ฉากละลายเป็นหน้าร้อนสีเขียว ฉากออสเตรียเป็นภูเขาแอลป์ ฉากปิดเป็นหิมะยามเย็นสีชมพู</li></ul></div>
+    <div class="fix"><h3>ตัวละคร</h3><p class="was">ชุดใหม่ทั้งหมด ใช้ท่าและสีหน้าจากเอนจิน v2</p>
+      <ul><li><b>นายกเมือง:</b> ผู้หญิงเสื้อโค้ตแดง ถือแฟ้ม เป็นคนตัดสินใจสร้าง</li><li><b>คนขับเครน:</b> หมวกไหมพรมเหลือง ยิ้มตลอด</li><li><b>อาสาสมัคร:</b> แจ็กเก็ตสีสด หมวกไหมพรม และเด็กลากเลื่อนกับหมาหนึ่งตัว</li><li><b>วุฒิสมาชิก:</b> ชุดสูทฟ้า มาตัดริบบิ้น</li></ul></div>
+    <div class="fix"><h3>งานใหม่ในเอนจิน</h3><p class="was">ใช้ระบบเดิม เพิ่มฉากและพร็อพ</p>
+      <ul><li>เมืองหิมะ ภูเขา ตึก 10 ชั้น เครน และถังตัก</li><li>ตุ๊กตาหิมะยักษ์ที่ค่อย ๆ สูงขึ้นทีละชั้น พร้อมพวงหรีด สกี ยาง และต้นสน</li><li>หิมะตกตลอดเวลา รอยเท้า ลูกหิมะ และฉากละลาย</li><li>หมวกไหมพรม ท่ากระทืบ และท่าลื่นล้มก้นจ้ำเบ้า</li></ul></div>
+  </section>
+
+  <section aria-label="Colour script"></section>
+
+  <section aria-label="Colour script">
+    <h2>สีของแต่ละช็อต (Colour script)</h2>
+    <div class="script" id="script"></div>
+    <div class="swl" id="swl"></div>
+    <p class="scriptnote">แต่ละแถบคือหนึ่งช็อต จากบนลงล่างเป็นท้องฟ้า ขอบฟ้า พื้นหลัก เงา และสีเด่นของช็อต ส่วนใหญ่เป็นวันหิมะสดใส ช็อต 3 ย้อนปี 1999 ช็อต 12-13 เป็นไดอะแกรม ช็อต 14 ชายหาด ช็อต 15 หนาวจัด ช็อต 17 หน้าร้อน ช็อต 18 ภูเขาแอลป์ และช็อต 19 ยามเย็นตอนจบ</p>
+  </section>
+
+  <section aria-label="Panels">
+    <h2>23 ช่องตามเวลา</h2>
+    <div class="board" id="board"></div>
+  </section>
+
+  <section class="next" aria-label="Next step">
+    <p><b>ขั้นต่อไป:</b> ถ้าบอร์ดนี้โอเค ผมจะสร้างโลกหิมะและตัวละครในเอนจิน แล้วส่งภาพนิ่งจริงให้ดูก่อนเรนเดอร์ทั้งคลิป</p>
+    <p>ถ้าอยากแก้ช่องไหน บอกเลขช่องกับสิ่งที่อยากเปลี่ยนได้เลย</p>
+  </section>
+</div>
+
+<script>
+(() => {
+  const P = {
+    snow:   { sky0: "#2f86e0", sky1: "#d4ecfb", sea: "#9ab8e8", seaF: "#7f9fd8", sand: "#f4f8ff", shade: "#9fb0e6", wet: "#dfe8fb", accent: "#e8333b", grass: "#2f6f45" },
+    flash:  { sky0: "#56648f", sky1: "#c9d3e6", sea: "#8b9ac2", seaF: "#6f7fae", sand: "#e8edf6", shade: "#8e9bc2", wet: "#d4dbe9", accent: "#c9a24a", grass: "#3f5f52" },
+    diagram:{ sky0: "#dff0fb", sky1: "#f3fafe", sea: "#9fd2db", seaF: "#7fbfcc", sand: "#eaf6ff", shade: "#b5d6f2", wet: "#d6ecfa", accent: "#3aa0e8" },
+    beach:  { sky0: "#2a74d4", sky1: "#9fd3f2", sea: "#139aa8", seaF: "#0f6f93", sand: "#f1c77f", shade: "#a98ab8", wet: "#c79a62", accent: "#ff6b2c" },
+    frigid: { sky0: "#3b3f8f", sky1: "#a9b6ee", sea: "#7d8bd0", seaF: "#5d6abb", sand: "#e3e8ff", shade: "#7e86c8", wet: "#cfd6fb", accent: "#7fd8ff", grass: "#2f4f6f" },
+    summer: { sky0: "#2b7fe0", sky1: "#bfe6f7", sea: "#1592a3", seaF: "#11708f", sand: "#6cc04a", shade: "#3e8a52", wet: "#8fd06a", accent: "#ffcc29", grass: "#5aa83c" },
+    alps:   { sky0: "#2d7fd8", sky1: "#cfe9fb", sea: "#9fb8e8", seaF: "#7a8fd0", sand: "#f2f6ff", shade: "#a4b1e4", wet: "#dde6fb", accent: "#2f8a4f", grass: "#2f6f45" },
+    dusk:   { sky0: "#5b5aa8", sky1: "#ffc6b0", sea: "#b8a6d8", seaF: "#9a88c8", sand: "#fbe9ee", shade: "#a58cc8", wet: "#f2d6e2", accent: "#ff8a6a", grass: "#3f5f6a" },
+  };
+  // shots (colour script): 1 hook, 2 tower, 3 1999, 4 wanted more, 5 crane, 6 stomp, 7 eyes+lashes, 8 lips+arms, 9 reveal,
+  // 10 senator, 11 why, 12 skin, 13 glue, 14 sandcastle, 15 powder, 16 stomp again, 17 melt, 18 Austria, 19 finale
+  const SHOT_PAL = ["snow","snow","flash","snow","snow","snow","snow","snow","snow","snow","snow","diagram","diagram","beach","frigid","snow","summer","alps","dusk"];
+  const sc = document.getElementById("script"), sl = document.getElementById("swl");
+  sc.style.gridTemplateColumns = sl.style.gridTemplateColumns = `repeat(${SHOT_PAL.length}, minmax(0, 1fr))`;
+  SHOT_PAL.forEach((k, i) => {
+    const p = P[k], d = document.createElement("div"); d.className = "sw";
+    d.innerHTML = [p.sky0, p.sky1, p.sand, p.shade, p.accent].map((c) => `<span style="background:${c}"></span>`).join("");
+    d.title = `Shot ${i + 1}: ${k}`; sc.appendChild(d);
+    const l = document.createElement("span"); l.textContent = i + 1; sl.appendChild(l);
+  });
+  // ---------- drawing kit (180 x 320 frame) ----------
+  const INK = "#22182a", SKIN = ["#ffe0c2", "#f2c49c", "#d9a37a", "#b07a55"];
+  let uid = 0;
+  const bg = (pal, hor = 150, mode = "beach") => {
+    const p = P[pal], id = "g" + (uid++), hh2 = (v) => Math.max(0, v);
+    let s = `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.sky0}"/><stop offset="1" stop-color="${p.sky1}"/></linearGradient></defs>`;
+    s += `<rect width="180" height="320" fill="url(#${id})"/>`;
+    if (pal === "diagram") {
+      s += `<rect width="180" height="320" fill="${p.sky1}"/>`;
+      for (let x = 10; x < 180; x += 14) s += `<line x1="${x}" y1="0" x2="${x}" y2="320" stroke="#cfdbe6" stroke-width=".6"/>`;
+      for (let y = 10; y < 320; y += 14) s += `<line x1="0" y1="${y}" x2="180" y2="${y}" stroke="#cfdbe6" stroke-width=".6"/>`;
+      return s;
+    }
+    s += cloud(30, hor - 95, 1) + cloud(130, hor - 115, .8);
+    if (mode === "beach") {
+      s += `<rect y="${hor}" width="180" height="16" fill="${p.seaF}"/><rect y="${hor + 8}" width="180" height="${12}" fill="${p.sea}"/>`;
+      s += `<path d="M0 ${hor + 20} q15 -4 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V${hor + 26} H0Z" fill="#fff" opacity=".9"/>`;
+      s += `<rect y="${hor + 24}" width="180" height="10" fill="${p.wet}"/><rect y="${hor + 32}" width="180" height="${hh2(320 - hor - 32)}" fill="${p.sand}"/>`;
+      s += sandMarks(hor + 40, p);
+    } else if (mode === "crest") {
+      s += `<rect y="${hor}" width="180" height="10" fill="${p.sea}"/>`;
+      s += `<path d="M0 ${hor + 10} Q45 ${hor - 6} 90 ${hor + 8} T180 ${hor + 4} V320 H0Z" fill="${p.sand}"/>`;
+      for (let i = 0; i < 9; i++) s += tuft(10 + i * 21, hor + 30 + (i % 3) * 22, p.grass || "#7fae3e");
+      s += sandMarks(hor + 40, p);
+    } else if (mode === "lot") {
+      s += `<path d="M0 ${hor} Q60 ${hor - 14} 120 ${hor - 4} T180 ${hor - 6} V${hor + 6} H0Z" fill="#3f8f47"/>`;
+      for (let i = 0; i < 6; i++) s += pine(12 + i * 32, hor + 2, 18 + (i % 2) * 8);
+      s += `<rect y="${hor + 4}" width="180" height="${hh2(320 - hor)}" fill="${p.sand}"/>`;
+      for (let i = 0; i < 5; i++) s += `<rect x="${i * 44 - 10}" y="${hor + 60 + i * 0}" width="3" height="40" fill="#e9e6dc" opacity=".7" transform="skewX(-25)"/>`;
+    } else if (mode === "park") {
+      s += `<rect y="${hor}" width="180" height="8" fill="${p.seaF}"/>`;
+      s += `<rect y="${hor + 6}" width="180" height="${hh2(320 - hor)}" fill="${p.sand}"/>`;
+      s += tree(18, hor + 12, 34) + tree(160, hor + 18, 40);
+    } else if (mode === "dusk") {
+      s += `<circle cx="132" cy="${hor - 8}" r="16" fill="#ffe3a8"/><rect y="${hor}" width="180" height="20" fill="${p.sea}"/>`;
+      s += `<path d="M0 ${hor + 18} q15 -4 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V${hor + 24} H0Z" fill="#ffe9d6" opacity=".8"/>`;
+      s += `<rect y="${hor + 22}" width="180" height="${hh2(320 - hor)}" fill="${p.sand}"/>`;
+    }
+    return s;
+  };
+  const cloud = (x, y, k) => `<g transform="translate(${x} ${y}) scale(${k})" fill="#fff"><ellipse cx="0" cy="0" rx="18" ry="9"/><ellipse cx="14" cy="-4" rx="13" ry="10"/><ellipse cx="-12" cy="2" rx="11" ry="7"/></g>`;
+  const tuft = (x, y, c) => `<path d="M${x} ${y} l-4 -9 M${x} ${y} l0 -11 M${x} ${y} l4 -9" stroke="${c}" stroke-width="2" stroke-linecap="round"/>`;
+  const pine = (x, y, h) => `<path d="M${x} ${y - h} l${h * .35} ${h} h${-h * .7}Z" fill="#2f6f45" stroke="${INK}" stroke-width="1"/>`;
+  const tree = (x, y, h) => `<rect x="${x - 2}" y="${y - h * .45}" width="4" height="${h * .45}" fill="#8a5a3c"/><circle cx="${x}" cy="${y - h * .65}" r="${h * .33}" fill="#4f9e3b" stroke="${INK}" stroke-width="1.2"/>`;
+  const sandMarks = (y0, p) => { let s = ""; for (let i = 0; i < 10; i++) s += `<path d="M${(i * 37) % 170} ${y0 + (i * 53) % (300 - y0)} q6 -2 12 0" stroke="${p.shade}" stroke-width="1" fill="none" opacity=".5"/>`; return s; };
+  const shadow = (x, y, w, pal) => `<ellipse cx="${x}" cy="${y}" rx="${w}" ry="${w * .22}" fill="${P[pal].shade}" opacity=".75"/>`;
+
+  // ---------- face + person ----------
+  const face = (cx, cy, r, e) => {
+    const ex = r * .36, ey = cy - r * .08, er = r * .1;
+    let s = "";
+    const brow = (l, r2) => `<path d="M${cx - ex - er * 1.6} ${ey - r * .3 + l} L${cx - ex + er * 1.6} ${ey - r * .3 - l}" stroke="${INK}" stroke-width="${r * .09}" stroke-linecap="round"/><path d="M${cx + ex - er * 1.6} ${ey - r * .3 - r2} L${cx + ex + er * 1.6} ${ey - r * .3 + r2}" stroke="${INK}" stroke-width="${r * .09}" stroke-linecap="round"/>`;
+    const dots = () => `<circle cx="${cx - ex}" cy="${ey}" r="${er}" fill="${INK}"/><circle cx="${cx + ex}" cy="${ey}" r="${er}" fill="${INK}"/>`;
+    const wide = () => `<circle cx="${cx - ex}" cy="${ey}" r="${er * 2.3}" fill="#fff" stroke="${INK}" stroke-width="${r * .06}"/><circle cx="${cx + ex}" cy="${ey}" r="${er * 2.3}" fill="#fff" stroke="${INK}" stroke-width="${r * .06}"/><circle cx="${cx - ex}" cy="${ey}" r="${er * .8}" fill="${INK}"/><circle cx="${cx + ex}" cy="${ey}" r="${er * .8}" fill="${INK}"/>`;
+    const happy = () => `<path d="M${cx - ex - er * 1.4} ${ey + er} q${er * 1.4} ${-er * 2.4} ${er * 2.8} 0 M${cx + ex - er * 1.4} ${ey + er} q${er * 1.4} ${-er * 2.4} ${er * 2.8} 0" stroke="${INK}" stroke-width="${r * .08}" fill="none" stroke-linecap="round"/>`;
+    const lids = () => `<path d="M${cx - ex - er * 1.5} ${ey} h${er * 3} M${cx + ex - er * 1.5} ${ey} h${er * 3}" stroke="${INK}" stroke-width="${r * .08}" stroke-linecap="round"/>` + dots();
+    const spiral = () => [cx - ex, cx + ex].map((x) => `<path d="M${x} ${ey} m-${er} 0 a${er} ${er} 0 1 1 ${er * 2} 0 a${er * 1.5} ${er * 1.5} 0 1 1 -${er * 3} 0" stroke="${INK}" stroke-width="${r * .05}" fill="none"/>`).join("");
+    const m = (d, fill = "none") => `<path d="${d}" stroke="${INK}" stroke-width="${r * .08}" fill="${fill}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const my = cy + r * .42, mw = r * .32;
+    const sweat = () => `<path d="M${cx + r * .95} ${cy - r * .4} q${r * .18} ${r * .3} 0 ${r * .38} q${-r * .18} ${-r * .08} 0 ${-r * .38}Z" fill="#9fdcff" stroke="${INK}" stroke-width="${r * .04}"/>`;
+    switch (e) {
+      case "smug": s += lids() + brow(-r * .02, r * .06) + m(`M${cx - mw} ${my} q${mw} ${r * .2} ${mw * 1.6} ${-r * .12}`); break;
+      case "proud": s += happy() + brow(-r * .06, -r * .06) + m(`M${cx - mw} ${my - r * .05} q${mw} ${r * .35} ${mw * 2} 0`); break;
+      case "grin": s += happy() + m(`M${cx - mw} ${my - r * .08} h${mw * 2} q${-mw} ${r * .45} ${-mw * 2} 0Z`, "#7a2234"); break;
+      case "laugh": s += happy() + brow(-r * .08, -r * .08) + m(`M${cx - mw * 1.1} ${my - r * .1} h${mw * 2.2} q${-mw * 1.1} ${r * .6} ${-mw * 2.2} 0Z`, "#7a2234"); break;
+      case "shock": s += wide() + brow(-r * .12, -r * .12) + `<ellipse cx="${cx}" cy="${my + r * .02}" rx="${r * .14}" ry="${r * .2}" fill="#7a2234" stroke="${INK}" stroke-width="${r * .07}"/>`; break;
+      case "panic": s += wide() + brow(r * .1, r * .1) + m(`M${cx - mw * 1.2} ${my} q${mw * .6} ${-r * .14} ${mw * 1.2} 0 t${mw * 1.2} 0`) + sweat(); break;
+      case "angry": s += dots() + brow(r * .14, r * .14) + m(`M${cx - mw} ${my + r * .06} q${mw} ${-r * .22} ${mw * 2} 0`); break;
+      case "worried": s += dots() + brow(-r * .12, -r * .12).replace(/L/g, "L") + m(`M${cx - mw} ${my} q${mw * .5} ${-r * .1} ${mw} 0 t${mw} 0`) + sweat(); break;
+      case "disgust": s += lids() + brow(r * .08, -r * .04) + m(`M${cx - mw} ${my} l${mw * .6} ${-r * .08} l${mw * .7} ${r * .08} l${mw * .7} ${-r * .06}`) + `<path d="M${cx - r * .7} ${cy + r * .1} q${r * .1} ${r * .2} ${r * .2} 0" stroke="#7fa83a" stroke-width="${r * .08}" fill="none"/>`; break;
+      case "deadpan": s += lids() + m(`M${cx - mw} ${my} h${mw * 2}`); break;
+      case "dizzy": s += spiral() + m(`M${cx - mw} ${my} q${mw * .5} ${-r * .1} ${mw} 0 t${mw} 0`); break;
+      case "sad": s += dots() + brow(-r * .1, -r * .1) + m(`M${cx - mw} ${my + r * .08} q${mw} ${-r * .24} ${mw * 2} 0`) + `<path d="M${cx - ex} ${ey + er * 1.5} v${r * .25}" stroke="#7fc8ff" stroke-width="${r * .08}" stroke-linecap="round"/>`; break;
+      case "innocent": s += happy() + brow(-r * .1, -r * .1) + `<circle cx="${cx + r * .1}" cy="${my}" r="${r * .08}" fill="none" stroke="${INK}" stroke-width="${r * .07}"/>`; break;
+      case "excited": s += wide() + brow(-r * .1, -r * .1) + m(`M${cx - mw} ${my - r * .05} h${mw * 2} q${-mw} ${r * .4} ${-mw * 2} 0Z`, "#7a2234"); break;
+      default: s += dots() + m(`M${cx - mw * .6} ${my} q${mw * .6} ${r * .1} ${mw * 1.2} 0`);
+    }
+    return s;
+  };
+  const hat = (cx, cy, r, h) => {
+    if (!h) return "";
+    const [k, c] = h;
+    if (k === "hard") return `<path d="M${cx - r * 1.05} ${cy - r * .25} a${r * 1.05} ${r * .95} 0 0 1 ${r * 2.1} 0Z" fill="${c}" stroke="${INK}" stroke-width="${r * .1}"/><rect x="${cx - r * 1.3}" y="${cy - r * .32}" width="${r * 2.6}" height="${r * .18}" rx="${r * .08}" fill="${c}" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    if (k === "cap") return `<path d="M${cx - r * .95} ${cy - r * .35} a${r * .95} ${r * .8} 0 0 1 ${r * 1.9} 0Z" fill="${c}" stroke="${INK}" stroke-width="${r * .1}"/><path d="M${cx + r * .3} ${cy - r * .38} h${r * .95}" stroke="${INK}" stroke-width="${r * .22}" stroke-linecap="round"/>`;
+    if (k === "hair") return `<path d="M${cx - r * .98} ${cy - r * .1} a${r} ${r} 0 0 1 ${r * 1.96} 0 q${-r * .5} ${-r * .3} ${-r} ${-r * .15} q${-r * .5} ${r * .2} ${-r * .96} ${r * .15}Z" fill="${c}" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    return "";
+  };
+  // pose: arm end points [lx, ly, rx, ry] relative to shoulders (in head radii), legs [lx, ly, rx, ry] relative to hips
+  const POSE = {
+    stand:  { a: [-.5, 2.4, .5, 2.4], l: [-.5, 2.6, .5, 2.6] },
+    hips:   { a: [-1.2, 1.2, 1.2, 1.2], l: [-.6, 2.6, .6, 2.6], elbow: true },
+    point:  { a: [-.5, 2.4, 2.6, -.6], l: [-.5, 2.6, .5, 2.6] },
+    up:     { a: [-1.3, -2.2, 1.3, -2.2], l: [-.8, 2.5, .8, 2.5] },
+    wave:   { a: [-.5, 2.4, 1.5, -1.8], l: [-.5, 2.6, .5, 2.6] },
+    run:    { a: [-1.8, .8, 1.6, -.6], l: [-1.6, 2.0, 1.5, 2.3], tilt: 14 },
+    duck:   { a: [-.9, -1.4, .9, -1.4], l: [-1.0, 1.4, 1.0, 1.4], squash: .72 },
+    carry:  { a: [-.5, 1.1, .5, 1.1], l: [-.5, 2.6, .5, 2.6] },
+    push:   { a: [-.3, 2.2, .3, 2.2], l: [-.7, 2.4, .7, 2.4], squash: .9 },
+    jump:   { a: [-1.6, -1.6, 1.6, -1.6], l: [-.9, 1.6, .9, 1.4], lift: 18, stretch: 1.12 },
+    shrug:  { a: [-1.8, .5, 1.8, .5], l: [-.5, 2.6, .5, 2.6] },
+    palm:   { a: [-.5, 2.4, .2, -.9], l: [-.5, 2.6, .5, 2.6] },
+    sit:    { a: [-.8, 1.6, .8, 1.6], l: [-1.2, 1.2, 1.2, 1.2], sit: true },
+    stomp:  { a: [-1.3, .4, 1.3, .2], l: [-.5, 2.6, .8, 1.2] },
+    hold:   { a: [-.5, 2.4, .9, 1.0], l: [-.5, 2.6, .5, 2.6] },
+    flinch: { a: [-1.5, -.2, 1.4, -.5], l: [-.9, 2.5, .7, 2.5], tilt: -10 },
+  };
+  /** person with feet at (x, y), height h px; o: {c, pants, hat, skin, pose, e, flip, prop, mo} */
+  const man = (x, y, h, o) => {
+    const pz = POSE[o.pose || "stand"], r = h * .17, flip = o.flip ? -1 : 1;
+    const st = pz.stretch || 1, sq = pz.squash || 1, lift = (pz.lift || 0) * h / 60;
+    const H = h * st * sq, hip = y - lift - (pz.sit ? r * 1.4 : r * 2.6) * sq;
+    const bodyH = r * 2.6 * st * sq, bw = r * 1.05;
+    const bcy = hip - bodyH * .45, sh = hip - bodyH * .85, hc = sh - r * 1.05;
+    let s = `<g transform="translate(${x} 0) scale(${flip} 1) rotate(${(pz.tilt || 0)} 0 ${hip})">`;
+    const lc = o.pants || "#3b3f52";
+    // legs
+    const [l1x, l1y, l2x, l2y] = pz.l;
+    s += `<path d="M${-r * .35} ${hip} L${l1x * r} ${hip + l1y * r}" stroke="${INK}" stroke-width="${r * .34}" stroke-linecap="round"/><path d="M${r * .35} ${hip} L${l2x * r} ${hip + l2y * r}" stroke="${INK}" stroke-width="${r * .34}" stroke-linecap="round"/>`;
+    s += `<path d="M${-r * .35} ${hip} L${l1x * r} ${hip + l1y * r}" stroke="${lc}" stroke-width="${r * .2}" stroke-linecap="round"/><path d="M${r * .35} ${hip} L${l2x * r} ${hip + l2y * r}" stroke="${lc}" stroke-width="${r * .2}" stroke-linecap="round"/>`;
+    s += `<ellipse cx="${l1x * r - r * .2}" cy="${hip + l1y * r}" rx="${r * .38}" ry="${r * .18}" fill="${INK}"/><ellipse cx="${l2x * r + r * .2}" cy="${hip + l2y * r}" rx="${r * .38}" ry="${r * .18}" fill="${INK}"/>`;
+    // arms behind
+    const [a1x, a1y, a2x, a2y] = pz.a;
+    const arm = (sx, ex, ey) => `<path d="M${sx} ${sh} Q${(sx + ex * r) / 2 + (pz.elbow ? Math.sign(ex) * r * .9 : 0)} ${(sh + sh + ey * r) / 2} ${ex * r} ${sh + ey * r}" stroke="${INK}" stroke-width="${r * .26}" fill="none" stroke-linecap="round"/><circle cx="${ex * r}" cy="${sh + ey * r}" r="${r * .22}" fill="${INK}"/>`;
+    s += arm(-bw * .8, a1x, a1y) + arm(bw * .8, a2x, a2y);
+    // body
+    s += `<ellipse cx="0" cy="${bcy}" rx="${bw}" ry="${bodyH * .58}" fill="${o.c}" stroke="${INK}" stroke-width="${r * .14}"/>`;
+    if (o.vest) s += `<path d="M${-bw * .6} ${bcy - bodyH * .3} v${bodyH * .7} M${bw * .6} ${bcy - bodyH * .3} v${bodyH * .7}" stroke="#f6f0d8" stroke-width="${r * .22}"/>`;
+    if (o.splat) for (let i = 0; i < 5; i++) s += `<circle cx="${(i - 2) * r * .35}" cy="${bcy - r * .3 + (i % 2) * r * .5}" r="${r * .18}" fill="#d42a1e"/>`;
+    for (let i = 0; i < 3; i++) s += `<circle cx="${r * .05}" cy="${bcy - bodyH * .25 + i * bodyH * .22}" r="${r * .08}" fill="${INK}"/>`;
+    // prop
+    if (o.prop === "crate") s += `<rect x="${-r * 1.4}" y="${sh + r * .55}" width="${r * 2.8}" height="${r * 1.5}" fill="#c99a5d" stroke="${INK}" stroke-width="${r * .12}"/><rect x="${-r * 1.4}" y="${sh + r * 1.05}" width="${r * 2.8}" height="${r * .45}" fill="#d23a35"/>`;
+    if (o.prop === "clip") s += `<rect x="${r * .4}" y="${sh + r * .4}" width="${r * 1.1}" height="${r * 1.4}" fill="#f7f3e6" stroke="${INK}" stroke-width="${r * .1}"/>`;
+    if (o.prop === "mic") s += `<path d="M${r * .9} ${sh + r} l${r * .4} ${-r * 1.0}" stroke="${INK}" stroke-width="${r * .2}"/><circle cx="${r * 1.35}" cy="${sh - r * .1}" r="${r * .28}" fill="#4a4d57" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    if (o.prop === "pointer") s += `<path d="M${2.6 * r} ${sh - .6 * r} l${r * 2.2} ${-r * .9}" stroke="#8a5a34" stroke-width="${r * .14}" stroke-linecap="round"/>`;
+    if (o.prop === "shovel") s += `<path d="M${r * .9} ${sh} v${r * 4.4}" stroke="#8a5a34" stroke-width="${r * .18}"/><path d="M${r * .45} ${sh + r * 4.3} h${r * .9} l-${r * .2} ${r * .8} h-${r * .5}Z" fill="#8d949c" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    if (o.prop === "tnt") s += `<rect x="${-r * 2.2}" y="${sh + r * .8}" width="${r * 1.3}" height="${r * 1.0}" fill="#c99a5d" stroke="${INK}" stroke-width="${r * .1}"/>`;
+    // head
+    const skin = o.skin || SKIN[0];
+    s += `<ellipse cx="0" cy="${hc}" rx="${r}" ry="${r * 1.04}" fill="${skin}" stroke="${INK}" stroke-width="${r * .12}"/>`;
+    s += `<g transform="scale(${flip} 1)">` + face(0, hc, r, o.e || "neutral") + `</g>`;
+    if (o.mo) s += `<path d="M${-r * .35} ${hc + r * .3} q${r * .35} ${-r * .15} ${r * .7} 0" stroke="${o.mo}" stroke-width="${r * .16}" fill="none" stroke-linecap="round"/>`;
+    if (o.hatOff) s += `<g transform="translate(${r * .6} ${-r * 1.8}) rotate(25 0 ${hc})">${hat(0, hc, r, o.hat)}</g>`;
+    else s += hat(0, hc, r, o.hat);
+    if (o.goo) s += `<path d="M${-r * .7} ${hc - r * .95} q${r * .7} ${-r * .8} ${r * 1.4} 0 q${-r * .2} ${r * .3} ${-r * .3} ${r * .1} q${-r * .2} ${r * .4} ${-r * .4} 0 q${-r * .3} ${r * .3} ${-r * .7} ${-r * .1}Z" fill="#d9a296" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    s += `</g>`;
+    return s;
+  };
+  // outfits
+  const ENG = { c: "#f6f4ee", pants: "#5a5f6e", hat: ["hard", "#f8f6f0"], skin: SKIN[1], mo: "#4a3020" };
+  const WRK = (k = 0) => ({ c: ["#ff7a26", "#f2621c", "#ff9330"][k % 3], pants: "#2f4470", hat: ["hard", "#ffcc29"], skin: SKIN[k % 4], vest: true });
+  const WAR = { c: "#5f6d34", pants: "#4a4038", hat: ["cap", "#6b4a33"], skin: SKIN[2], mo: "#5a4030" };
+  const REP = { c: "#c23a4f", hat: ["hair", "#3a2a20"], skin: SKIN[0] };
+  const CAMM = { c: "#2f6fd0", hat: ["cap", "#1f4a55"], skin: SKIN[3] };
+  const KIDO = { c: "#ff9a2f", pants: "#2f5aa0", hat: ["cap", "#e8332b"], skin: SKIN[0] };
+  const FOLK = (k) => ({ c: ["#e2a92e", "#c25a7a", "#2f8a8a", "#8b5e3c", "#7c9a2f", "#5a7fe0"][k % 6], hat: ["hair", ["#3a2a20", "#7a4a2a", "#d9b46a", "#a8643a"][k % 4]], skin: SKIN[k % 4] });
+
+  // ---------- props + fx ----------
+  const whale = (x, y, w, o = {}) => { const k = w / 120; return `<g transform="translate(${x} ${y}) scale(${o.flip ? -k : k} ${k})">
+    <path d="M-60 0 Q-62 -38 -20 -42 L45 -40 Q62 -38 62 -10 Q62 0 50 2 L-60 2 Q-75 -6 -82 -16 Q-92 -26 -98 -14 Q-90 -6 -98 4 Q-86 6 -76 2Z" fill="#4c5a7c" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M-50 -2 Q0 8 52 -2" stroke="#7d87a3" stroke-width="7" fill="none" opacity=".7"/>
+    ${[0, 1, 2, 3, 4].map((i) => `<path d="M${-20 + i * 12} -36 q4 6 0 12" stroke="#33405c" stroke-width="1.6" fill="none"/>`).join("")}
+    <circle cx="30" cy="-18" r="2.6" fill="${INK}"/><path d="M38 -4 L60 -6" stroke="${INK}" stroke-width="1.6"/>
+    ${o.cubes ? "" : ""}</g>`; };
+  const cubeWhale = (x, y, w) => { let s = ""; const k = w / 120; for (let i = 0; i < 12; i++) for (let j = 0; j < (i < 2 ? 2 : i > 9 ? 3 : 4); j++) s += `<rect x="${x + (-62 + i * 10) * k}" y="${y - (j + 1) * 10 * k}" width="${8.5 * k}" height="${8.5 * k}" fill="#4c5a7c" stroke="${INK}" stroke-width="1"/>`; return s; };
+  const crates = (x, y, cols, rows, s = 1) => { let o = ""; for (let r = 0; r < rows; r++) for (let c = 0; c < cols - r; c++) { const cx = x + (c + r * .5) * 15 * s, cy = y - (r + 1) * 9 * s; o += `<rect x="${cx}" y="${cy}" width="${14 * s}" height="${8.5 * s}" fill="#c99a5d" stroke="${INK}" stroke-width="1"/><rect x="${cx}" y="${cy + 3 * s}" width="${14 * s}" height="${2.6 * s}" fill="#d23a35"/>`; } return o; };
+  const gull = (x, y, s, m = "fly") => {
+    if (m === "stand") return `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#fff" stroke="${INK}" stroke-width="1.2"/><circle cx="7" cy="-7" r="4.5" fill="#fff" stroke="${INK}" stroke-width="1.2"/><path d="M11 -7 l5 1.5 l-5 1.5Z" fill="#f2b630"/><circle cx="8" cy="-8" r=".9" fill="${INK}"/><path d="M-9 -1 l-6 -3 l2 6Z" fill="#8f98a6"/><path d="M-2 6 v5 M2 6 v5" stroke="#e89a3a" stroke-width="1.4"/></g>`;
+    if (m === "faint") return `<g transform="translate(${x} ${y}) scale(${s}) rotate(180)"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#fff" stroke="${INK}" stroke-width="1.2"/><circle cx="7" cy="-7" r="4.5" fill="#fff" stroke="${INK}" stroke-width="1.2"/><path d="M5 -9 l3 3 M8 -9 l-3 3" stroke="${INK}" stroke-width=".9"/><path d="M-2 6 v5 M2 6 v5" stroke="#e89a3a" stroke-width="1.4"/></g>`;
+    if (m === "bib") return gull(x, y, s, "stand") + `<path d="M${x + 3 * s} ${y - 3 * s} l${4 * s} ${7 * s} l${4 * s} ${-6 * s}Z" fill="#fff" stroke="#d23a35" stroke-width="1"/>`;
+    return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -4 Q-7 -9 0 0 Q7 -9 14 -4" stroke="${INK}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M-14 -4 Q-7 -9 0 0 Q7 -9 14 -4" stroke="#fff" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>`;
+  };
+  const burst = (x, y, r, c = "#fff3b0") => { let p = ""; for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2, rr = i % 2 ? r * .55 : r; p += `${i ? "L" : "M"}${x + Math.cos(a) * rr} ${y + Math.sin(a) * rr}`; } return `<path d="${p}Z" fill="${c}" stroke="${INK}" stroke-width="2"/>`; };
+  const plume = (x, y, s) => { let o = ""; const pts = [[0, 0, 22], [-16, -14, 18], [16, -12, 19], [-6, -34, 20], [12, -38, 17], [0, -58, 18], [-18, -50, 14], [18, -60, 13]]; for (const [dx, dy, r] of pts) o += `<circle cx="${x + dx * s}" cy="${y + dy * s}" r="${r * s}" fill="#f0d9a6" stroke="${INK}" stroke-width="1.4"/>`; for (const [dx, dy, r] of pts.slice(3)) o += `<circle cx="${x + dx * s - 3}" cy="${y + dy * s - 3}" r="${r * s * .55}" fill="#fff3d6"/>`; return o; };
+  const chunk = (x, y, r, rot = 0) => `<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M${-r} 0 Q${-r} ${-r * .9} 0 ${-r * .8} Q${r * 1.1} ${-r * .9} ${r} 0 Q${r * .9} ${r * .8} 0 ${r * .7} Q${-r * .9} ${r * .8} ${-r} 0Z" fill="#d9a296" stroke="${INK}" stroke-width="1.4"/><path d="M${-r * .5} ${-r * .3} q${r * .3} ${-r * .2} ${r * .6} 0" stroke="#f3cfc4" stroke-width="${r * .25}" fill="none" stroke-linecap="round"/></g>`;
+  const fallLines = (x, y, len) => `<path d="M${x - 4} ${y - len} v${len * .7} M${x + 4} ${y - len * .8} v${len * .6}" stroke="${INK}" stroke-width="1.2" opacity=".6"/>`;
+  const speed = (x, y, n, len, dir = 1) => { let o = ""; for (let i = 0; i < n; i++) o += `<path d="M${x} ${y + i * 6} h${-dir * len}" stroke="${INK}" stroke-width="1.3" opacity=".55" stroke-linecap="round"/>`; return o; };
+  const stink = (x, y) => [0, 1, 2].map((i) => `<path d="M${x + i * 12} ${y} q-6 -8 0 -16 t0 -16 t0 -16" stroke="#7fa83a" stroke-width="3.2" fill="none" stroke-linecap="round"/>`).join("");
+  const stars = (x, y) => [[-10, 0], [0, -6], [10, 0]].map(([dx, dy]) => `<path d="M${x + dx} ${y + dy - 4} l1.2 3 3 .2 -2.4 2 .8 3 -2.6 -1.6 -2.6 1.6 .8 -3 -2.4 -2 3 -.2Z" fill="#ffd23f" stroke="${INK}" stroke-width=".8"/>`).join("");
+  const sparkle = (x, y, r) => `<path d="M${x} ${y - r} L${x + r * .25} ${y - r * .25} L${x + r} ${y} L${x + r * .25} ${y + r * .25} L${x} ${y + r} L${x - r * .25} ${y + r * .25} L${x - r} ${y} L${x - r * .25} ${y - r * .25}Z" fill="#fff7c2" stroke="${INK}" stroke-width="1"/>`;
+  const car = (x, y, w, c, o = {}) => { const k = w / 90, cr = o.crushed; return `<g transform="translate(${x} ${y}) scale(${k})">
+    <rect x="-45" y="-24" width="90" height="16" rx="4" fill="${c}" stroke="${INK}" stroke-width="2"/>
+    ${cr ? `<path d="M-24 -24 L-20 -30 L18 -29 L24 -24Z" fill="${c}" stroke="${INK}" stroke-width="2"/>` : `<path d="M-24 -24 L-16 -42 L18 -42 L26 -24Z" fill="${c}" stroke="${INK}" stroke-width="2"/><path d="M-19 -26 L-13 -39 H0 V-26Z M4 -26 V-39 H16 L22 -26Z" fill="#a7d4ef" stroke="${INK}" stroke-width="1.4"/>`}
+    <circle cx="-27" cy="-8" r="8" fill="${INK}"/><circle cx="27" cy="-8" r="8" fill="${INK}"/><circle cx="-27" cy="-8" r="3" fill="#cfd3da"/><circle cx="27" cy="-8" r="3" fill="#cfd3da"/>
+    <rect x="-47" y="-14" width="6" height="4" fill="#dfe3ea" stroke="${INK}"/><rect x="41" y="-14" width="6" height="4" fill="#dfe3ea" stroke="${INK}"/>
+    ${o.bow ? `<path d="M0 -42 l-14 -9 -3 10Z M0 -42 l14 -9 3 10Z" fill="#e0303a" stroke="${INK}" stroke-width="1.4"/><circle cx="0" cy="-42" r="4" fill="#f04650" stroke="${INK}" stroke-width="1.2"/>` : ""}</g>`; };
+  const truck = (x, y, w) => { const k = w / 100; return `<g transform="translate(${x} ${y}) scale(${k})"><rect x="-50" y="-30" width="58" height="20" fill="#5b5f6b" stroke="${INK}" stroke-width="2"/><rect x="8" y="-46" width="40" height="36" rx="4" fill="#ff7a26" stroke="${INK}" stroke-width="2"/><rect x="24" y="-42" width="20" height="14" fill="#a7d4ef" stroke="${INK}" stroke-width="1.4"/><rect x="8" y="-22" width="40" height="5" fill="#fff"/><circle cx="-34" cy="-8" r="9" fill="${INK}"/><circle cx="30" cy="-8" r="9" fill="${INK}"/><rect x="24" y="-52" width="8" height="6" fill="#ffc83a" stroke="${INK}"/></g>`; };
+  const sign = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-2" y="-70" width="4" height="70" fill="#8d949c" stroke="${INK}" stroke-width="1.2"/><path d="M0 -100 L28 -72 L0 -44 L-28 -72Z" fill="#f4c531" stroke="${INK}" stroke-width="3"/><path d="M-16 -72 Q-14 -82 2 -82 L12 -80 Q16 -74 12 -68 L-14 -68 L-20 -64 L-18 -72 L-22 -78Z" fill="${INK}"/></g>`;
+  const easel = (x, y, s, panel = "plan") => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-18 0 L-6 -60 M18 0 L6 -60 M0 -50 L0 0" stroke="#8a5a34" stroke-width="3"/><rect x="-26" y="-74" width="52" height="40" fill="#fbf8ef" stroke="${INK}" stroke-width="2"/>
+    ${panel === "plan" ? `<path d="M-20 -52 q4 -10 16 -10 h10 q4 2 4 8 h-30Z" fill="#4c5a7c"/><path d="M6 -58 l6 0" stroke="${INK}"/><path d="M8 -50 l4 0 M12 -54 l6 -4" stroke="#e8642c" stroke-width="1.5"/>${[0, 1, 2, 3].map((i) => `<rect x="${10 + i * 4}" y="${-46 + (i % 2) * 3}" width="2.4" height="2.4" fill="#4c5a7c"/>`).join("")}<path d="M-16 -42 q3 -3 6 0 q3 -3 6 0" stroke="${INK}" fill="none"/>` : ""}</g>`;
+  const plunger = (x, y, s, down = 0) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-16" y="-24" width="32" height="24" fill="#8a5a34" stroke="${INK}" stroke-width="2"/><path d="M0 -24 v${-18 + down * 14}" stroke="${INK}" stroke-width="3"/><path d="M-12 ${-42 + down * 14} h24" stroke="${INK}" stroke-width="5" stroke-linecap="round"/></g>`;
+  const tvcam = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -30 L-14 0 M0 -30 L14 0 M0 -30 L0 0" stroke="${INK}" stroke-width="2.4"/><rect x="-14" y="-46" width="30" height="16" rx="2" fill="#3a3d47" stroke="${INK}" stroke-width="1.6"/><rect x="16" y="-42" width="8" height="8" fill="#22242a" stroke="${INK}"/><circle cx="-6" cy="-50" r="6" fill="#2a2c33" stroke="${INK}"/><circle cx="8" cy="-50" r="6" fill="#2a2c33" stroke="${INK}"/><circle cx="-10" cy="-38" r="1.6" fill="#e2453c"/></g>`;
+  const rope = (y) => { let o = ""; for (let x = 6; x < 180; x += 40) o += `<rect x="${x}" y="${y - 22}" width="3.5" height="24" fill="#8a5a34" stroke="${INK}" stroke-width="1"/>`; o += `<path d="M6 ${y - 18} q20 6 40 0 t40 0 t40 0 t40 0 t40 0" stroke="#e7d7a8" stroke-width="2" fill="none"/>`; return o; };
+  const ketchup = (x, y, len) => `<path d="M${x} ${y} q${len * .5} ${-len * .35} ${len} ${-len * .1}" stroke="${INK}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M${x} ${y} q${len * .5} ${-len * .35} ${len} ${-len * .1}" stroke="#d42a1e" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="${x - 8}" y="${y - 2}" width="12" height="4" fill="#d42a1e" stroke="${INK}"/>`;
+  const arrow = (x1, y1, x2, y2, c = "#e8642c") => { const a = Math.atan2(y2 - y1, x2 - x1); return `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${c}" stroke-width="4" stroke-linecap="round"/><path d="M${x2} ${y2} l${-9 * Math.cos(a - .5)} ${-9 * Math.sin(a - .5)} M${x2} ${y2} l${-9 * Math.cos(a + .5)} ${-9 * Math.sin(a + .5)}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`; };
+  const bench = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-26" y="-16" width="52" height="5" fill="#8a5a34" stroke="${INK}"/><rect x="-26" y="-30" width="52" height="5" fill="#8a5a34" stroke="${INK}"/><path d="M-22 -11 v11 M22 -11 v11" stroke="${INK}" stroke-width="3"/></g>`;
+  const parkSign = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-30 0 v-70 M30 0 v-70" stroke="#8a5a34" stroke-width="5"/><rect x="-38" y="-108" width="76" height="48" rx="4" fill="#2f6a43" stroke="${INK}" stroke-width="2"/><rect x="-33" y="-103" width="66" height="38" rx="3" fill="#f3ead3"/>${[...Array(10)].map((_, i) => { const a = i / 10 * Math.PI * 2; return `<path d="M${Math.cos(a) * 16} ${-84 + Math.sin(a) * 12} L${Math.cos(a) * 22} ${-84 + Math.sin(a) * 16}" stroke="#e8642c" stroke-width="2"/>`; }).join("")}<path d="M-14 -84 q2 -8 14 -8 h6 q4 4 0 10 h-18 l-4 3 l0 -5 l-4 -5Z" fill="${INK}"/></g>`;
+  const cooler = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-18" y="-20" width="36" height="20" rx="3" fill="#e0303a" stroke="${INK}" stroke-width="2"/><rect x="-18" y="-24" width="36" height="6" rx="2" fill="#f4f1ea" stroke="${INK}" stroke-width="2"/></g>`;
+  const board = (x, y, w) => `<rect x="${x - w / 2}" y="${y}" width="${w}" height="10" rx="3" fill="#d9a46a" stroke="${INK}" stroke-width="1.6"/>`;
+  const wrap = (s) => `<svg viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg" role="img">${s}</svg>`;
+
+
+  // ---------- winter additions ----------
+  const snowfall = (n = 40, seed = 1) => { let o = ""; for (let i = 0; i < n; i++) { const x = (i * 73 + seed * 31) % 180, y = (i * 131 + seed * 17) % 320, r = 1 + (i % 3) * .7; o += `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity=".9"/>`; } return o; };
+  const house = (x, y, w, h, c) => `<rect x="${x - w / 2}" y="${y - h}" width="${w}" height="${h}" fill="${c}" stroke="${INK}" stroke-width="1.2"/><path d="M${x - w / 2 - 3} ${y - h} L${x} ${y - h - w * .45} L${x + w / 2 + 3} ${y - h}Z" fill="#f4f8ff" stroke="${INK}" stroke-width="1.2"/><rect x="${x - w * .15}" y="${y - h * .55}" width="${w * .3}" height="${h * .3}" fill="#ffd77a" stroke="${INK}" stroke-width=".8"/>`;
+  const church = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-10" y="-30" width="20" height="30" fill="#f6f0e4" stroke="${INK}" stroke-width="1.2"/><path d="M-12 -30 L0 -40 L12 -30Z" fill="#f4f8ff" stroke="${INK}"/><rect x="-4" y="-56" width="8" height="18" fill="#f6f0e4" stroke="${INK}"/><path d="M-5 -56 L0 -72 L5 -56Z" fill="#c9373a" stroke="${INK}"/></g>`;
+  const winterBg = (pal, hor = 200, mode = "town", seed = 1) => {
+    const p = P[pal], id = "w" + (uid++);
+    let s = `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.sky0}"/><stop offset="1" stop-color="${p.sky1}"/></linearGradient></defs><rect width="180" height="320" fill="url(#${id})"/>`;
+    s += `<path d="M0 ${hor - 40} L30 ${hor - 70} L60 ${hor - 45} L95 ${hor - 85} L130 ${hor - 50} L160 ${hor - 72} L180 ${hor - 55} V${hor} H0Z" fill="${p.sea}" stroke="${INK}" stroke-width="1"/>`;
+    s += `<path d="M30 ${hor - 70} l-8 10 l8 -3 l8 3Z M95 ${hor - 85} l-10 13 l10 -4 l10 4Z" fill="#fff"/>`;
+    if (mode === "alps") s += `<path d="M0 ${hor - 20} L40 ${hor - 140} L80 ${hor - 30} L120 ${hor - 160} L180 ${hor - 40} V${hor} H0Z" fill="${p.seaF}" stroke="${INK}" stroke-width="1.4"/><path d="M40 ${hor - 140} l-14 30 l14 -8 l14 8Z M120 ${hor - 160} l-16 34 l16 -9 l16 9Z" fill="#fff"/>`;
+    for (let i = 0; i < 7; i++) s += pine(8 + i * 27, hor + 2, 16 + (i % 3) * 6);
+    if (mode === "town") { s += house(30, hor + 6, 22, 16, "#c9473f") + house(150, hor + 8, 24, 18, "#3f6fb5") + church(100, hor + 6, 1) + house(62, hor + 10, 20, 14, "#e2a92e"); }
+    s += `<rect y="${hor}" width="180" height="${Math.max(0, 320 - hor)}" fill="${p.sand}"/>`;
+    for (let i = 0; i < 8; i++) s += `<path d="M${(i * 41) % 170} ${hor + 20 + (i * 37) % Math.max(20, 300 - hor)} q8 -3 16 0" stroke="${p.shade}" stroke-width="1.4" fill="none"/>`;
+    return s;
+  };
+  const summerBg = (hor = 220) => { const p = P.summer, id = "s" + (uid++); return `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.sky0}"/><stop offset="1" stop-color="${p.sky1}"/></linearGradient></defs><rect width="180" height="320" fill="url(#${id})"/><circle cx="148" cy="44" r="18" fill="#ffe36a" stroke="${INK}" stroke-width="1.4"/>` + [0, 1, 2, 3, 4, 5, 6, 7].map((i) => { const a = i * Math.PI / 4; return `<path d="M${148 + Math.cos(a) * 24} ${44 + Math.sin(a) * 24} l${Math.cos(a) * 8} ${Math.sin(a) * 8}" stroke="#ffb02e" stroke-width="3"/>`; }).join("") + `<rect y="${hor}" width="180" height="${320 - hor}" fill="${p.sand}"/>` + tree(20, hor + 4, 40) + tree(165, hor + 6, 34); };
+  /** the snowwoman: base at (x, y), height h; o: {lashes, lips, arms, eyes, layers(0..1 built), melt(0..1), wink} */
+  const olympia = (x, y, h, o = {}) => {
+    const built = o.built ?? 1, melt = o.melt ?? 0, k = h / 200;
+    const r1 = 52 * k, r2 = 38 * k, r3 = 28 * k;
+    const yb = y - r1 * (1 - melt * .5), ym = yb - r1 * .8 - r2 * .8 * (1 - melt * .4), yh = ym - r2 * .8 - r3 * .85 * (1 - melt * .3);
+    let s = "";
+    const ball = (cy, r, sq = 1) => `<ellipse cx="${x}" cy="${cy}" rx="${r * (1 + melt * .35)}" ry="${r * sq * (1 - melt * .35)}" fill="#f6f9ff" stroke="${INK}" stroke-width="${2.2 * Math.max(.5, k)}"/><path d="M${x - r * .6} ${cy + r * .55} q${r * .6} ${r * .3} ${r * 1.2} 0" stroke="#b9c6ee" stroke-width="${3 * k}" fill="none"/>`;
+    if (o.arms !== false && built > .7) for (const sd of [-1, 1]) s += `<g transform="translate(${x + sd * r2 * .8} ${ym - r2 * .1}) rotate(${sd * (melt ? 110 : 60)})"><path d="M0 0 L${-8 * k} ${-60 * k} L${8 * k} ${-60 * k}Z" fill="#2f6f45" stroke="${INK}" stroke-width="1.4"/><path d="M0 ${-50 * k} l${-12 * k} 14 h${24 * k}Z M0 ${-30 * k} l${-15 * k} 16 h${30 * k}Z" fill="#3f8a55" stroke="${INK}" stroke-width="1.2"/></g>`;
+    s += ball(yb, r1, .92);
+    if (built > .35) s += ball(ym, r2, .9);
+    if (built > .7) {
+      s += ball(yh, r3, .95);
+      for (let i = 0; i < 3; i++) s += `<circle cx="${x}" cy="${ym - r2 * .45 + i * r2 * .45}" r="${4.5 * k}" fill="#2b2b33" stroke="${INK}"/>`;
+      if (o.eyes !== false) for (const sd of [-1, 1]) {
+        const ex = x + sd * r3 * .38, ey = yh - r3 * .15;
+        s += `<circle cx="${ex}" cy="${ey}" r="${r3 * .24}" fill="none" stroke="#2f8a4f" stroke-width="${r3 * .14}"/><circle cx="${ex}" cy="${ey}" r="${r3 * .08}" fill="#d42a1e"/>`;
+        if (o.wink && sd > 0) s = s.replace(/$/, "") + `<path d="M${ex - r3 * .2} ${ey} q${r3 * .2} ${r3 * .16} ${r3 * .4} 0" stroke="${INK}" stroke-width="${2.4 * k}" fill="none"/>`;
+        if (o.lashes !== false) for (let j = 0; j < 4; j++) s += `<path d="M${ex - r3 * .2 + j * r3 * .13} ${ey - r3 * .22} l${sd * 2 * k + (j - 1.5) * 2 * k} ${-r3 * .32}" stroke="${["#ff5a3c", "#2f6fd0", "#ffcc29", "#7c3fb0"][j]}" stroke-width="${3 * k}" stroke-linecap="round"/>`;
+      }
+      s += `<path d="M${x} ${yh + r3 * .05} l${r3 * .5} ${r3 * .08} l${-r3 * .5} ${r3 * .1}Z" fill="#ff8a2a" stroke="${INK}" stroke-width="1"/>`;
+      if (o.lips !== false) s += `<ellipse cx="${x}" cy="${yh + r3 * .45}" rx="${r3 * .32}" ry="${r3 * .13}" fill="#e0303a" stroke="${INK}" stroke-width="${1.6 * k}"/><path d="M${x - r3 * .3} ${yh + r3 * .45} h${r3 * .6}" stroke="${INK}" stroke-width="${1.2 * k}"/>`;
+    }
+    if (o.layers) for (let i = 1; i < 7; i++) s += `<path d="M${x - r1} ${y - i * r1 * .26} h${r1 * 2}" stroke="#b9c6ee" stroke-width="${1.6 * k}" stroke-dasharray="4 3"/>`;
+    return s;
+  };
+  const crane = (x, y, s, hookX, hookY, bucket = true) => `<g><path d="M${x} ${y} v${-170 * s} h${(hookX - x)}" stroke="#ffb02e" stroke-width="${6 * s}" fill="none"/><path d="M${x} ${y} v${-170 * s}" stroke="${INK}" stroke-width="1" stroke-dasharray="3 3"/><rect x="${x - 12 * s}" y="${y - 30 * s}" width="${24 * s}" height="${24 * s}" fill="#ffb02e" stroke="${INK}" stroke-width="1.6"/><rect x="${x - 6 * s}" y="${y - 26 * s}" width="${12 * s}" height="${10 * s}" fill="#a7d4ef" stroke="${INK}"/><path d="M${hookX} ${y - 170 * s} V${hookY}" stroke="${INK}" stroke-width="1.4"/>${bucket ? `<path d="M${hookX - 12} ${hookY} h24 l-4 16 h-16Z" fill="#5b5f6b" stroke="${INK}" stroke-width="1.6"/><ellipse cx="${hookX}" cy="${hookY}" rx="13" ry="4" fill="#fff" stroke="${INK}"/>` : ""}</g>`;
+  const tower = (x, y, w, floors) => { let o = `<rect x="${x - w / 2}" y="${y - floors * 14}" width="${w}" height="${floors * 14}" fill="#9a8f86" stroke="${INK}" stroke-width="1.6"/>`; for (let f = 0; f < floors; f++) for (let c = 0; c < 3; c++) o += `<rect x="${x - w / 2 + 5 + c * (w - 10) / 3}" y="${y - (f + 1) * 14 + 4}" width="${(w - 16) / 3}" height="7" fill="#cfe6ff" stroke="${INK}" stroke-width=".6"/>`; return o; };
+  const angus = (x, y, h) => olympia(x, y, h, { lashes: false, lips: false, eyes: false }) + `<rect x="${x - h * .09}" y="${y - h * 1.02}" width="${h * .18}" height="${h * .14}" fill="#2b2b33" stroke="${INK}" stroke-width="1.4"/><rect x="${x - h * .14}" y="${y - h * .89}" width="${h * .28}" height="${h * .025}" fill="#2b2b33" stroke="${INK}"/><circle cx="${x - h * .05}" cy="${y - h * .77}" r="${h * .015}" fill="${INK}"/><circle cx="${x + h * .05}" cy="${y - h * .77}" r="${h * .015}" fill="${INK}"/><path d="M${x - h * .05} ${y - h * .7} q${h * .05} ${h * .03} ${h * .1} 0" stroke="${INK}" stroke-width="1.4" fill="none"/>`;
+  const trophy = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-10 -30 h20 v8 q0 12 -10 12 q-10 0 -10 -12Z" fill="#ffcc29" stroke="${INK}" stroke-width="1.6"/><rect x="-3" y="-10" width="6" height="6" fill="#ffcc29" stroke="${INK}"/><rect x="-9" y="-4" width="18" height="4" fill="#8a5a34" stroke="${INK}"/></g>`;
+  const scaleG = (x, y, w, spin) => `<rect x="${x - w / 2}" y="${y - 10}" width="${w}" height="10" rx="3" fill="#dfe3ea" stroke="${INK}" stroke-width="1.6"/><circle cx="${x}" cy="${y + 12}" r="13" fill="#fff" stroke="${INK}" stroke-width="1.6"/><path d="M${x} ${y + 12} l${Math.cos(spin) * 10} ${Math.sin(spin) * 10}" stroke="#e0303a" stroke-width="2.4"/>`;
+  const flake = (x, y, r, wet = false) => { let o = ""; for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; o += `<path d="M${x} ${y} l${Math.cos(a) * r} ${Math.sin(a) * r} M${x + Math.cos(a) * r * .55} ${y + Math.sin(a) * r * .55} l${Math.cos(a + .6) * r * .25} ${Math.sin(a + .6) * r * .25} M${x + Math.cos(a) * r * .55} ${y + Math.sin(a) * r * .55} l${Math.cos(a - .6) * r * .25} ${Math.sin(a - .6) * r * .25}" stroke="${wet ? "#3aa0e8" : "#7fb6e8"}" stroke-width="${wet ? 7 : 5}" stroke-linecap="round" opacity="${wet ? .5 : 1}"/>`; } for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; o += `<path d="M${x} ${y} l${Math.cos(a) * r} ${Math.sin(a) * r} M${x + Math.cos(a) * r * .55} ${y + Math.sin(a) * r * .55} l${Math.cos(a + .6) * r * .25} ${Math.sin(a + .6) * r * .25} M${x + Math.cos(a) * r * .55} ${y + Math.sin(a) * r * .55} l${Math.cos(a - .6) * r * .25} ${Math.sin(a - .6) * r * .25}" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>`; } return o; };
+  const castle = (x, y, s, falling) => falling ? `<path d="M${x - 30 * s} ${y} q${10 * s} ${-14 * s} ${30 * s} ${-12 * s} q${20 * s} ${-2 * s} ${30 * s} ${12 * s}Z" fill="#f1d9a0" stroke="${INK}" stroke-width="1.4"/>` + [...Array(8)].map((_, i) => `<circle cx="${x - 20 * s + i * 6 * s}" cy="${y - 20 * s - (i % 3) * 8 * s}" r="${2 * s}" fill="#e6c98a"/>`).join("") : `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-26" y="-30" width="52" height="30" fill="#d9b06a" stroke="${INK}" stroke-width="1.6"/><rect x="-30" y="-46" width="16" height="46" fill="#d9b06a" stroke="${INK}" stroke-width="1.6"/><rect x="14" y="-46" width="16" height="46" fill="#d9b06a" stroke="${INK}" stroke-width="1.6"/><path d="M-30 -46 h4 v-4 h4 v4 h4 v-4 h4 v4 M14 -46 h4 v-4 h4 v4 h4 v-4 h4 v4" stroke="${INK}" fill="none"/><path d="M14 -46 v-14 l10 4 -10 4" stroke="${INK}" fill="#e0303a"/></g>`;
+  const thermo = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-5" y="-50" width="10" height="44" rx="5" fill="#fff" stroke="${INK}" stroke-width="1.6"/><circle cx="0" cy="-4" r="9" fill="#3aa0e8" stroke="${INK}" stroke-width="1.6"/><rect x="-2.5" y="-14" width="5" height="10" fill="#3aa0e8"/></g>`;
+  const sled = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-18" y="-10" width="36" height="6" rx="2" fill="#e0303a" stroke="${INK}" stroke-width="1.4"/><path d="M-18 -2 h40 q6 0 6 -6" stroke="${INK}" stroke-width="2" fill="none"/></g>`;
+  const dog = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="-10" rx="14" ry="8" fill="#b06a3a" stroke="${INK}" stroke-width="1.4"/><circle cx="14" cy="-18" r="7" fill="#b06a3a" stroke="${INK}" stroke-width="1.4"/><circle cx="16" cy="-19" r="1.2" fill="${INK}"/><path d="M-10 -4 v6 M10 -4 v6 M-14 -12 q-8 -6 -6 -12" stroke="${INK}" stroke-width="2" fill="none"/></g>`;
+  const iceCream = (x, y) => `<path d="M${x - 4} ${y} l4 10 l4 -10Z" fill="#e0a35a" stroke="${INK}"/><circle cx="${x}" cy="${y - 3}" r="5" fill="#f7c6d9" stroke="${INK}"/>`;
+  const confetti = (n = 30) => [...Array(n)].map((_, i) => `<rect x="${(i * 67) % 180}" y="${(i * 113) % 200}" width="4" height="2" fill="${["#e0303a", "#ffcc29", "#2f6fd0", "#2f8a4f"][i % 4]}" transform="rotate(${i * 37} ${(i * 67) % 180} ${(i * 113) % 200})"/>`).join("");
+
+  // outfits
+  const BEANIE = (c) => ["cap", c];
+  const MAYOR = { c: "#d6343b", pants: "#2b2b33", hat: ["hair", "#5a3b2a"], skin: SKIN[1] };
+  const OPER = { c: "#3a6a3a", pants: "#2f4470", hat: ["hard", "#ffcc29"], skin: SKIN[2], vest: true };
+  const VOL = (k) => ({ c: ["#ff7a26", "#2f6fd0", "#7c3fb0", "#2f8a4f", "#e2a92e", "#d6343b"][k % 6], pants: ["#2f4470", "#3b3f52", "#5a4a3a"][k % 3], hat: BEANIE(["#ffcc29", "#e0303a", "#2f6fd0", "#ffffff"][k % 4]), skin: SKIN[k % 4] });
+  const KIDW = { c: "#ff4f9a", pants: "#2f4470", hat: BEANIE("#ffcc29"), skin: SKIN[0] };
+  const SEN = { c: "#3f6fb5", pants: "#3f6fb5", hat: ["hair", "#d9b46a"], skin: SKIN[0] };
+  const AUS = { c: "#2f6f45", pants: "#6b4a33", hat: ["cap", "#2f6f45"], skin: SKIN[0], mo: "#a8643a" };
+  const JUDGE = { c: "#2b2b33", pants: "#2b2b33", hat: ["hair", "#7a7a7a"], skin: SKIN[2] };
+  const SUMMER = (k) => ({ c: ["#ffcc29", "#5fd0b4", "#ff7a26"][k % 3], pants: "#3f6fb5", hat: ["hair", HAIRC[k % 3]], skin: SKIN[k % 4] });
+  const HAIRC = ["#3a2a20", "#d9b46a", "#a8643a"];
+
+  const PANELS = [
+    { t: "0.3", sh: 1, pal: "snow", vo: "In 2008, a tiny town in Maine built a snowwoman…",
+      act: "กล้องเริ่มที่เท้าของ Olympia แล้วเครนขึ้นช้า ๆ ผ่านกระดุมยางไปถึงหน้า ชาวเมืองตัวเล็ก ๆ ข้างล่างโห่ร้องโยนหมวก หิมะตกตลอด", ex: "ชาวเมือง: ตื่นเต้น ภูมิใจ", cam: "เครนขึ้นจากเท้าไปถึงหน้า (เผยความสูงตอน \"snowwoman\")",
+      d: () => winterBg("snow", 250) + olympia(90, 300, 280) + man(30, 314, 40, { ...VOL(0), pose: "up", e: "excited" }) + man(150, 312, 40, { ...VOL(2), pose: "up", e: "laugh", flip: true }) + man(120, 316, 30, { ...KIDW, pose: "jump", e: "laugh" }) + snowfall(40, 1) },
+    { t: "3.8", sh: 2, pal: "snow", vo: "…taller than a ten-story building.",
+      act: "ตึก 10 ชั้นตั้งข้าง Olympia ซึ่งสูงกว่าเห็นได้ชัด ผู้ชายบนดาดฟ้าเงยมองแล้วอ้าปากค้าง ถ้วยกาแฟหล่นจากมือ", ex: "ผู้ชายบนดาดฟ้า: ตกใจ", cam: "กว้างด้านข้าง ซูมกระแทกตอน \"ten-story\"",
+      d: () => winterBg("snow", 270) + tower(46, 280, 50, 10) + olympia(126, 290, 250) + man(46, 140, 26, { ...VOL(1), pose: "flinch", e: "shock" }) + snowfall(30, 2) },
+    { t: "5.2", sh: 3, pal: "flash", vo: "Bethel already held the world record, with a hundred and thirteen foot snowman from 1999.",
+      act: "ภาพย้อนอดีตสีฟ้าหม่น: Angus ตุ๊กตาหิมะใส่หมวกทรงสูง นายกเมืองขัดถ้วยรางวัลแล้วยิ้มให้กล้อง", ex: "นายกเมือง: ภูมิใจ ยิ้มเยาะ", cam: "MS ดันเข้าช้า ขอบภาพมืดลงเหมือนภาพเก่า",
+      d: () => winterBg("flash", 250) + angus(110, 290, 240) + man(46, 312, 96, { ...MAYOR, pose: "carry", e: "smug" }) + trophy(46, 236, 1.4) + snowfall(20, 3) },
+    { t: "10.5", sh: 4, pal: "snow", vo: "But the town wanted more.",
+      act: "ที่ประชุมเมือง: นายกเมืองทุบโต๊ะ แล้วชี้ขึ้นฟ้า ชาวเมืองยืดตัวขึ้นพร้อมกัน", ex: "นายกเมือง: มุ่งมั่น → ยิ้มเยาะ · ชาวเมือง: ตื่นเต้น", cam: "ตัดกระแทกตอน \"more\" แล้วเอียงกล้อง",
+      d: () => winterBg("snow", 240) + `<rect x="10" y="250" width="160" height="12" fill="#8a5a34" stroke="${INK}" stroke-width="1.6"/>` + man(90, 252, 110, { ...MAYOR, pose: "point", e: "angry" }) + man(28, 310, 50, { ...VOL(3), pose: "up", e: "excited" }) + man(152, 310, 50, { ...VOL(4), pose: "up", e: "excited", flip: true }) + speed(120, 110, 3, 14, -1) },
+    { t: "12.0", sh: 5, pal: "snow", vo: "For a whole month, a crane hoisted bucket after bucket of snow to the top.",
+      act: "เครนแกว่งถังหิมะขึ้นไปเทบนยอด คนขับเครนยิ้มโบกมือ ฉากเร่งเวลาให้เห็นดวงอาทิตย์ข้ามฟ้า เงาหมุน และตัวตุ๊กตาสูงขึ้นทีละชั้น", ex: "คนขับเครน: ยิ้มกว้าง", cam: "กว้าง ฉากเร่งเวลา (time-lapse) ตอน \"bucket after bucket\"",
+      d: () => winterBg("snow", 260) + olympia(110, 300, 200, { built: .5, layers: true }) + crane(30, 300, 1.1, 110, 110) + `<path d="M98 126 q12 16 24 0" stroke="#fff" stroke-width="5" fill="none"/>` + man(30, 276, 22, { ...OPER, pose: "wave", e: "grin" }) + snowfall(25, 4) },
+    { t: "15.6", sh: 6, pal: "snow", vo: "Volunteers stomped every layer flat, like the world's coldest layer cake.",
+      act: "อาสาสมัครกระทืบหิมะบนชั้นบนสุดเป็นจังหวะเดียวกัน คนหนึ่งลื่นล้มก้นจ้ำเบ้า เพื่อนหัวเราะ ภาพตัดขวางเห็นชั้นหิมะเหมือนเค้กชั้น", ex: "อาสาสมัคร: สนุก · คนที่ล้ม: ตกใจ → หัวเราะ", cam: "MS จากด้านบน แล้วซูมออกเห็นชั้นเค้กตอน \"layer cake\"",
+      d: () => winterBg("snow", 150) + `<rect x="0" y="210" width="180" height="110" fill="#f6f9ff" stroke="${INK}"/>` + [0, 1, 2, 3].map((i) => `<path d="M0 ${230 + i * 22} h180" stroke="#b9c6ee" stroke-width="2" stroke-dasharray="6 4"/>`).join("") + man(36, 214, 60, { ...VOL(0), pose: "stomp", e: "laugh" }) + man(84, 214, 60, { ...VOL(1), pose: "stomp", e: "grin" }) + man(140, 230, 54, { ...VOL(2), pose: "sit", e: "shock" }) + stars(140, 150) + snowfall(25, 5) },
+    { t: "19.3", sh: 7, pal: "snow", vo: "Her eyes were giant wreaths. Her eyelashes were sixteen old skis.",
+      act: "เครนหย่อนพวงหรีดลงมาเป็นตา คนบนนั่งร้านจัดตำแหน่ง แล้วนักสกีส่งสกีต่อกันขึ้นไปเป็นขนตา นักสกีคนสุดท้ายเหลือแต่รองเท้าบู๊ต ยืนหน้าเศร้า", ex: "คนบนนั่งร้าน: ตั้งใจ · นักสกี: เศร้า", cam: "CU หน้าตุ๊กตา แล้วตัดลงไปที่นักสกี",
+      d: () => winterBg("snow", 330) + olympia(90, 560, 460, { lashes: true }) + crane(-10, 330, .9, 130, 60, false) + `<circle cx="130" cy="74" r="16" fill="none" stroke="#2f8a4f" stroke-width="7"/>` + man(150, 318, 70, { ...VOL(3), pose: "palm", e: "sad", flip: true }) + snowfall(20, 6) },
+    { t: "22.8", sh: 8, pal: "snow", vo: "Her lips were car tires, painted red. And her arms were two whole spruce trees.",
+      act: "ช่างทาสีกลิ้งลูกกลิ้งทาสีแดงบนยางรถ จนหน้าตัวเองเปื้อนสีแดง จากนั้นเครนยกต้นสนทั้งต้นขึ้นไปเป็นแขน คนตัดไม้ยืนเท้าสะเอวอย่างภูมิใจ", ex: "ช่างทาสี: ภูมิใจ (หน้าเปื้อนแดง) · คนตัดไม้: ยิ้มเยาะ", cam: "MS ช่างทาสี แล้วตัดกว้างตอน \"spruce trees\"",
+      d: () => winterBg("snow", 240) + `<ellipse cx="60" cy="280" rx="34" ry="14" fill="#2b2b33" stroke="${INK}" stroke-width="2"/><ellipse cx="60" cy="276" rx="34" ry="12" fill="#e0303a" stroke="${INK}" stroke-width="2"/>` + man(130, 312, 96, { ...VOL(5), pose: "hips", e: "proud", splat: true }) + `<path d="M150 70 L136 130 L164 130Z" fill="#2f6f45" stroke="${INK}" stroke-width="1.6"/>` + snowfall(20, 7) },
+    { t: "27.2", sh: 9, pal: "snow", vo: "When they were done, she stood a hundred and twenty-two feet tall, and weighed about thirteen million pounds.",
+      act: "เผยตัวเต็ม: Olympia ครบทุกส่วน กระดาษสีโปรยลงมา ฝูงชนเชียร์ จากนั้นมุกตาชั่งยักษ์ใต้ตัวเธอ เข็มหมุนติ้วจนหลุด", ex: "ฝูงชน: ภูมิใจ ตื่นเต้น", cam: "เครนถอยออกกว้าง แล้วตัดไปที่ตาชั่งตอน \"thirteen million\"",
+      d: () => winterBg("snow", 270) + olympia(90, 290, 260) + scaleG(90, 300, 140, 2.6) + confetti(30) + man(24, 318, 40, { ...VOL(1), pose: "up", e: "excited" }) + man(158, 318, 40, { ...VOL(4), pose: "up", e: "laugh", flip: true }) + snowfall(30, 8) },
+    { t: "32.3", sh: 10, pal: "snow", vo: "They named her Olympia, after Maine's senator…",
+      act: "วุฒิสมาชิกในชุดสูทฟ้าตัดริบบิ้นแดงหน้า Olympia นายกเมืองปรบมือ", ex: "วุฒิสมาชิก: ยิ้มสุภาพ · นายกเมือง: ภูมิใจ", cam: "MS ดันเข้าช้า",
+      d: () => winterBg("snow", 230) + olympia(120, 330, 260) + `<path d="M10 250 h160" stroke="#e0303a" stroke-width="5"/>` + man(60, 312, 100, { ...SEN, pose: "hold", e: "smile" }) + man(140, 314, 70, { ...MAYOR, pose: "up", e: "proud", flip: true }) + snowfall(20, 9) },
+    { t: "35.5", sh: 10, pal: "snow", vo: "…whose last name, luckily, was Snowe.",
+      act: "วุฒิสมาชิกกับ Olympia ทำท่าเดียวกันแล้วขยิบตาพร้อมกัน ฝูงชนหัวเราะลั่น หิมะก้อนหนึ่งหล่นใส่หัวนายกเมือง", ex: "วุฒิสมาชิก: ขยิบตา ยิ้มเยาะ · ฝูงชน: หัวเราะ", cam: "ตัดแบบเทียบภาพสองฝั่ง (match cut) เอียงกล้อง 4°",
+      d: () => winterBg("snow", 230) + olympia(126, 320, 230, { wink: true }) + man(52, 312, 110, { ...SEN, pose: "hips", e: "smug" }) + snowfall(20, 10) },
+    { t: "36.9", sh: 11, pal: "snow", vo: "But why does snow stick together at all?",
+      act: "เด็กพยายามปั้นลูกหิมะ แต่หิมะร่วนหลุดออกจากถุงมือ เด็กเกาหัว หมาเอียงคอมอง", ex: "เด็ก: งง → กังวล", cam: "CU มุมต่ำระดับเด็ก",
+      d: () => winterBg("snow", 220) + man(80, 312, 120, { ...KIDW, pose: "palm", e: "worried" }) + [...Array(8)].map((_, i) => `<circle cx="${110 + (i % 4) * 6}" cy="${220 + Math.floor(i / 4) * 14 + i * 3}" r="2.6" fill="#fff" stroke="#9fb0e6"/>`).join("") + dog(150, 312, 1.4) + snowfall(15, 11) },
+    { t: "38.8", sh: 12, pal: "diagram", vo: "Near freezing, every snowflake has a thin wet skin.",
+      act: "ภาพมาโครสีน้ำแข็ง: เกล็ดหิมะยักษ์หมุนช้า ๆ มีขอบน้ำใสวาวบาง ๆ รอบแฉก มีเทอร์โมมิเตอร์ (ไม่มีตัวเลข) เกือบ 0 องศา", ex: "ไม่มีตัวละคร เป็นภาพอธิบาย", cam: "ซูมเข้าช้า ๆ",
+      d: () => bg("diagram") + flake(90, 150, 60, true) + flake(90, 150, 60) + thermo(150, 290, 1.4) },
+    { t: "41.6", sh: 13, pal: "diagram", vo: "Press two flakes together, and that water glues them, then freezes solid.",
+      act: "มือในถุงมือสองข้างดันเกล็ดหิมะสองเกล็ดมาชนกัน น้ำตรงกลางกลายเป็นสะพานแล้วแข็งตัวพร้อมประกายแวบ", ex: "ไม่มีตัวละคร เป็นภาพอธิบาย", cam: "นิ่ง ซูมกระแทกเบา ๆ ตอน \"freezes solid\"",
+      d: () => bg("diagram") + flake(60, 160, 42) + flake(120, 160, 42) + `<ellipse cx="90" cy="160" rx="12" ry="6" fill="#3aa0e8" opacity=".6"/>` + sparkle(90, 160, 14) + `<ellipse cx="14" cy="160" rx="14" ry="18" fill="#e0303a" stroke="${INK}" stroke-width="2"/><ellipse cx="166" cy="160" rx="14" ry="18" fill="#e0303a" stroke="${INK}" stroke-width="2"/>` + arrow(26, 220, 56, 220) + arrow(154, 220, 124, 220) },
+    { t: "45.4", sh: 14, pal: "beach", vo: "It's like a sandcastle. Dry sand falls apart.",
+      act: "ชายหาดหน้าร้อน: เด็กคนเดิมในชุดว่ายน้ำปั้นปราสาททรายแห้ง แล้วปราสาทถล่มเป็นกองฝุ่นต่อหน้า", ex: "เด็ก: ภูมิใจ → ช็อก", cam: "MS ตัดตอน \"falls apart\"",
+      d: () => bg("beach", 120) + castle(110, 280, 1.3, true) + man(46, 312, 100, { ...KIDW, hat: null, c: "#ff4f9a", pose: "flinch", e: "shock" }) },
+    { t: "47.5", sh: 14, pal: "beach", vo: "Damp sand holds.",
+      act: "เด็กเทถังน้ำใส่ทราย ปั้นใหม่ ปราสาทตั้งตรงแข็งแรง เด็กเท้าสะเอว ปูเดินผ่าน", ex: "เด็ก: ภูมิใจ ยิ้มเยาะ", cam: "ดันเข้าช้า",
+      d: () => bg("beach", 120) + castle(110, 284, 1.3, false) + man(40, 312, 100, { ...KIDW, hat: null, pose: "hips", e: "smug" }) },
+    { t: "49.1", sh: 15, pal: "frigid", vo: "On a really cold day, snow is just powder, and you can't build anything.",
+      act: "วันหนาวจัดสีม่วงฟ้า เด็กใส่ชุดหนาเป็นก้อนกลม ตักหิมะขึ้นมาแล้วหิมะปลิวเป็นผงตามลม มีน้ำแข็งย้อยห้อยจากจมูก", ex: "เด็ก: เศร้า หน้าตาย", cam: "MS มีลมพัดหิมะผ่านเฟรม",
+      d: () => winterBg("frigid", 230) + man(80, 312, 120, { ...KIDW, c: "#7fd8ff", pose: "shrug", e: "deadpan" }) + [...Array(18)].map((_, i) => `<circle cx="${110 + i * 4}" cy="${200 - i * 2 + (i % 3) * 4}" r="${1.8}" fill="#fff"/>`).join("") + speed(170, 120, 5, 40, -1) + thermo(150, 300, 1.2).replace(/#3aa0e8/g, "#7c3fb0") },
+    { t: "52.8", sh: 16, pal: "snow", vo: "That's why they stomped every layer: the pressure made the glue.",
+      act: "กลับมาที่อาสาสมัครกระทืบหิมะแบบสโลว์ รองเท้าบู๊ตกดลงแล้วหิมะยุบเป็นชั้นแน่น มีเส้นแรงกดและประกายตอนติดกัน", ex: "อาสาสมัคร: ตั้งใจจริงจัง", cam: "CU รองเท้าแบบสโลว์ แล้วตัดไปที่คนกระทืบ",
+      d: () => winterBg("snow", 150) + `<rect x="0" y="230" width="180" height="90" fill="#f6f9ff" stroke="${INK}"/>` + man(90, 232, 120, { ...VOL(0), pose: "stomp", e: "angry" }) + sparkle(120, 236, 10) + speed(40, 236, 3, 20) + snowfall(15, 12) },
+    { t: "55.8", sh: 17, pal: "summer", vo: "Olympia didn't finish melting until the end of July.",
+      act: "หน้าร้อน หญ้าเขียว แดดจ้า Olympia ละลายจนตัวทรุด สกียังห้อยอยู่ ชาวเมืองใส่กางเกงขาสั้นมากินไอศกรีมใต้เงาเธอ", ex: "ชาวเมือง: สบาย ยิ้ม", cam: "กว้าง ฉากเร่งเวลาให้เห็นการละลาย",
+      d: () => summerBg(230) + olympia(100, 300, 190, { melt: .55 }) + `<ellipse cx="100" cy="306" rx="80" ry="10" fill="#7fc8ff" opacity=".7"/>` + man(30, 316, 54, { ...SUMMER(0), pose: "hold", e: "grin" }) + iceCream(42, 270) + man(160, 316, 50, { ...SUMMER(1), pose: "sit", e: "smile", flip: true }) },
+    { t: "57.3", sh: 17, pal: "summer", vo: "(สิ้นเดือนกรกฎาคม)",
+      act: "เหลือแค่กองหิมะเล็ก ๆ ที่มีปากยางแดงกับสกีปักอยู่ เด็กในชุดว่ายน้ำไถลลงจากกองหิมะสุดท้าย", ex: "เด็ก: หัวเราะ", cam: "MS",
+      d: () => summerBg(230) + `<ellipse cx="96" cy="300" rx="60" ry="26" fill="#f6f9ff" stroke="${INK}" stroke-width="2"/><ellipse cx="96" cy="292" rx="18" ry="7" fill="#e0303a" stroke="${INK}" stroke-width="2"/>` + `<path d="M60 290 l-10 -30 M132 290 l14 -28" stroke="#2f6fd0" stroke-width="4" stroke-linecap="round"/>` + man(130, 286, 60, { ...KIDW, hat: null, pose: "up", e: "laugh" }) },
+    { t: "58.8", sh: 18, pal: "alps", vo: "A town in Austria tried to beat her in 2020…",
+      act: "ภูเขาแอลป์: ชาวบ้านออสเตรียโห่ร้องหน้าตุ๊กตาหิมะของพวกเขาที่สูงกว่านิดเดียว ผู้ชายหมวกแอลป์ยืนเท้าสะเอว", ex: "ชาวออสเตรีย: ภูมิใจ ยิ้มเยาะ", cam: "เครนขึ้นตามตัวตุ๊กตาหิมะ",
+      d: () => winterBg("alps", 260, "alps") + olympia(110, 296, 250, { lashes: false, lips: false }) + man(40, 316, 90, { ...AUS, pose: "hips", e: "smug" }) + snowfall(25, 13) },
+    { t: "61.0", sh: 18, pal: "alps", vo: "…but the record was never confirmed.",
+      act: "เจ้าหน้าที่ถือแฟ้ม (ไม่มีตัวหนังสือ) ส่ายหัว ยักไหล่ จมูกแครอทของตุ๊กตาหิมะออสเตรียหล่นลงพื้น ชาวออสเตรียหน้าเศร้า", ex: "เจ้าหน้าที่: หน้าตาย · ชาวออสเตรีย: เศร้า", cam: "MS แล้วตัดไปที่แครอทที่หล่น",
+      d: () => winterBg("alps", 260, "alps") + man(60, 312, 110, { ...JUDGE, pose: "shrug", e: "deadpan" }) + man(146, 316, 76, { ...AUS, pose: "palm", e: "sad", flip: true }) + `<path d="M110 300 l26 6 l-26 4Z" fill="#ff8a2a" stroke="${INK}" stroke-width="1.4"/>` + snowfall(20, 14) },
+    { t: "63.6", sh: 19, pal: "dusk", vo: "So the tallest snowperson in history is still a lady from Maine…",
+      act: "กลับมาที่ Bethel ยามเย็นหิมะสีชมพู Olympia ยืนสง่า ชาวเมืองทุกคนในเรื่องยืนเรียงแถว เด็กลากเลื่อน หมาวิ่งวน นายกเมืองชูถ้วยรางวัล", ex: "ทุกคน: ภูมิใจ", cam: "เครนถอยออก",
+      d: () => winterBg("dusk", 260) + olympia(100, 300, 270) + man(28, 318, 44, { ...MAYOR, pose: "up", e: "proud" }) + trophy(28, 262, 1) + man(164, 318, 40, { ...OPER, pose: "wave", e: "grin", flip: true }) + sled(130, 316, 1) + dog(70, 318, 1) + snowfall(30, 15) },
+    { t: "66.5", sh: 19, pal: "dusk", vo: "…with skis for eyelashes.",
+      act: "CU หน้า Olympia ขนตาสกีกระพือ แล้วขยิบตาให้กล้อง หิมะตก ปิดด้วยดนตรี", ex: "Olympia: ขยิบตา", cam: "ดันเข้าหน้า แล้วจบที่ขยิบตา",
+      d: () => winterBg("dusk", 330) + olympia(90, 640, 560, { wink: true }) + snowfall(40, 16) },
+  ];
+  const boardEl = document.getElementById("board");
+  PANELS.forEach((p, i) => {
+    const el = document.createElement("article"); el.className = "panel";
+    el.innerHTML = `<div class="frame">${wrap(p.d())}<span class="num">${String(i + 1).padStart(2, "0")}</span></div>
+      <div class="meta"><b>ช็อต ${p.sh}</b><span>${p.t} s</span><span>เฟรม ${Math.round(parseFloat(p.t) * 30)}</span></div>
+      <p class="vo">${p.vo}</p>
+      <dl><dt>Action</dt><dd>${p.act}</dd><dt>สีหน้า</dt><dd>${p.ex}</dd><dt>กล้อง</dt><dd>${p.cam}</dd></dl>`;
+    boardEl.appendChild(el);
+  });
+})();
+</script>
