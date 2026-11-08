@@ -84,7 +84,7 @@ export const chunkAt = (c: Chunk, t: number): { p: V3; rot: V3; landed: boolean 
 export const carChunkDrop = (t: number) => { const u = T_FLAT - t; return u <= 0 ? 0 : 0.5 * G * u * u; };
 
 // ---------------- shots ----------------
-export type Light = "day" | "golden";
+export type Light = "day" | "golden" | "blast" | "dusk";
 export type Cast =
   | "hook" | "beach" | "stink" | "sign" | "truck" | "engineer" | "gulls" | "warner" | "crates" | "crowd" | "tvcam" | "plunger" | "blast"
   | "rain" | "dazed" | "newcar" | "flat" | "neat" | "ketchup" | "over" | "after" | "whales" | "park";
@@ -100,7 +100,7 @@ export const SHOTS: ShotDef[] = [
   { id: 5, a: 531, b: 649, light: "day", tau: (t) => t },
   { id: 6, a: 649, b: 715, light: "day", tau: (t) => t },
   { id: 7, a: 715, b: 846, light: "day", tau: (t) => t },
-  { id: 8, a: 846, b: 1004, light: "day", tau: (t) => t },
+  { id: 8, a: 846, b: 1004, light: "blast", tau: (t) => t },
   { id: 9, a: 1004, b: 1062, light: "day", tau: (t) => t + 3 },
   { id: 10, a: 1062, b: 1222, light: "day", tau: (t) => t },
   { id: 11, a: 1222, b: 1262, light: "day", tau: (t) => t },
@@ -108,7 +108,7 @@ export const SHOTS: ShotDef[] = [
   { id: 13, a: 1418, b: 1544, light: "day", tau: (t) => t },
   { id: 14, a: 1544, b: 1655, light: "day", tau: replay(1544, T_BLAST + 1.6) },
   { id: 15, a: 1655, b: 1760, light: "day", tau: (t) => t + 40 },
-  { id: 16, a: 1760, b: 1918, light: "golden", tau: (t) => t },
+  { id: 16, a: 1760, b: 1918, light: "dusk", tau: (t) => t },
   { id: 17, a: 1918, b: TOTAL, light: "day", tau: (t) => t },
 ];
 export const XFADE: Record<number, number> = { 12: 8, 13: 8, 15: 8, 16: 10, 17: 10 };
@@ -175,7 +175,7 @@ const S4b = (f: number) => dolly([-6, 1.3, -9], [1.2, 3.6, 0], pushK(f, 480, 0.0
 const S5a = (f: number) => dolly(at(3, -46, 2.2), at(-2, -58.5, 1.3), pushK(f, 531, 0.002), { fov: 42 });
 const S5b = (f: number) => dolly(at(-2.4, -54.9, 1.55), at(-4, -58.4, 1.5), pushK(f, 572, 0.0022, 0.006, 32), { fov: 38 });
 const S5c = rolled(S5b, 0.04);
-const S6a = (f: number) => dolly([-6.5, 1.4, -8.8], [-1.0, 0.95, -2.6], pushK(f, 649, 0.004, 0.008, 30), { fov: 40, roll: -0.03 });
+const S6a = (f: number) => dolly([-6.8, 1.6, -9.6], [-1.0, 1.9, -2.6], pushK(f, 649, 0.004, 0.008, 30), { fov: 44, roll: -0.03 });
 const S7a = (f: number) => zoom(at(-8, -68, 4.5), [0, 1.5, -2], 40, pushK(f, 715, 0.0018));
 const S7b = (f: number) => dolly(at(CAMSTAND[0] + 1.6, CAMSTAND[2] + 3.8, 1.6), at(CAMSTAND[0] - 0.7, CAMSTAND[2] - 0.5, 1.45), pushK(f, 760, 0.0025), { fov: 38, roll: 0.035 });
 const S7c = (f: number) => dolly(at(PLUNGER[0] + 1.4, PLUNGER[2] - 3.4, 1.45), at(PLUNGER[0], PLUNGER[2] + 0.3, 1.05), pushK(f, 795, 0.003, 0.008, 25), { fov: 40 });
@@ -243,7 +243,7 @@ export const camAt = (id: number, f: number): Cam => {
 // ---------------- lens ----------------
 export type Dof = { f: number; dur?: number; cInf: number; focus?: (f: number) => V3 };
 export const DOF: Dof[] = [
-  { f: 0, cInf: 8 }, { f: 96, cInf: 14 },
+  { f: 0, cInf: 3 }, { f: 96, cInf: 14 },
   { f: 140, cInf: 0 }, { f: 265, cInf: 13 },
   { f: 288, cInf: 12 }, { f: 372, cInf: 7 },
   { f: 411, cInf: 12 }, { f: 480, cInf: 0 },

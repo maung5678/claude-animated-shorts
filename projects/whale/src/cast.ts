@@ -3,11 +3,11 @@
 import * as THREE from "three";
 import {
   Pen, bodyFront, bodySide, KID, fxBurst, fxShadow, fxContact, fxGull, fxPuffC, fxStink, fxSpark, fxBow, fxKetchup, fxBit, fxStars,
-  Outfit, Expr, FrontOpts, SideOpts, SKINS, INK,
+  fxHat, fxCooler, fxArrow, fxAlarm, Outfit, Expr, FrontOpts, SideOpts, SKINS, INK, Pose,
 } from "./toon";
 import {
   FPS, V3, smooth, clamp01, hh, groundY, at, SHOTS, has, CRATES, PLUNGER, TRUCK, CAR, CAMSTAND, PARK, PACKET, T_PUSH, T_BLAST, T_FLAT,
-  T_STOMP, T_SQUIRT, CREST, CHUNKS, chunkAt, carChunkDrop,
+  T_STOMP, T_SQUIRT, CREST, CHUNKS, chunkAt, carChunkDrop, SIGN,
 } from "./story";
 import { NOINK } from "./ink";
 import { cardShade, blobMaterial, CARD_K } from "./cardshade";
@@ -108,7 +108,7 @@ export class Fx {
 // ---------------- placements ----------------
 export type Place = {
   key: string; draw: (p: Pen) => void; x: number; y: number; z: number;
-  scale?: number; mirror?: boolean; yaw?: number; geo?: "body" | "swing"; roll?: number; size?: [number, number, number];
+  scale?: number; mirror?: boolean; yaw?: number; geo?: "body" | "swing"; roll?: number; size?: [number, number, number]; sy?: number;
 };
 export type FxPlace = { key: string; cw: number; ch: number; draw: (p: Pen) => void; x: number; y: number; z: number; w: number; h: number; flat?: boolean; rot?: number; soft?: boolean };
 /** sun = world direction TOWARD the sun (optional: when absent the scene's shadow-casting light is used) */
@@ -125,6 +125,7 @@ const tier = (d: number): [number, number, number] =>
 const SUN = new THREE.Vector3(0.5, 0.75, -0.4).normalize();
 const tmp = new THREE.Vector3();
 let LNAME: "day" | "golden" = "day";
+const lname = (l: string): "day" | "golden" => (l === "golden" || l === "dusk" ? "golden" : "day");
 const sunOf = (root: THREE.Object3D) => {
   let s: THREE.DirectionalLight | null = null;
   root.traverse((o) => { if (!s && o instanceof THREE.DirectionalLight && o.castShadow) s = o; });
@@ -215,49 +216,77 @@ export type Stage = { places: Place[]; fx: FxPlace[] };
 
 // ---------------- our cast ----------------
 type O = Outfit;
-const WORKER = (v: number): O => ({ jacket: ["#e8892c", "#dc7a2a", "#ef9d3c"][v % 3], pants: "#3b4a6b", boots: "#5a3b2a", hat: "hardhat", cap: "#f2c230", skin: SKINS[v % 4], buttons: "#f1efe6" });
-const ENGINEER: O = { jacket: "#f1efe6", pants: "#5a5f6e", boots: "#3a2a20", hat: "hardhat", cap: "#f7f5ee", moustache: "#4a3020", build: "stout", buttons: "#c9ccd2", skin: SKINS[1] };
-const WARNER: O = { jacket: "#6b7342", pants: "#4a4038", boots: "#3a2a20", hat: "cap", cap: "#6b4a33", moustache: "#5a4030", skin: SKINS[2], buttons: "#c8b27a" };
-const REPORTER: O = { jacket: "#8c3b4a", pants: "#3b3f52", boots: "#2a2020", hat: "hair", hair: "#3a2a20", skin: SKINS[0] };
-const CAMERAMAN: O = { jacket: "#3f6fb5", pants: "#4a4038", boots: "#3a2a20", hat: "cap", cap: "#2f5f6a", skin: SKINS[3] };
-const COATS = ["#d9a441", "#b5653f", "#2f6a6a", "#7a5a3a", "#7a8a3a", "#3f6fb5", "#8c3b4a", "#c25a7a"];
+const WORKER = (v: number): O => ({ jacket: ["#ff7a26", "#f2621c", "#ff9330"][v % 3], pants: "#2f4470", boots: "#5a3b2a", hat: "hardhat", cap: "#ffcc29", skin: SKINS[v % 4], buttons: "#f6f0d8" });
+const ENGINEER: O = { jacket: "#f6f4ee", pants: "#5a5f6e", boots: "#3a2a20", hat: "hardhat", cap: "#f8f6f0", moustache: "#4a3020", build: "stout", buttons: "#c9ccd2", skin: SKINS[1] };
+const ENG_OLD: O = { ...ENGINEER, moustache: "#d8d4cc" };
+const WARNER: O = { jacket: "#5f6d34", pants: "#4a4038", boots: "#3a2a20", hat: "cap", cap: "#6b4a33", moustache: "#5a4030", skin: SKINS[2], buttons: "#c8b27a" };
+const WARNER_OLD: O = { ...WARNER, moustache: "#e6e1d8" };
+const REPORTER: O = { jacket: "#c23a4f", pants: "#3b3f52", boots: "#2a2020", hat: "hair", hair: "#3a2a20", skin: SKINS[0] };
+const CAMERAMAN: O = { jacket: "#2f6fd0", pants: "#4a4038", boots: "#3a2a20", hat: "cap", cap: "#1f4a55", skin: SKINS[3] };
+const KID2: O = { ...KID, jacket: "#2f6fd0", cap: "#ffcc29" };
+const COATS = ["#e2a92e", "#c25a7a", "#2f8a8a", "#8b5e3c", "#7c9a2f", "#5a7fe0", "#d9542e", "#9a4fb0"];
 const HAIR = ["#3a2a20", "#7a4a2a", "#d9b46a", "#2a2020", "#a8643a"];
 const CROWD = (v: number): O => {
   const o: O = { jacket: COATS[v % 8], pants: ["#3b3f52", "#5a4a3a", "#2f4a6a"][v % 3], boots: "#4a3426", skin: SKINS[v % 4], hat: v % 5 === 3 ? "cap" : "hair", cap: "#3b5b9a", hair: HAIR[v % 5] };
-  if (v % 3 === 1) o.dress = ["#d9a441", "#c25a7a", "#5a8fc2", "#e8892c"][v % 4];
+  if (v % 3 === 1) o.dress = ["#e2a92e", "#c25a7a", "#5a8fc2", "#ff7a26"][v % 4];
   if (v % 7 === 2) o.moustache = "#3a2a20";
   return o;
 };
 const CROWD_O = Array.from({ length: 8 }, (_, v) => CROWD(v));
+const noHat = (o: O): O => ({ ...o, hat: o.hat === "hardhat" || o.hat === "cap" ? "hair" : o.hat, hair: o.hair ?? "#3a2a20" });
 
-/** a standing / walking person at ground level (x, z); front view unless `side` */
 const who = (i: number, o: O, okey: string) => ({ i, o, okey });
-const stand = (out: Stage, cam: CamInfo, t: number, i: number, o: O, okey: string, x: number, z: number, fo: FrontOpts, sc = 1, dy = 0) => {
-  const y = groundY(x, z);
-  out.places.push(person(cam, who(i, o, okey), x, y + dy, z, { side: false, mirror: false }, { mode: "stand", blink: lidAt(t, i), ...fo }, {}, sc));
-  if (dy < 0.05) blob(out, x, y, z, sc);
+/** front-view person at ground (x, z); dy lifts the card (jumps, standing on things); sy squashes/stretches it */
+type Act = FrontOpts & { dy?: number; sy?: number; swaps?: number[]; noBlob?: boolean };
+const stand = (out: Stage, cam: CamInfo, t: number, i: number, o: O, okey: string, x: number, z: number, a: Act, sc = 1) => {
+  const y = groundY(x, z), dy = a.dy ?? 0;
+  const pl = person(cam, who(i, o, okey), x, y + dy, z, { side: false, mirror: false }, { mode: "stand", blink: lidAt(t, i, a.swaps), ...a }, {}, sc);
+  if (a.sy) pl.sy = a.sy;
+  out.places.push(pl);
+  if (!a.noBlob) blob(out, x, y, z, sc, dy > 0.05 ? Math.max(0.35, 1 - dy) : 1);
 };
 const walkSide = (out: Stage, cam: CamInfo, t: number, i: number, o: O, okey: string, x: number, z: number, dx: number, dz: number, phase: number, expr: Expr, sc = 1) => {
   const y = groundY(x, z), view = viewOf(cam, x, z, dx, dz);
-  const fo: FrontOpts = { mode: "stroll", phase, expr, blink: lidAt(t, i) };
-  const so: SideOpts = { mode: "march", phase, expr, stomp: 0.6, stride: view.fs, blink: lidAt(t, i) };
+  const fo: FrontOpts = { mode: "stroll", pose: "run", phase, expr, blink: lidAt(t, i), tilt: 6 };
+  const so: SideOpts = { mode: "march", phase, expr, stomp: 0.9, stride: 1.3 * view.fs, blink: lidAt(t, i) };
   out.places.push(person(cam, who(i, o, okey), x, y, z, view, fo, so, sc));
   blob(out, x, y, z, sc);
 };
 const fxAt = (out: Stage, key: string, cw: number, ch: number, draw: (p: Pen) => void, p: V3, w: number, h: number, extra: Partial<FxPlace> = {}) =>
   out.fx.push({ key, cw, ch, draw, x: p[0], y: p[1], z: p[2], w, h, ...extra });
 const faded = (alpha: number, draw: (p: Pen) => void) => (p: Pen) => { p.g.globalAlpha = alpha; draw(p); p.g.globalAlpha = 1; };
+const F = (f: number) => f / FPS;
+/** 0 before a, 1 after b, smooth between (frames) */
+const k01 = (t: number, a: number, b: number) => smooth((t - F(a)) / (F(b) - F(a)));
+const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
+const osc = (t: number, hz: number, i = 0) => Math.sin(t * hz * Math.PI * 2 + i);
+/** a jump arc: height h peaking halfway through [a, b] frames */
+const hop = (t: number, a: number, b: number, h: number) => { const u = (t - F(a)) / (F(b) - F(a)); return u > 0 && u < 1 ? 4 * h * u * (1 - u) : 0; };
 
-// gulls: circling flyers and perched ones
-const gull = (out: Stage, t: number, i: number, p: V3, size = 0.9, perched = false) => {
+// gulls
+const gull = (out: Stage, t: number, i: number, p: V3, size = 0.9, perched = false, mirror = false) => {
   const flap = perched ? 0 : q(0.5 + 0.5 * Math.sin(t * 9 + i * 1.7), 6);
-  fxAt(out, perched ? "gullP" : `gull${flap}`, 400, 240, (pp) => fxGull(pp, flap, perched), p, size, size * 0.6, { rot: perched ? 0 : 0.15 * Math.sin(t * 2 + i) });
+  fxAt(out, perched ? "gullP" : `gull${flap}`, 400, 240, (pp) => fxGull(pp, flap, perched), p, mirror ? -size : size, size * 0.6, { rot: perched ? 0 : 0.15 * Math.sin(t * 2 + i) });
 };
+const bibGull = (out: Stage, t: number, i: number, p: V3, size = 0.6) => {
+  const bob = 0.04 * Math.max(0, osc(t, 2.2, i)), lean = q(0.12 * osc(t, 1.1, i * 2), 10);
+  fxAt(out, `gullBib${lean}`, 400, 300, (pp) => { pp.g.translate(0, 40); fxGull(pp, 0, true); pp.g.translate(0, -40); pp.poly([[250, 150], [300, 150], [276, 210]], "#ffffff", 5); pp.stroke([[250, 150], [300, 150]], 6, "#d23a35"); },
+    [p[0], p[1] + bob, p[2]], size, size * 0.75, { rot: lean });
+};
+const faintGull = (out: Stage, p: V3, size = 0.6) =>
+  fxAt(out, "gullFaint", 400, 240, (pp) => { pp.g.translate(400, 240); pp.g.rotate(Math.PI); fxGull(pp, 0, true); pp.g.setTransform(1, 0, 0, 1, 0, 0); pp.stroke([[255, 150], [275, 170]], 6); pp.stroke([[275, 150], [255, 170]], 6); }, p, size, size * 0.6, { rot: 0.2 });
 const circling = (out: Stage, t: number, n: number, c: V3, r: number) => {
   for (let i = 0; i < n; i++) {
     const a = t * (0.5 + 0.1 * (i % 3)) + (i / n) * Math.PI * 2;
     gull(out, t, i, [c[0] + Math.cos(a) * r * (0.7 + 0.3 * hh(i)), c[1] + 1.5 * hh(i, 2) + 0.4 * Math.sin(t * 1.3 + i), c[2] + Math.sin(a) * r * 0.6]);
   }
+};
+const hatFly = (out: Stage, t: number, t0: number, p: V3, col: string, kind: "hard" | "cap", vx = 1.2) => {
+  const u = t - t0;
+  if (u < 0 || u > 1.6) return;
+  const y = p[1] + 4.2 * u - 4.9 * u * u;
+  if (y < groundY(p[0], p[2]) + 0.05) return;
+  fxAt(out, `hat${kind}${col}`, 128, 96, (pp) => fxHat(pp, col, kind), [p[0] + vx * u, y, p[2]], 0.42, 0.32, { rot: u * 9 });
 };
 
 // the crowd on the crest (rope line at z -55.5)
@@ -266,107 +295,105 @@ const CROWD_SPOTS: [number, number][] = Array.from({ length: 34 }, (_, i) => {
   return [-17 + k * 3.0 + row * 1.0 + (hh(i) - 0.5) * 0.9, -57.2 - row * 1.5 - hh(i, 2) * 0.6];
 });
 const WARN_AT: [number, number] = [-4, -58.4];
-const crowd = (out: Stage, cam: CamInfo, id: number, t: number, tau: number, force?: Expr) => {
-  CROWD_SPOTS.forEach(([x0, z0], i) => {
-    if (Math.hypot(x0 - WARN_AT[0], z0 - WARN_AT[1]) < 1.2 || Math.hypot(x0 - CAMSTAND[0], z0 - CAMSTAND[2]) < 1.6) return;
+const COOLER_AT: [number, number] = [1.2, -57.6];
+const crowd = (out: Stage, cam: CamInfo, id: number, t: number, tau: number) => {
+  const ub = tau - T_BLAST;
+  const back = id === 7 ? -1.3 * k01(t, 715, 770) : id > 7 ? -1.3 : 0; // "the crowd was moved back"
+  CROWD_SPOTS.forEach(([x0, z00], i) => {
+    if (Math.hypot(x0 - WARN_AT[0], z00 - WARN_AT[1]) < 1.2 || Math.hypot(x0 - CAMSTAND[0], z00 - CAMSTAND[2]) < 1.6 || Math.hypot(x0 - COOLER_AT[0], z00 - COOLER_AT[1]) < 1.2) return;
+    const z0 = z00 + back;
     const o = CROWD_O[i % 8], okey = `c${i % 8}`, ii = i + 100;
-    const ub = tau - T_BLAST;
-    let expr: Expr = (["smile", "neutral", "grin", "smile_closed"] as Expr[])[i % 4];
-    if (id === 7) expr = t > 820 / FPS ? "nervous" : (["grin", "smile", "laugh", "smile_closed"] as Expr[])[i % 4];
-    if (ub > 0) expr = ub < 1.2 ? "shock" : i % 3 === 0 ? "pained" : "shock";
-    // when the chunks come down (~4 s after the blast) every third one runs for it
-    if (ub > 3.4 && i % 3 === 0 && id !== 14) {
-      const run = ub - 3.4, dx = (i % 2 ? 1 : -1);
-      walkSide(out, cam, t, ii, o, okey, x0 + dx * 2.6 * run, z0 - 0.6 * run, dx, -0.2, q((run * 2.4) % 1, 12), "shock");
-      return;
+    const ph = hh(i, 5) * 0.4; // everyone reacts a little apart
+    let a: Act = { expr: (["smile", "neutral", "grin", "smile_closed"] as Expr[])[i % 4], look: Math.round(Math.sin(t * 0.7 + i * 1.7)) };
+    if (id === 5) {
+      // heads turn toward the warner when he speaks up; the nearest ones point at him
+      const near = Math.abs(x0 - WARN_AT[0]) < 6;
+      a = { expr: t > F(560) ? (near ? "worried" : "neutral") : "smile", look: t > F(548) + ph ? (x0 > WARN_AT[0] ? -1 : 1) : 0, pose: near && i % 4 === 1 && t > F(590) ? "point" : undefined, facing: x0 > WARN_AT[0] ? -1 : 1 };
     }
-    if (force) expr = force;
-    const look = ub > 0 && ub < 3.4 ? 0 : Math.round(Math.sin(i * 1.7));
-    stand(out, cam, t, ii, o, okey, x0, z0, { expr, look: Math.max(-1, Math.min(1, look)), headTilt: ub > 0 && ub < 4 ? -6 : 0 });
+    if (id === 7 && ub < 0) a = { expr: t > F(815) ? "worried" : (["excited", "grin", "laugh", "excited"] as Expr[])[i % 4], pose: t < F(770) && i % 5 === 0 ? "point" : undefined, dy: t < F(770) ? hop(t, 735 + i * 3, 750 + i * 3, 0.12) : 0 };
+    if (ub >= 0 && ub < 0.7) { a = { expr: "shock", pose: "flinch", tilt: -8 * smooth(ub / 0.15) }; if (i % 3 === 2) hatFly(out, t, T_BLAST + 0.05 + ph * 0.2, [x0, groundY(x0, z0) + 2.0, z0], "#3b5b9a", "cap", (hh(i) - 0.5) * 3); }
+    if (ub >= 0.7 && ub < 3.4) a = { expr: "shock", look: 0, headTilt: -8, pose: i % 4 === 0 ? "point" : undefined };
+    if (ub >= 3.4 && id !== 14) {
+      const r = ub - 3.4;
+      if (i % 3 === 0) { // run for it
+        const dx = i % 2 ? 1 : -1;
+        walkSide(out, cam, t, ii, o, okey, x0 + dx * 3.2 * r, z0 - 0.8 * r, dx, -0.2, q((r * 2.6) % 1, 12), "panic");
+        return;
+      }
+      a = i % 3 === 1 ? { mode: "sit", pose: "cover", expr: "panic" } : { pose: "cover", expr: "panic", dy: 0.02 * Math.abs(osc(t, 3, i)) };
+    }
+    if (id === 14) { const d = 0.25 + (x0 + 17) * 0.03; a = t - F(1544) > d ? { mode: "sit", pose: "cover", expr: "panic" } : { expr: "shock", headTilt: -8 }; }
+    stand(out, cam, t, ii, o, okey, x0, z0, a);
   });
+  // the man who dives behind the cooler
+  if (id >= 7 && id <= 8) {
+    const r = ub - 3.4;
+    fxAt(out, "cooler", 200, 140, fxCooler, at(COOLER_AT[0], COOLER_AT[1], 0.24), 0.62, 0.43);
+    stand(out, cam, t, 140, CROWD_O[6], "c6", COOLER_AT[0] - 0.05, COOLER_AT[1] - 0.45, r > 0 ? { mode: "sit", pose: "cover", expr: "panic", dy: -0.15 } : { expr: ub > 0 ? "shock" : "excited" });
+  }
 };
-const warner = (out: Stage, cam: CamInfo, t: number, id: number) => {
-  let expr: Expr = "neutral", wave: number | undefined;
-  if (id === 5) { expr = t < 560 / FPS ? "neutral" : t < 600 / FPS ? "stern" : "nervous"; if (t > 600 / FPS && t < 640 / FPS) wave = q(Math.sin(t * 10), 20); }
-  stand(out, cam, t, 7, WARNER, "warner", WARN_AT[0], WARN_AT[1], { expr, wave, facing: 1 });
+const KID_SHOULDERS = (out: Stage, cam: CamInfo, t: number, id: number) => {
+  // a kid on dad's shoulders (shot 7, before the blast)
+  const [x, z] = CROWD_SPOTS[10];
+  stand(out, cam, t, 141, CROWD_O[4], "c4", x + 0.2, z - 1.3 * k01(t, 715, 770) - 0.25, { expr: "grin", noBlob: false });
+  stand(out, cam, t, 142, KID, "kid", x + 0.2, z - 1.3 * k01(t, 715, 770) - 0.24, { expr: t > F(815) ? "shock" : "laugh", pose: t > F(815) ? "cover" : "up", dy: 1.45, noBlob: true }, 0.7);
+  void id;
+};
+const warnerCrest = (out: Stage, cam: CamInfo, t: number, id: number, tau: number) => {
+  let a: Act = { expr: "neutral", facing: 1 };
+  if (id === 5) {
+    // raises a hand on "army", then waves both arms and shakes his head on "way too much"
+    if (t < F(560)) a = { expr: "neutral", look: 1 };
+    else if (t < F(600)) a = { expr: "worried", pose: "point", facing: 1, swaps: [F(560)] };
+    else a = { expr: "panic", pose: osc(t, 2.4) > 0 ? "up" : "shrug", look: osc(t, 3) > 0 ? 1 : -1, swaps: [F(560), F(600)] };
+  }
+  if (id === 7) a = tau < T_BLAST ? { expr: "worried", pose: "palm" } : { expr: "shock", pose: "flinch" };
+  if (id === 8) a = tau - T_BLAST < 3.4 ? { expr: "shock", look: 0, headTilt: -8 } : { mode: "sit", pose: "cover", expr: "panic" };
+  stand(out, cam, t, 7, WARNER, "warner", WARN_AT[0], WARN_AT[1] - (id >= 7 ? 1.3 : 0), a);
 };
 const press = (out: Stage, cam: CamInfo, t: number, tau: number) => {
-  const shock = tau > T_BLAST;
-  stand(out, cam, t, 8, CAMERAMAN, "camman", CAMSTAND[0] - 0.2, CAMSTAND[2] - 0.9, { expr: shock ? "shock" : "neutral", prop: "tvcam" });
-  stand(out, cam, t, 9, REPORTER, "reporter", CAMSTAND[0] - 1.6, CAMSTAND[2] - 0.3, { expr: shock ? "shock" : "smile", prop: "mic", facing: -1 });
-};
-
-// workers + engineer at the whale
-const crew = (out: Stage, cam: CamInfo, t: number, id: number) => {
-  const spots: [number, number, Expr, FrontOpts["prop"]][] = [
-    [CRATES[0] + 2.2, CRATES[2] - 0.9, "grin", "crate"], [CRATES[0] - 2.4, CRATES[2] - 1.1, "smile", "crate"], [CRATES[0] + 0.3, CRATES[2] - 2.2, "neutral", "crate"],
-  ];
-  spots.forEach(([x, z, expr, prop], i) => {
-    const bob = 0.02 * Math.sin(t * 5 + i);
-    stand(out, cam, t, 20 + i, WORKER(i), `w${i}`, x, z, { expr, prop, look: i === 2 ? 1 : 0 }, 1, Math.max(0, bob));
-  });
-  if (id === 6) stand(out, cam, t, 6, ENGINEER, "eng", CRATES[0] + 4.2, CRATES[2] - 1.6, { expr: "grin", prop: "clipboard" });
-};
-const truckCrew = (out: Stage, cam: CamInfo, t: number) => {
-  [[TRUCK[0] - 2.6, TRUCK[2] - 2.2], [TRUCK[0] - 4.0, TRUCK[2] - 1.0], [TRUCK[0] - 1.2, TRUCK[2] - 3.4]].forEach(([x, z], i) =>
-    stand(out, cam, t, 30 + i, WORKER(i + 1), `w${i + 1}`, x, z, { expr: (["grin", "smile", "neutral"] as Expr[])[i], prop: i === 1 ? "shovel" : null }));
-  stand(out, cam, t, 6, ENGINEER, "eng", TRUCK[0] - 5.4, TRUCK[2] - 3.0, { expr: "smile", prop: "clipboard" });
-};
-const engineerPlan = (out: Stage, cam: CamInfo, t: number) => {
-  const wave = t > 438 / FPS && t < 470 / FPS ? q(Math.sin(t * 7), 20) : undefined;
-  stand(out, cam, t, 6, ENGINEER, "eng", 6.2, -6.6, { expr: t > 452 / FPS ? "grin" : "smile", prop: wave === undefined ? "clipboard" : null, wave, facing: -1 });
+  const after = tau > T_BLAST;
+  stand(out, cam, t, 8, CAMERAMAN, "camman", CAMSTAND[0] - 0.2, CAMSTAND[2] - 0.9, { expr: after ? "shock" : "smug", prop: "tvcam", dy: after ? hop(tau, 829 * 1, 838, 0.15) : 0 });
+  const thumbs = t > F(775) && t < F(795);
+  stand(out, cam, t, 9, REPORTER, "reporter", CAMSTAND[0] - 1.6, CAMSTAND[2] - 0.3,
+    after ? { expr: "shock", pose: "flinch" } : thumbs ? { expr: "grin", wave: 0.8, facing: 0 } : { expr: "excited", prop: "mic", facing: -1 });
 };
 
 // the blast: flash burst, sand + smoke plume (by story time, so the replays show it too)
-const SAND = ["#f1d9a6", "#c7a874"], SMOKE = ["#d9d5cf", "#9d968e"];
+const SAND = ["#f6dca8", "#c7a874"], SMOKE = ["#e4dfd8", "#9d968e"];
 const blast = (out: Stage, tau: number) => {
   const u = tau - T_BLAST;
   if (u < 0) return;
-  if (u < 0.5) fxAt(out, `bigburst${q(u / 0.5, 30)}`, 500, 500, (p) => fxBurst(p, q(u / 0.5, 30), "#fff3b0", 14, 30, 240), [0, 3, -0.8], 22, 22);
-  for (let i = 0; i < 16; i++) {
-    const t0 = i * 0.035, k = u - t0;
+  if (u < 0.5) fxAt(out, `bigburst${q(u / 0.5, 30)}`, 500, 500, (p) => fxBurst(p, q(u / 0.5, 30), "#fff3b0", 14, 30, 240), [0, 3, -0.8], 24, 24);
+  for (let i = 0; i < 18; i++) {
+    const t0 = i * 0.03, k = u - t0;
     if (k < 0 || k > 7) continue;
-    const rise = 26 * (1 - Math.exp(-k * 0.9)) * (0.5 + 0.7 * hh(i, 1)), spread = (hh(i, 2) - 0.5) * 12 * (1 - Math.exp(-k));
-    const size = 4 + 11 * (1 - Math.exp(-k * 1.3)) * (0.6 + 0.6 * hh(i, 3));
+    const rise = 28 * (1 - Math.exp(-k * 0.9)) * (0.5 + 0.7 * hh(i, 1)), spread = (hh(i, 2) - 0.5) * 13 * (1 - Math.exp(-k));
+    const size = 4 + 12 * (1 - Math.exp(-k * 1.3)) * (0.6 + 0.6 * hh(i, 3));
     const fade = q(Math.min(1, Math.max(0, (7 - k) / 3)) * 0.95, 8);
     if (fade <= 0) continue;
     const col = i % 3 === 0 ? SMOKE : SAND, seed = i % 5;
     fxAt(out, `puff${seed}${col[0]}${fade}`, 512, 512, faded(fade, (p) => fxPuffC(p, seed, col[0], col[1])),
-      [spread, 1.5 + rise, -0.5 + (hh(i, 4) - 0.5) * 4 - 1.5 * k * 0.2], size, size, { soft: true, rot: (hh(i, 5) - 0.5) * 0.8 });
+      [spread, 1.5 + rise, -0.5 + (hh(i, 4) - 0.5) * 4 - 0.3 * k], size, size, { soft: true, rot: (hh(i, 5) - 0.5) * 0.8 });
   }
 };
-/** small bits raining near a camera position (shot 8+) and lying on the ground afterwards */
-const bits = (out: Stage, cam: CamInfo, tau: number, c: [number, number], r: number, n: number, landedOnly = false) => {
+const bits = (out: Stage, tau: number, c: [number, number], r: number, n: number, landedOnly = false) => {
   const u = tau - T_BLAST;
   if (u < 3.0) return;
   for (let i = 0; i < n; i++) {
     const land = 3.6 + 2.6 * hh(i, 11), x = c[0] + (hh(i, 12) - 0.5) * 2 * r, z = c[1] + (hh(i, 13) - 0.5) * 2 * r, gy = groundY(x, z);
     const k = land - u, y = k > 0 ? gy + 0.5 * 9.8 * k * k : gy + 0.07;
-    if (landedOnly && k > 0) continue;
-    if (y > gy + 30) continue;
+    if ((landedOnly && k > 0) || y > gy + 30) continue;
     const s = 0.16 + 0.22 * hh(i, 14), seed = i % 4;
     fxAt(out, `bit${seed}`, 128, 96, (p) => fxBit(p, seed), [x, y, z], s, s * 0.75, { rot: k > 0 ? u * 3 + i : hh(i, 15) });
   }
 };
-
-// ketchup packet gag (shot 13): the kid stomps, the jet shoots out one side onto the engineer's white shirt
-const ketchup = (out: Stage, cam: CamInfo, t: number) => {
-  const sx = PACKET[0], sz = PACKET[2];
-  const down = t >= T_STOMP - 1 / FPS;
-  const phase = down ? 0 : q(0.25 * smooth((t - (T_STOMP - 0.8)) / 0.5), 20);
-  stand(out, cam, t, 50, KID, "kid", sx + 0.05, sz + 0.25, { mode: "march", phase, lift: 80, expr: t < T_STOMP ? "grin" : t < T_SQUIRT ? "shock" : "nervous" } as FrontOpts, 0.8);
-  const hit = t > T_STOMP + 0.3;
-  stand(out, cam, t, 6, ENGINEER, "eng", sx - 1.3, sz + 0.6, { expr: hit ? "shock" : "smile", prop: "clipboard", facing: 1 });
-  const u = (t - T_STOMP) / 0.35;
-  if (u >= 0) {
-    const k = q(Math.min(1, u), 20);
-    fxAt(out, `ketchup${k}`, 600, 300, (p) => fxKetchup(p, k), [sx - 0.6, groundY(sx, sz) + 0.3, sz + 0.35], 1.5, 0.75, { rot: 0 });
-  }
-  if (hit) for (let i = 0; i < 5; i++)
-    fxAt(out, "splatdot", 64, 64, (p) => p.ell(32, 32, 24, 20, "#d02a1e", 4), [sx - 1.3 + (hh(i, 3) - 0.5) * 0.4, groundY(sx, sz) + 0.9 + hh(i, 4) * 0.55, sz + 0.45], 0.12, 0.1);
-  if (t >= T_STOMP && t < T_STOMP + 5 / FPS) {
-    const v = (t - T_STOMP) / (5 / FPS);
-    fxAt(out, `burst${q(v, 30)}`, 500, 500, (p) => fxBurst(p, q(v, 30)), [sx, groundY(sx, sz) + 0.1, sz + 0.2], 0.9, 0.9);
+const dust = (out: Stage, t: number, t0: number, p: V3, size = 1.2, n = 4) => {
+  const u = t - t0;
+  if (u < 0 || u > 0.9) return;
+  for (let i = 0; i < n; i++) {
+    const fade = q(0.85 * (1 - u / 0.9), 6), s = size * (0.5 + u) * (0.7 + 0.4 * hh(i, 3));
+    fxAt(out, `dust${i % 3}${fade}`, 512, 512, faded(fade, (pp) => fxPuffC(pp, i % 3, SAND[0], SAND[1])), [p[0] + (i - n / 2) * 0.35 * size * (0.4 + u), p[1] + 0.25 * size + u * 0.5, p[2]], s, s, { soft: true });
   }
 };
 
@@ -374,64 +401,180 @@ const ketchup = (out: Stage, cam: CamInfo, t: number) => {
 export const stage = (id: number, t: number, cam: CamInfo): Stage => {
   const out: Stage = { places: [], fx: [] };
   const s = SHOTS[id - 1], tau = s.tau(t);
-  LNAME = s.light;
+  LNAME = lname(s.light);
   findSun(cam, SUN);
-  if (has(id, "hook") || id === 6) crew(out, cam, t, id);
-  if (has(id, "stink") && t > 250 / FPS) fxAt(out, `stink${q((t * 0.7) % 1, 20)}`, 400, 420, (p) => fxStink(p, q((t * 0.7) % 1, 20)), [5.5, 3.4, 0.3], 2.2, 2.3);
-  if (has(id, "sign")) gull(out, t, 3, [-9.5, groundY(-9.5, -7.5) + 2.75, -7.5], 0.55, true);
-  if (has(id, "truck") && id === 3) truckCrew(out, cam, t);
-  if (has(id, "engineer")) engineerPlan(out, cam, t);
-  if (has(id, "gulls")) { circling(out, t, 7, [0.5, 6.5, 0], 6); gull(out, t, 1, [1.5, 2.85, 0.2], 0.6, true); gull(out, t, 2, [-2.5, 2.6, 0.4], 0.6, true); }
-  if (has(id, "warner")) warner(out, cam, t, id);
-  if (has(id, "crowd") || has(id, "rain")) { if (id !== 10 && id !== 11 && id !== 9) crowd(out, cam, id, t, tau); }
-  if (id === 7 || id === 8 || id === 14) press(out, cam, t, tau);
-  if (id === 7 || id === 8) warner(out, cam, t, id);
-  if (has(id, "plunger")) {
-    const k = q(smooth((t - (T_PUSH - 0.05)) / (T_BLAST - T_PUSH)), 20);
-    stand(out, cam, t, 6, ENGINEER, "eng", PLUNGER[0], PLUNGER[2] + 0.75, { expr: k > 0.5 ? "grin" : "stern", prop: ["plunger", k] });
+  const C = (dx: number, dz: number): [number, number] => [CRATES[0] + dx, CRATES[2] + dz];
+
+  if (id === 1) {
+    // a worker runs in with a case; the engineer stands proud, then points at the whale on "dynamite"
+    const u = k01(t, 0, 75), [x, z] = [lerp(-5.6, -3.0, u), lerp(-5.2, -5.9, u)];
+    stand(out, cam, t, 20, WORKER(0), "w0", x, z, u < 1 ? { expr: "excited", prop: "crate", pose: "run", mode: "stroll", phase: q((t * 2.4) % 1, 12), tilt: 10, dy: 0.05 * Math.abs(osc(t, 2.4)) } : { expr: "grin", prop: "crate" });
+    if (u < 1) dust(out, t, F(Math.floor(t * 30 / 9) * 9), at(x + 0.3, z), 0.6, 2);
+    stand(out, cam, t, 6, ENGINEER, "eng", -4.9, -7.9, t < F(118) ? { expr: "proud", pose: "hips" } : { expr: "smug", pose: "point", facing: 1, swaps: [F(118)] });
+    stand(out, cam, t, 21, WORKER(1), "w1", C(2.6, -1.4)[0], C(2.6, -1.4)[1], { expr: "grin", prop: "crate" });
   }
-  if (has(id, "blast")) blast(out, tau);
-  if (id === 8) bits(out, cam, tau, [cam.pos.x, cam.pos.z - 4], 7, 40);
+  if (id === 2 && t < F(250)) {
+    // tiny people around the whale for scale: a kid "measures" it with open arms
+    stand(out, cam, t, 60, KID, "kid", -3.2, 3.4, { expr: "excited", pose: "up", dy: hop(t, 160, 175, 0.25) + hop(t, 200, 215, 0.25) }, 0.75);
+    stand(out, cam, t, 61, CROWD_O[1], "c1", 3.4, 4.0, { expr: "shock", pose: "point", facing: -1 });
+    stand(out, cam, t, 62, CROWD_O[5], "c5", 6.4, 3.0, { expr: "excited", pose: "up" });
+  }
+  if (id === 1 && t > F(96)) {
+    // crates CU: last case slammed down, dust, the gull on the pile jumps
+    dust(out, t, F(100), [CRATES[0] + 0.6, 1.15, CRATES[2] + 0.2], 0.8);
+    const jump = hop(t, 100, 112, 0.35);
+    gull(out, t, 3, [CRATES[0] - 0.2, 1.32 + jump, CRATES[2] + 0.35], 0.55, true);
+    if (t > F(100) && t < F(118)) fxAt(out, "alarm", 200, 120, fxAlarm, [CRATES[0] - 0.15, 1.75 + jump, CRATES[2] + 0.35], 0.35, 0.21);
+    stand(out, cam, t, 22, WORKER(1), "w1", C(-1.6, -1.0)[0], C(-1.6, -1.0)[1], { expr: t > F(110) ? "grin" : "worried", pose: t > F(110) ? "palm" : undefined, swaps: [F(110)] });
+  }
+  if (id === 2 && t > F(240)) {
+    // a gull lands on the head, sniffs, keels over; a passer-by pinches her nose
+    if (t < F(268)) { const u = k01(t, 240, 268); gull(out, t, 4, [lerp(8, 5.5, u), lerp(5.5, 3.0, u), lerp(1.5, 0.3, u)], 0.6); }
+    else if (t < F(276)) gull(out, t, 4, [5.5, 2.95, 0.3], 0.55, true);
+    else faintGull(out, [5.5, 2.75, 0.3], 0.55);
+    if (t > F(250)) fxAt(out, `stink${q((t * 0.7) % 1, 20)}`, 400, 420, (p) => fxStink(p, q((t * 0.7) % 1, 20)), [5.2, 3.6, 0.3], 2.2, 2.3);
+    stand(out, cam, t, 63, CROWD_O[1], "c1", 8.3, -2.4, { expr: t > F(268) ? "disgust" : "neutral", pose: t > F(268) ? "palm" : undefined, facing: -1, swaps: [F(268)] });
+  }
+  if (id === 3 && t < F(372)) {
+    // a worker hammers the sign in; it wobbles; the gull on top gets bounced
+    const hits = [300, 318, 336, 354];
+    let k = 1;
+    for (const h of hits) { const n = t * 30 - h; if (n >= -9 && n < -5) k = Math.min(k, 1 - smooth((n + 9) / 4)); else if (n >= -5 && n < 0) k = 0; }
+    stand(out, cam, t, 23, WORKER(2), "w2", SIGN[0] + 0.45, SIGN[2] - 0.3, { expr: "deadpan", prop: ["hammer", q(k, 20)], facing: -1 });
+    const last = Math.max(...hits.filter((h) => t * 30 >= h), -99);
+    const jig = last > 0 ? hop(t, last, last + 8, 0.25) : 0;
+    gull(out, t, 3, [SIGN[0], groundY(SIGN[0], SIGN[2]) + 2.72 + jig, SIGN[2]], 0.5, true);
+    for (const h of hits) if (t * 30 >= h && t * 30 < h + 5) { const v = q((t * 30 - h) / 5, 10); fxAt(out, `burst${v}`, 500, 500, (p) => fxBurst(p, v), [SIGN[0] + 0.1, groundY(SIGN[0], SIGN[2]) + 2.35, SIGN[2] - 0.2], 0.6, 0.6); }
+  }
+  if (id === 3 && t >= F(372)) {
+    // the truck has just skidded in; the crew jumps down one by one, the engineer steps out last
+    dust(out, t, F(372), [TRUCK[0] + 1.5, groundY(TRUCK[0], TRUCK[2]) + 0.3, TRUCK[2] - 1], 2.2, 5);
+    [[TRUCK[0] + 2.0, TRUCK[2] - 4.6], [TRUCK[0] + 3.4, TRUCK[2] - 5.4], [TRUCK[0] + 1.0, TRUCK[2] - 6.0]].forEach(([x, z], i) => {
+      const f0 = 380 + i * 7, dy = hop(t, f0, f0 + 10, 0.55), land = t * 30 > f0 + 10 && t * 30 < f0 + 14;
+      stand(out, cam, t, 30 + i, WORKER(i + 1), `w${i + 1}`, x, z, { expr: (["excited", "grin", "excited"] as Expr[])[i], pose: dy > 0 ? "jump" : i === 1 ? "hips" : undefined, prop: i === 2 ? "shovel" : null, dy, sy: land ? 0.9 : dy > 0 ? 1.06 : 1 });
+    });
+    stand(out, cam, t, 6, ENGINEER, "eng", TRUCK[0] + 4.4, TRUCK[2] - 6.8, { expr: "smug", prop: "clipboard", facing: -1 });
+  }
+  if (id === 4 && t < F(480)) {
+    // the plan, as a lecture: pointing at the easel drawing
+    const pt = t > F(430);
+    stand(out, cam, t, 6, ENGINEER, "eng", 7.1, -7.7, { expr: t > F(452) ? "smug" : "proud", pose: pt ? "point" : "hips", facing: 1, swaps: [F(430), F(452)] });
+  }
+  if (id === 4 && t >= F(480)) {
+    [-3.2, -1.6, 0, 1.6, 3.2].forEach((x, i) => bibGull(out, t, i, [x, 3.15 - Math.abs(x) * 0.05, 0.3], 1.0));
+    circling(out, t, 6, [0.5, 7, 0], 7);
+  }
+  if (id === 5 || id === 7 || id === 8) crowd(out, cam, id, t, tau);
+  if (id === 5 || id === 7 || id === 8) warnerCrest(out, cam, t, id, tau);
+  if (id === 6) {
+    // the tower of cases: the engineer sets the last one on top and dusts off his hands; a worker sweats below
+    const top = t > F(680);
+    stand(out, cam, t, 6, ENGINEER, "eng", CRATES[0] + 0.2, CRATES[2] - 0.1, top ? { expr: "proud", pose: "hips", dy: 2.25, noBlob: true, swaps: [F(680)] } : { expr: "smug", prop: "crate", dy: 2.25 + hop(t, 660, 672, 0.15), noBlob: true });
+    if (t > F(678) && t < F(690)) dust(out, t, F(678), [CRATES[0] + 0.2, 2.3, CRATES[2] + 0.2], 0.7, 3);
+    stand(out, cam, t, 20, WORKER(0), "w0", C(-2.3, -1.4)[0], C(-2.3, -1.4)[1], { expr: "worried", prop: "crate", dy: 0.03 * Math.abs(osc(t, 2)) });
+    stand(out, cam, t, 21, WORKER(1), "w1", C(2.6, -1.0)[0], C(2.6, -1.0)[1], { expr: t > F(690) ? "worried" : "deadpan", pose: t > F(690) ? "palm" : undefined });
+  }
+  if (id === 7) {
+    KID_SHOULDERS(out, cam, t, id);
+    if (t < F(770)) stand(out, cam, t, 24, WORKER(1), "w1", -9, -53.8, { expr: "stern", pose: "shrug", facing: 1 });
+  }
+  if (id === 7 || id === 8 || id === 14) press(out, cam, t, tau);
+  if (id === 7 && t >= F(795)) {
+    // anticipation: up on his toes, then all his weight on the plunger
+    const pre = k01(t, 798, 806), push = k01(t, 809, 829);
+    const dy = 0.08 * pre * (1 - push), sy = 1 + 0.06 * pre * (1 - push) - 0.1 * push;
+    stand(out, cam, t, 6, ENGINEER, "eng", PLUNGER[0], PLUNGER[2] + 0.75, { expr: push > 0.1 ? "grin" : "excited", prop: ["plunger", q(push, 20)], dy, sy, swaps: [F(809)] });
+  }
+  if (id === 8) bits(out, tau, [cam.pos.x, cam.pos.z - 4], 7, 40);
   if (id === 9) {
-    crowd(out, cam, 9, t, T_BLAST - 1, "dazed");
-    bits(out, cam, tau, [cam.pos.x, cam.pos.z - 4], 7, 40, true);
-    for (let i = 0; i < 14; i++) { const [x, z] = CROWD_SPOTS[i]; fxAt(out, `bit${i % 4}`, 128, 96, (p) => fxBit(p, i % 4), at(x + 0.05, z, 2.12), 0.3, 0.22); }
-    const u = q((t * 0.9) % 1, 30); fxAt(out, `stars${u}`, 420, 210, (p) => fxStars(p, u), at(-0.8, -58.6, 2.35), 0.8, 0.4);
+    // everyone gets up, goo on heads; one sits dazed under circling stars; a kid laughs and points
+    CROWD_SPOTS.slice(0, 22).forEach(([x, z0], i) => {
+      const z = z0 - 1.3, up = k01(t, 1004 + (i % 5) * 4, 1020 + (i % 5) * 4);
+      stand(out, cam, t, 100 + i, CROWD_O[i % 8], `c${i % 8}`, x, z, i % 4 === 1 ? { mode: "sit", expr: "dizzy" } : { expr: up < 1 ? "panic" : "dizzy", mode: up < 0.5 ? "sit" : "stand", look: Math.round(osc(t, 0.8, i)) });
+      if (i % 2 === 0) fxAt(out, `bit${i % 4}`, 128, 96, (p) => fxBit(p, i % 4), at(x + 0.05, z, (i % 4 === 1 ? 1.65 : 2.12)), 0.32, 0.24);
+      if (i % 4 === 1) { const u = q((t * 0.9 + i * 0.1) % 1, 30); fxAt(out, `stars${u}`, 420, 210, (p) => fxStars(p, u), at(x, z, 1.95), 0.7, 0.35); }
+    });
+    stand(out, cam, t, 142, KID, "kid", -1.6, -57.4, { expr: "laugh", pose: "point", facing: -1, dy: hop(t, 1030, 1042, 0.18) }, 0.7);
+    bits(out, tau, [cam.pos.x, cam.pos.z - 4], 7, 40, true);
   }
   if (id === 10 || id === 11) {
-    const flat = id === 11 && t >= T_FLAT;
-    stand(out, cam, t, 7, WARNER, "warner", CAR[0] + 1.9, CAR[2] + 2.7, { expr: flat ? "shock" : id === 11 ? "nervous" : t > 1130 / FPS ? "grin" : "smile", facing: -1,
-      wave: id === 10 && t > 1135 / FPS && t < 1175 / FPS ? q(Math.sin(t * 6), 20) : undefined });
-    if (!flat) {
+    const W: [number, number] = [CAR[0] + 1.9, CAR[2] + 2.7];
+    if (id === 10) {
+      // polishing the new car, then a proud lean on "brand new car"
+      const proud = t > F(1145);
+      stand(out, cam, t, 7, WARNER, "warner", W[0], W[1], proud ? { expr: "proud", pose: "hips", swaps: [F(1145)] } : { expr: "smile", pose: "polish", swing: q((t * 1.6) % 1, 16), facing: -1 });
       fxAt(out, "bow", 400, 260, fxBow, at(CAR[0] - 0.2, CAR[2], 1.88), 0.9, 0.58);
-      if (id === 10) for (let i = 0; i < 3; i++) { const v = q(((t * 0.8 + i * 0.33) % 1), 20); fxAt(out, `spark${v}`, 200, 200, (p) => fxSpark(p, v), at(CAR[0] - 1.6 + i * 1.5, CAR[2] + 0.95, 1.0 + 0.4 * i), 0.5, 0.5); }
+      for (let i = 0; i < 3; i++) { const v = q(((t * 0.8 + i * 0.33) % 1), 20); fxAt(out, `spark${v}`, 200, 200, (p) => fxSpark(p, v), at(CAR[0] - 1.6 + i * 1.5, CAR[2] + 0.95, 1.0 + 0.4 * i), 0.5, 0.5); }
+    } else {
+      // he jumps clean out of his cap when it lands, then just stands there
+      const hit = t >= T_FLAT, n = (t - T_FLAT) * 30;
+      const a: Act = !hit ? { expr: "worried", headTilt: -6, look: 0 } : n < 12 ? { expr: "panic", pose: "jump", dy: hop(t, 1240, 1252, 0.5), sy: n < 3 ? 1.12 : 1 } : { expr: "deadpan", swaps: [F(1252)] };
+      stand(out, cam, t, 7, hit ? noHat(WARNER) : WARNER, hit ? "warnerNoHat" : "warner", W[0], W[1], a);
+      hatFly(out, t, T_FLAT, [W[0], groundY(W[0], W[1]) + 2.1, W[1]], "#6b4a33", "cap", 1.4);
+      if (!hit) fxAt(out, "bow", 400, 260, fxBow, at(CAR[0] - 0.2, CAR[2], 1.88), 0.9, 0.58);
+      if (hit && t < T_FLAT + 0.4) { const v = (t - T_FLAT) / 0.4; fxAt(out, `bigburst${q(v, 30)}`, 500, 500, (p) => fxBurst(p, q(v, 30), "#fff3b0", 12, 30, 230), at(CAR[0], CAR[2] + 0.6, 1.4), 3.4, 3.4); }
+      if (hit) dust(out, t, T_FLAT, [CAR[0], groundY(CAR[0], CAR[2]) + 0.4, CAR[2] + 1.2], 2.4, 5);
     }
-    if (id === 11 && t >= T_FLAT && t < T_FLAT + 0.4) {
-      const v = (t - T_FLAT) / 0.4;
-      fxAt(out, `bigburst${q(v, 30)}`, 500, 500, (p) => fxBurst(p, q(v, 30), "#fff3b0", 12, 30, 230), at(CAR[0], CAR[2] + 0.6, 1.4), 3.2, 3.2);
+    bits(out, T_BLAST + 8, [CAR[0] + 1, CAR[2] + 2], 5, 16, true);
+  }
+  if (id === 12 && t < F(1350)) {
+    // the imagined neat version: the engineer leans in, nods, shrugs when the cross comes down
+    const x = t > F(1322);
+    stand(out, cam, t, 6, ENGINEER, "eng", 4.6, -7.2, x ? { expr: "innocent", pose: "shrug", swaps: [F(1322)] } : { expr: "proud", pose: "hips", headTilt: 6 * osc(t, 1.2) });
+  }
+  if (has(id, "blast")) blast(out, tau);
+  if (id === 12 && t >= F(1350)) {
+    // force arrows: the sand pushes back up, the blast goes up and out (no text)
+    const g = k01(t, 1356, 1372), g2 = k01(t, 1372, 1392);
+    for (const x of [-3, 3]) if (g > 0) fxAt(out, "arrowS", 200, 400, (p) => fxArrow(p, "#e8b04a"), [x, -0.2 + 1.2 * g, -1.2], 1.0, 2.0 * g + 0.01);
+    if (g2 > 0) for (const [x, r] of [[0, 0], [-3.5, 0.5], [3.5, -0.5]]) fxAt(out, "arrowB", 200, 400, (p) => fxArrow(p), [x, 6 + 3 * g2, -1.2], 2.2, 4.4 * g2 + 0.01, { rot: r });
+  }
+  if (id === 13) {
+    // the kid winds up, jumps, stomps; the jet hits the engineer's white shirt; he looks down, then at us
+    const sx = PACKET[0], sz = PACKET[2];
+    const air = hop(t, 1428, 1447, 0.65), landed = t >= T_STOMP;
+    stand(out, cam, t, 50, KID, "kid", sx + 0.05, sz + 0.25, landed ? { expr: t < F(1480) ? "excited" : "worried", mode: "march", phase: 0, lift: 0, sy: t * 30 - 1447 < 3 ? 0.86 : 1, swaps: [F(1480)] }
+      : air > 0 ? { expr: "grin", pose: "jump", dy: air, sy: 1.08 } : { expr: "smug", sy: t > F(1420) ? 0.92 : 1 }, 0.8);
+    const hitT = T_STOMP + 0.3, hit = t > hitT;
+    const eA: Act = !hit ? { expr: "smug", prop: "clipboard", facing: 1 } : t < F(1490) ? { expr: "shock", pose: "flinch", sy: 1.04 } : t < F(1505) ? { expr: "sad", headTilt: 12 } : { expr: "angry", pose: "hips", facing: 0, swaps: [F(1490), F(1505)] };
+    stand(out, cam, t, 6, ENGINEER, "eng", sx - 1.3, sz + 0.6, eA);
+    const u = (t - T_STOMP) / 0.3;
+    if (u >= 0) { const k = q(Math.min(1, u), 20); fxAt(out, `ketchup${k}`, 600, 300, (p) => fxKetchup(p, k), [sx - 0.6, groundY(sx, sz) + 0.3, sz + 0.35], 1.5, 0.75); }
+    if (hit) for (let i = 0; i < 6; i++) fxAt(out, "splatdot", 64, 64, (p) => p.ell(32, 32, 24, 20, "#d02a1e", 4), [sx - 1.3 + (hh(i, 3) - 0.5) * 0.4, groundY(sx, sz) + 0.9 + hh(i, 4) * 0.55, sz + 0.45], 0.13, 0.11);
+    if (t >= T_STOMP && t < T_STOMP + 5 / FPS) { const v = (t - T_STOMP) / (5 / FPS); fxAt(out, `burst${q(v, 30)}`, 500, 500, (p) => fxBurst(p, q(v, 30)), [sx, groundY(sx, sz) + 0.1, sz + 0.2], 0.9, 0.9); }
+  }
+  if (id === 14) crowd(out, cam, id, t, tau);
+  if (id === 15) {
+    // the whale is still there: head-scratching and face-palms; one gull lands, double-takes and leaves for good
+    const late = t > F(1700);
+    [[-4, -5.5], [4.5, -5.8], [-7.5, -3.5]].forEach(([x, z], i) => stand(out, cam, t, 30 + i, WORKER(i), `w${i}`, x, z,
+      i === 0 ? { expr: "deadpan", pose: late ? "palm" : undefined, swaps: [F(1700)] } : i === 1 ? { expr: "deadpan", pose: "shrug" } : { expr: "sad", prop: "shovel" }));
+    stand(out, cam, t, 6, ENGINEER, "eng", 1.5, -6.2, t < F(1708) ? { expr: "worried", pose: "palm" } : t < F(1735) ? { expr: "worried", pose: "point", facing: 1 } : { expr: "sad", swaps: [F(1708), F(1735)] });
+    const n = t * 30;
+    if (n > 1690 && n < 1712) { const u = (n - 1690) / 22; gull(out, t, 5, [lerp(9, 3.2, u), lerp(7, 2.9, u), lerp(1, 0.3, u)], 0.7); }
+    else if (n >= 1712 && n < 1726) { gull(out, t, 5, [3.2, 2.95, 0.3], 0.55, true, Math.floor((n - 1712) / 4) % 2 === 1); if (n > 1714 && n < 1722) fxAt(out, "alarm", 200, 120, fxAlarm, [3.3, 3.45, 0.3], 0.3, 0.18); }
+    else if (n >= 1726) { const u = (n - 1726) / 18; if (u < 1.5) gull(out, t * 2, 5, [3.2 - 9 * u * u, 3 + 5 * u, 0.3], 0.7, false, true); }
+  }
+  if (id === 16) {
+    // 1979: the crew marches in with shovels; the old engineer hides a case behind his back and whistles
+    if (t < F(1860)) [0, 1, 2, 3].forEach((i) => walkSide(out, cam, t, 30 + i, WORKER(i), `w${i}`, -18 + i * 2.6 + (t - F(1760)) * 1.4, -6 - (i % 2) * 1.2, 1, 0, q((t * 1.8 + i * 0.25) % 1, 12), "stern"));
+    else {
+      [[1.2, -3.2], [4.8, -4.4]].forEach(([x, z], i) => stand(out, cam, t, 30 + i, WORKER(i), `w${i}`, x, z, t > F(1893) ? { expr: "angry", pose: "hips", facing: i ? -1 : 1, swaps: [F(1893)] } : { expr: "stern", prop: "shovel" }));
+      stand(out, cam, t, 6, ENG_OLD, "engOld", 3.2, -3.4, t > F(1893) ? { expr: "innocent", prop: "crate", look: 1, swaps: [F(1893)] } : { expr: "neutral", prop: "crate" });
     }
-    bits(out, cam, T_BLAST + 8, [CAR[0] + 1, CAR[2] + 2], 5, 16, true);
   }
-  if (has(id, "ketchup")) ketchup(out, cam, t);
-  if (has(id, "after")) {
-    [[-4, -5.5], [4.5, -5.8], [-7.5, -3.5]].forEach(([x, z], i) => stand(out, cam, t, 30 + i, WORKER(i), `w${i}`, x, z, { expr: (["dazed", "nervous", "neutral"] as Expr[])[i], prop: "shovel" }));
-    stand(out, cam, t, 6, ENGINEER, "eng", 1.5, -6.2, { expr: "nervous", prop: "clipboard" });
-    // one gull comes in, sees it, and leaves for good
-    const u = (t - 1690 / FPS) / 2.4;
-    if (u > 0 && u < 1) { const a = u * Math.PI; gull(out, t, 5, [6 - 12 * u, 3 + 4 * Math.sin(a) + 3 * u, -1 + 2 * u], 0.9); }
-  }
-  if (has(id, "whales")) {
-    [[1.2, -3.2], [4.8, -4.4], [-1.6, -5.0]].forEach(([x, z], i) => stand(out, cam, t, 30 + i, WORKER(i), `w${i}`, x, z, { expr: (["stern", "neutral", "stern"] as Expr[])[i], prop: "shovel" }));
-    stand(out, cam, t, 6, ENGINEER, "eng", 3.2, -3.4, { expr: t > 1888 / FPS ? "whistle" : "neutral", prop: "shovel", look: t > 1888 / FPS ? 1 : 0 });
-  }
-  if (has(id, "park")) {
-    stand(out, cam, t, 7, { ...WARNER, moustache: "#d8d4cc" }, "warnerOld", PARK[0] + 0.9, PARK[2] + 0.6, { mode: "sit", expr: t > 2030 / FPS ? "laugh" : "smile" }, 1, 0.0);
+  if (id === 17) {
+    const n = t * 30;
+    stand(out, cam, t, 7, WARNER_OLD, "warnerOld", PARK[0] + 0.9, PARK[2] + 0.6, n < 2040 ? { mode: "sit", expr: "proud" } : { mode: "sit", expr: "smug", wave: q(Math.sin(t * 5), 20), swaps: [F(2040)] });
     [[PARK[0] - 2.4, PARK[2] - 1.6], [PARK[0] + 3.4, PARK[2] - 2.2]].forEach(([x, z], i) => {
-      const ph = q((t * 1.6 + i * 0.5) % 1, 12);
-      walkSide(out, cam, t, 60 + i, { ...KID, jacket: i ? "#3f6fb5" : "#f08a2c", cap: i ? "#f2c230" : "#e2453c" }, `kid${i}`, x + Math.sin(t * 0.9 + i) * 1.2, z, Math.cos(t * 0.9 + i), 0, ph, "laugh", 0.75);
+      const dx = Math.cos(t * 0.9 + i * 2);
+      walkSide(out, cam, t, 60 + i, i ? KID2 : KID, `kid${i}`, x + Math.sin(t * 0.9 + i * 2) * 1.6, z, dx, 0, q((t * 2.2 + i * 0.5) % 1, 12), "laugh", 0.75);
     });
-    stand(out, cam, t, 64, CROWD_O[2], "c2", PARK[0] - 3.6, PARK[2] + 1.6, { expr: "smile" });
-    gull(out, t, 9, at(PARK[0] - 1.2, PARK[2] + 0.9, 2.62), 0.55, true);
+    stand(out, cam, t, 64, CROWD_O[2], "c2", PARK[0] - 3.6, PARK[2] + 1.6, { expr: "smile", pose: n > 1990 ? "point" : undefined, facing: 1 });
+    // a gull comes in to land on the sign
+    if (n < 2010) { const u = k01(t, 1960, 2010); gull(out, t, 9, at(PARK[0] - 1.2 + 6 * (1 - u), PARK[2] + 0.9, 2.62 + 4 * (1 - u)), 0.6); }
+    else gull(out, t, 9, at(PARK[0] - 1.2, PARK[2] + 0.9, 2.62), 0.55, true);
   }
+  void clamp01; void CREST; void CHUNKS; void chunkAt; void carChunkDrop; void T_SQUIRT; void TRUCK; void INK;
   return out;
 };

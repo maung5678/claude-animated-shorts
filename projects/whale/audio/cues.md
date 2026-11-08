@@ -7,14 +7,24 @@ mix.wav: 3337600 samples = 69.533 s, integrated -14.0 LUFS, true peak -1.0 dBTP
 | 0.00 | 0 | breeze | sea breeze bed, whole film | -30 |
 | 0.00 | 0 | surf | surf + foam hiss (level 1.0) | -21 |
 | 3.20 | 96 | crate_thunk | a dynamite case set on the pile ('half a ton') | -14 |
+| 3.33 | 100 | gull_alarm | gull on the crates squawks | -14 |
 | 3.93 | 118 | crate_thunk2 | another case | -17 |
 | 4.12 | 124 | flash_whoosh | reverse swell into the white flash | -14 |
 | 5.27 | 158 | gulls_far | distant gulls | -26 |
 | 5.80 | 174 | glide_whoosh | camera glide down along the whale | -22 |
 | 8.83 | 265 | stink | comic stink wobble on 'stink' | -16 |
+| 9.20 | 276 | gull_faint | gull keels over: soft plop | -18 |
 | 9.65 | 290 | sign_ding | the whale-crossing sign | -20 |
+| 10.00 | 300 | sign_hammer | hammer on the whale-crossing sign | -15 |
+| 10.60 | 318 | sign_hammer | hammer on the whale-crossing sign | -15 |
+| 11.20 | 336 | sign_hammer | hammer on the whale-crossing sign | -15 |
+| 11.80 | 354 | sign_hammer | hammer on the whale-crossing sign | -15 |
+| 12.20 | 366 | truck_skid | truck skids in on the sand | -12 |
 | 12.40 | 372 | truck_idle | highway truck idling | -16 |
 | 12.67 | 380 | truck_beeps | truck reversing beeps | -24 |
+| 13.00 | 390 | crew_land | worker lands in the sand | -16 |
+| 13.23 | 397 | crew_land | worker lands in the sand | -16 |
+| 13.47 | 404 | crew_land | worker lands in the sand | -16 |
 | 16.00 | 480 | gulls | gulls over the whale on 'seagulls' | -14 |
 | 16.67 | 500 | gulls2 | more gulls | -18 |
 | 17.70 | 531 | crowd_murmur | crowd chatter on the crest | -28 |
@@ -23,6 +33,7 @@ mix.wav: 3337600 samples = 69.533 s, integrated -14.0 LUFS, true peak -1.0 dBTP
 | 21.78 | 654 | crates | cases stacked against the whale | -17 |
 | 22.11 | 663 | crates | cases stacked against the whale | -18 |
 | 22.44 | 673 | crates | cases stacked against the whale | -19 |
+| 22.60 | 678 | tower_top | last case on top of the tower | -13 |
 | 22.77 | 683 | crates | cases stacked against the whale | -20 |
 | 23.10 | 693 | crates | cases stacked against the whale | -21 |
 | 23.83 | 715 | crowd_murmur | crowd chatter on the crest | -28 |
@@ -182,11 +193,13 @@ mix.wav: 3337600 samples = 69.533 s, integrated -14.0 LUFS, true peak -1.0 dBTP
 | 38.83 | 1165 | sparkle | new-car sparkle | -24 |
 | 40.33 | 1210 | flat_whistle | the chunk falling onto the car | -16 |
 | 41.33 | 1240 | CRUNCH | chunk flattens the brand-new car: thump, metal, glass | -3 |
+| 41.35 | 1241 | warner_jump | he jumps out of his cap | -18 |
 | 41.68 | 1250 | horn | the crushed car's horn sticks on | -16 |
 | 42.07 | 1262 | surf | surf + foam hiss (level 0.8) | -21 |
 | 43.87 | 1316 | neat_ticks | neat little cubes clicking into place | -20 |
 | 45.15 | 1354 | slow_boom | the blast again, slowed down | -6 |
 | 47.27 | 1418 | surf | surf + foam hiss (level 0.25) | -21 |
+| 47.60 | 1428 | kid_jump | kid winds up and jumps | -20 |
 | 48.23 | 1447 | stomp | kid stomps the ketchup packet | -12 |
 | 48.24 | 1447 | squirt | ketchup shoots out one side | -13 |
 | 48.55 | 1457 | splat_shirt | ketchup hits the engineer's shirt | -14 |
@@ -200,8 +213,11 @@ mix.wav: 3337600 samples = 69.533 s, integrated -14.0 LUFS, true peak -1.0 dBTP
 | 55.17 | 1655 | surf | surf + foam hiss (level 1.0) | -21 |
 | 55.77 | 1673 | gulls_far | distant gulls | -26 |
 | 56.63 | 1699 | gull_return | one gull arrives... | -16 |
+| 57.13 | 1714 | gull_doubletake | gull double-take squawk | -13 |
 | 57.13 | 1714 | gull_leave | ...and flaps off for good | -15 |
+| 57.53 | 1726 | gull_flee | gull flaps off fast | -14 |
 | 63.93 | 1918 | park_birds | birds in the park | -24 |
 | 63.93 | 1918 | surf | surf + foam hiss (level 0.3) | -21 |
 | 64.43 | 1933 | kids | kids playing in the park | -28 |
 | 64.53 | 1936 | gulls_far | distant gulls | -26 |
+| 67.00 | 2010 | gull_sign | gull lands on the park sign | -20 |

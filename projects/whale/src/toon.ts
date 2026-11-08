@@ -227,7 +227,8 @@ const DEF_LIGHT = rad(-120);
 
 // ---------------- faces ----------------
 export type Expr = "neutral" | "stern" | "grin" | "laugh" | "whistle" | "nervous" | "shock" | "relief" | "relief_open" | "dazed"
-  | "pained" | "smile" | "smile_closed" | "lick";
+  | "pained" | "smile" | "smile_closed" | "lick"
+  | "proud" | "smug" | "panic" | "angry" | "worried" | "disgust" | "deadpan" | "sad" | "innocent" | "dizzy" | "excited";
 type EyeK = "dot" | "small" | "lid" | "slit" | "happy" | "dash" | "squeeze" | "shock" | "shockHalf" | "spiral";
 type MouthK = "dash" | "frown" | "smirk" | "smile" | "smileWide" | "grin" | "laugh" | "o" | "O" | "wave" | "teeth" | "lick";
 /** eyes [back, front], brows [inner, outer] offsets in u (+ = down), mouth kind */
@@ -246,7 +247,19 @@ const FACE: Record<Expr, { eye: [EyeK, EyeK]; brow: [number, number]; mouth: Mou
   smile: { eye: ["dot", "dot"], brow: [0, -1], mouth: "smirk" },
   smile_closed: { eye: ["happy", "happy"], brow: [0, -1], mouth: "smile" },
   lick: { eye: ["dot", "dot"], brow: [0, -1], mouth: "lick" },
+  proud: { eye: ["happy", "happy"], brow: [-6, -7], mouth: "smileWide" },
+  smug: { eye: ["lid", "lid"], brow: [3, -6], mouth: "smirk" },
+  panic: { eye: ["shock", "shock"], brow: [-7, -6], mouth: "teeth" },
+  angry: { eye: ["small", "small"], brow: [7, -4], mouth: "frown" },
+  worried: { eye: ["small", "small"], brow: [-6, 4], mouth: "wave" },
+  disgust: { eye: ["lid", "squeeze"], brow: [5, -3], mouth: "wave" },
+  deadpan: { eye: ["lid", "lid"], brow: [1, 1], mouth: "dash" },
+  sad: { eye: ["small", "small"], brow: [-7, 4], mouth: "frown" },
+  innocent: { eye: ["happy", "happy"], brow: [-5, -5], mouth: "o" },
+  dizzy: { eye: ["spiral", "spiral"], brow: [-4, 3], mouth: "wave" },
+  excited: { eye: ["dot", "dot"], brow: [-7, -7], mouth: "grin" },
 };
+const SWEAT = new Set<Expr>(["nervous", "panic", "worried"]);
 const halfLid = (k: EyeK): EyeK => (k === "dot" || k === "small" ? "lid" : k === "lid" ? "slit" : k === "shock" ? "shockHalf" : k);
 const eyeKind = (k: EyeK, lid: number): EyeK =>
   lid >= 1 && k !== "happy" && k !== "squeeze" && k !== "spiral" ? "dash" : lid > 0 ? halfLid(k) : k;
@@ -321,7 +334,9 @@ const faceFront = (p: Pen, cx: number, cy: number, W: number, expr: Expr, facing
   mouth(p, F.mouth, mx, my, u);
   if (moustache) for (const s of [-1, 1])
     taper(p, [mx + s * 1.5 * u, cy + 12.5 * u], [mx + s * (stout ? 19 : 15) * u, cy + (stout ? 10.5 : 15) * u], stout ? 5.5 * u : 4.5 * u, 1.6 * u, moustache);
-  if (expr === "nervous") p.ell(cx + 40 * u * (facing || 1), cy - 22 * u, 3 * u, 5 * u, "#9fd4ff", 2 * u);
+  if (SWEAT.has(expr)) { p.ell(cx + 40 * u * (facing || 1), cy - 22 * u, 3.5 * u, 6 * u, "#9fd4ff", 2 * u); if (expr === "panic") p.ell(cx - 42 * u * (facing || 1), cy - 12 * u, 3 * u, 5 * u, "#9fd4ff", 2 * u); }
+  if (expr === "angry") for (const s2 of [-1, 1]) p.ell(cx + s2 * 30 * u, cy + 10 * u, 8 * u, 4 * u, "#f08a8a", 0);
+  if (expr === "disgust") p.ell(cx, cy + 8 * u, 26 * u, 6 * u, "rgba(130,180,60,0.45)", 0);
 };
 
 /** profile face (facing screen-right): one eye, brow, nose tick, mouth near the front edge; no skin bump nose, no ear */
@@ -335,7 +350,7 @@ const faceSide = (p: Pen, hx: number, hy: number, W: number, expr: Expr, lid: nu
   p.stroke([[hx + 44 * u, hy + 4 * u], [hx + 47.5 * u, hy + 9 * u], [hx + 43 * u, hy + 10 * u]], 3 * u);
   mouth(p, F.mouth, hx + 33 * u, hy + 21 * u, u, 0.62);
   if (moustache) taper(p, [hx + 41 * u, hy + 13.5 * u], [hx + 25 * u, hy + (stout ? 11.5 : 16) * u], stout ? 5.5 * u : 4.5 * u, 1.6 * u, moustache);
-  if (expr === "nervous") p.ell(hx - 30 * u, hy - 24 * u, 3 * u, 5 * u, "#9fd4ff", 2 * u);
+  if (SWEAT.has(expr)) p.ell(hx - 30 * u, hy - 24 * u, 3 * u, 5 * u, "#9fd4ff", 2 * u);
 };
 
 // ---------------- hats ----------------
@@ -448,7 +463,10 @@ export type FrontOpts = {
   prop?: Prop; tilt?: number; headTilt?: number; wave?: number;
   /** canvas angle the key light comes FROM (painted crescent + thick outline side) */
   light?: number; facing?: -1 | 0 | 1; seed?: number;
+  /** acting pose: arms (unless a held prop sets them) and legs */
+  pose?: Pose; swing?: number;
 };
+export type Pose = "point" | "up" | "hips" | "shrug" | "palm" | "cover" | "flinch" | "run" | "jump" | "polish";
 
 const footStroke = (p: Pen, a: P2, b: P2, w: number, col: string) => {
   if (col !== INK) p.stroke([a, b], w + 3, INK);
@@ -492,9 +510,9 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
       footStroke(p, [fx - side * 3 * u, fy], [fx + side * 12 * u, fy + u], footW, footCol);
     }
   } else {
-    const L = mode === "march" ? lift * 1.25 : mode === "stroll" ? lift * 0.55 : 0;
+    const L = opts.pose === "run" ? 150 : mode === "march" ? lift * 1.25 : mode === "stroll" ? lift * 0.55 : 0;
     for (const [side, ph] of [[-1, 0], [1, 0.5]] as const) {
-      const up = Math.max(0, Math.sin(two * (phase + ph))) * L;
+      const up = opts.pose === "jump" ? 0.3 * HH : Math.max(0, Math.sin(two * (phase + ph))) * L;
       const hx = 300 + side * 15 * u, fx = 300 + side * 22 * u, fy = sole - 4 * u - up;
       const k: P2 = [(hx + fx) / 2 + side * (1.5 * u + up * 0.16), (hipY + fy) / 2 - up * 0.08];
       p.stroke(curve([hx, hipY], k, [fx, fy]), legW, legCol);
@@ -521,7 +539,24 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   const rifle = !!o.rifle && (mode === "march" || mode === "stand" || mode === "stroll");
   type Arm = { pts: [P2, P2, P2]; front: boolean };
   const arms: Arm[] = [];
-  if (mode === "sit") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.1 * T.a + 6 * u), sh(side)[1] + 0.4 * HH], [tcx + side * (1.2 * T.a + 10 * u), torsoBot + 0.04 * HH]], front: false });
+  const pz = opts.pose, holding = prop !== null && prop !== undefined;
+  if (pz && !holding && pz !== "run" && pz !== "jump") {
+    const S1 = sh(1)[1], A2 = (side: number, e: P2, h: P2, front = false) => arms.push({ pts: [sh(side), [tcx + side * e[0], S1 + e[1]], [tcx + side * h[0], S1 + h[1]]], front });
+    const ta = T.a;
+    if (pz === "point") { A2(-1, [1.12 * ta + 4 * u, .48 * HH], [1.12 * ta + 7 * u, .95 * HH]); A2(1, [1.3 * ta + 14 * u, -.12 * HH], [1.5 * ta + 44 * u, -.32 * HH]); }
+    else if (pz === "up") for (const sd of [-1, 1]) A2(sd, [1.1 * ta + 10 * u, -.3 * HH], [1.0 * ta + 14 * u, -.88 * HH]);
+    else if (pz === "hips") for (const sd of [-1, 1]) A2(sd, [1.3 * ta + 14 * u, .32 * HH], [.95 * ta, .64 * HH]);
+    else if (pz === "shrug") for (const sd of [-1, 1]) A2(sd, [1.2 * ta + 6 * u, .38 * HH], [1.35 * ta + 26 * u, .18 * HH]);
+    else if (pz === "palm") { A2(-1, [1.12 * ta + 4 * u, .48 * HH], [1.12 * ta + 7 * u, .95 * HH]); A2(1, [1.2 * ta + 10 * u, .02 * HH], [.18 * ta, -.82 * HH], true); }
+    else if (pz === "cover") for (const sd of [-1, 1]) A2(sd, [1.15 * ta + 10 * u, -.45 * HH], [.28 * ta, -1.2 * HH], true);
+    else if (pz === "flinch") for (const sd of [-1, 1]) A2(sd, [1.0 * ta + 6 * u, .08 * HH], [.4 * ta, -.42 * HH], true);
+    else if (pz === "polish") { A2(-1, [1.3 * ta + 14 * u, .32 * HH], [.95 * ta, .64 * HH]); const k = opts.swing ?? 0; A2(1, [1.25 * ta + 12 * u, .25 * HH], [1.45 * ta + 30 * u + 10 * u * Math.cos(k * two), .3 * HH + 12 * u * Math.sin(k * two)]); }
+  } else if (pz === "run" && !holding) {
+    const k = Math.sin(two * phase);
+    for (const sd of [-1, 1]) arms.push({ pts: [sh(sd), [tcx + sd * (1.15 * T.a + 10 * u), sh(sd)[1] + .3 * HH], [tcx + sd * (1.1 * T.a + 14 * u), sh(sd)[1] + (.45 - .4 * k * sd) * HH]], front: false });
+  } else if (pz === "jump" && !holding) {
+    for (const sd of [-1, 1]) arms.push({ pts: [sh(sd), [tcx + sd * (1.15 * T.a + 14 * u), sh(sd)[1] - .25 * HH], [tcx + sd * (1.2 * T.a + 22 * u), sh(sd)[1] - .75 * HH]], front: false });
+  } else if (mode === "sit") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.1 * T.a + 6 * u), sh(side)[1] + 0.4 * HH], [tcx + side * (1.2 * T.a + 10 * u), torsoBot + 0.04 * HH]], front: false });
   else if (mode === "fall") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.15 * T.a + 12 * u), sh(side)[1] - 0.25 * HH], [tcx + side * (1.3 * T.a + 24 * u), sh(side)[1] - 0.68 * HH]], front: false });
   else {
     if (prop === "crate" || (Array.isArray(prop) && prop[0] === "plunger")) {
@@ -1051,4 +1086,34 @@ export const fxBit = (p: Pen, seed: number) => {
   p.poly(pts, "#c79b8e", 5);
   p.ell(54, 40, 18, 9, "#e2bdb1", 0);
   p.poly(pts.slice(0, 8).map(([x, y]) => [x, y + 2] as P2), null, 0);
+};
+
+/** a hat tumbling through the air (128 x 96): hard hat or cap */
+export const fxHat = (p: Pen, col: string, kind: "hard" | "cap") => {
+  if (kind === "hard") { p.ell(64, 60, 44, 34, col, 6, 180, 360); p.ell(64, 62, 54, 8, shade(col, 0.88), 5); }
+  else { p.ell(60, 60, 40, 30, col, 6, 180, 360); p.poly([[96, 58], [124, 64], [96, 68]], shade(col, 0.8), 5); }
+};
+/** red-and-white picnic cooler (200 x 140) */
+export const fxCooler = (p: Pen) => {
+  p.poly(rrect(14, 40, 186, 132, 12), "#e0303a", 7);
+  p.poly(rrect(8, 22, 192, 48, 10), "#f4f1ea", 7);
+  p.poly(rrect(70, 8, 130, 26, 6), "#3a3d47", 5);
+};
+/** thick orange arrow pointing up on a 200 x 400 canvas (the explanation diagram, no text) */
+export const fxArrow = (p: Pen, col = "#ff6b2c") => {
+  p.poly([[70, 390], [130, 390], [130, 140], [180, 140], [100, 10], [20, 140], [70, 140]], col, 8);
+};
+/** alarm marks over a startled head (200 x 120) */
+export const fxAlarm = (p: Pen) => {
+  for (const [x0, y0, x1, y1] of [[40, 110, 20, 40], [100, 100, 100, 20], [160, 110, 180, 40]]) p.stroke([[x0, y0], [x1, y1]], 10);
+};
+/** the engineer's easel drawing (512 x 384): whale -> little pieces -> happy gulls, no text */
+export const fxPlan = (p: Pen) => {
+  p.poly(rrect(10, 10, 502, 374, 12), "#fbf8ef", 6);
+  p.poly([[40, 200], [60, 140], [170, 136], [196, 170], [190, 214], [60, 216]], "#4c5a7c", 5);
+  p.poly([[40, 200], [16, 170], [26, 200], [16, 228]], "#4c5a7c", 5);
+  p.stroke([[214, 180], [262, 180]], 8, "#e8642c"); p.poly([[262, 164], [290, 180], [262, 196]], "#e8642c", 0);
+  for (let i = 0; i < 9; i++) p.poly(rrect(306 + (i % 3) * 30, 150 + Math.floor(i / 3) * 30, 326 + (i % 3) * 30, 170 + Math.floor(i / 3) * 30, 3), "#4c5a7c", 3);
+  for (let i = 0; i < 3; i++) { const x = 330 + i * 50, y = 80; p.arc(x - 12, y, 12, 8, 200, 340, 5); p.arc(x + 12, y, 12, 8, 200, 340, 5); }
+  p.stroke([[330, 120], [360, 140]], 5, "#e8642c");
 };

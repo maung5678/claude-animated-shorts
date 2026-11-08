@@ -172,7 +172,8 @@ export const GRADES: Record<"day" | "golden", GradeParams> = { day: GRADE_DAY2, 
  *  .54-.62 / ~.52. Re-fit the presets (grade.md 5.C) after the merge and raise these again. */
 export const GRADE_STRENGTH: Record<"day" | "golden", number> = { day: 1, golden: 1 };
 /** Apply the preset of a light to the effect (only touches uniforms when the light changes). */
-export function gradeFor(fx: GradeEffect, light: "day" | "golden") {
+export function gradeFor(fx: GradeEffect, light0: "day" | "golden" | "blast" | "dusk") {
+  const light: "day" | "golden" = light0 === "dusk" ? "golden" : light0 === "blast" ? "day" : light0;
   const tag = fx as unknown as { _light?: string };
   if (tag._light !== light) { fx.set(GRADES[light]); tag._light = light; }
   fx.amount = GRADE_STRENGTH[light];

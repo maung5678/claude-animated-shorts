@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { Batch, V, lam, Kit, Ray, prop, setSight } from "./build";
 import { ctex, rng, cloudHD, waterNear, waterFar } from "./paint";
-import { Pen, fxWhaleSign } from "./toon";
+import { Pen, fxWhaleSign, fxPlan } from "./toon";
 import { LIGHTS, LOOK, LightPreset } from "./lights";
 import { TONE, CHAR, LFB, untone } from "./shade";
 import { NOINK } from "./ink";
@@ -166,7 +166,7 @@ export class World {
   private WU: Record<string, THREE.IUniform>;
   private sunDisc: THREE.Sprite;
   private sunCache = new Map<number, THREE.Vector3>();
-  private cloudMaps: Record<"day" | "golden", THREE.Texture[]>;
+  private cloudMaps: Record<string, THREE.Texture[]>;
   private clouds: THREE.Mesh[] = [];
   private foam: THREE.Mesh;
   private whale = new THREE.Group(); private crater: THREE.Mesh; private crates = new THREE.Group();
@@ -176,6 +176,7 @@ export class World {
   private cars: { g: THREE.Group; cabin: THREE.Group }[] = []; private myCar: { g: THREE.Group; cabin: THREE.Group };
   private cubes: THREE.InstancedMesh; private pod: THREE.InstancedMesh; private podF: THREE.InstancedMesh;
   private park = new THREE.Group(); private packet: THREE.Mesh;
+  private tower = new THREE.Group(); private easel = new THREE.Group(); private diagram = new THREE.Group(); private cross = new THREE.Group();
   private frustum = new THREE.Frustum();
   private m4 = new THREE.Matrix4(); private v = new THREE.Vector3(); private sph = new THREE.Sphere();
 
@@ -203,7 +204,7 @@ export class World {
     this.sun = new THREE.DirectionalLight("#fff0d6", 2.6);
     this.sun.castShadow = true; this.sun.shadow.mapSize.set(4096, 4096);
     R.add(this.hemi, this.sun, this.sun.target);
-    this.cloudMaps = { day: [0, 1, 2, 3].map((k) => cloudHD(k, LOOK.day.cloud)), golden: [0, 1, 2, 3].map((k) => cloudHD(k, LOOK.golden.cloud)) };
+    this.cloudMaps = Object.fromEntries((["day", "golden", "blast", "dusk"] as const).map((n) => [n, [0, 1, 2, 3].map((k) => cloudHD(k, LOOK[n].cloud))]));
     for (let i = 0; i < 11; i++) {
       const a = (i / 11) * Math.PI * 2 + 0.3, d = 620 + (i % 3) * 60;
       const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: this.cloudMaps.day[i % 4], color: new THREE.Color(1.1, 1.1, 1.1), transparent: true, depthWrite: false, fog: false }));
@@ -216,14 +217,14 @@ export class World {
     const gw = 520, gd = 340, nx = 260, nz = 170;
     const gg = new THREE.PlaneGeometry(gw, gd, nx, nz); gg.rotateX(-Math.PI / 2); gg.translate(-40, 0, -140);
     const gp = gg.attributes.position as THREE.BufferAttribute, uv = gg.attributes.uv as THREE.BufferAttribute, cols: number[] = [];
-    const cSand = new THREE.Color("#ead6a6"), cWet = new THREE.Color("#c4a878"), cDune = new THREE.Color("#e2cf9c"), cLot = new THREE.Color("#7b7774"), cLawn = new THREE.Color("#7bb55a"), cGrass = new THREE.Color("#b9b77a");
+    const cSand = new THREE.Color("#f1c77f"), cWet = new THREE.Color("#c39060"), cDune = new THREE.Color("#ebc173"), cLot = new THREE.Color("#5e5a66"), cLawn = new THREE.Color("#6cc04a"), cGrass = new THREE.Color("#9fb04a");
     const tmp = new THREE.Color();
     for (let i = 0; i < gp.count; i++) {
       const x = gp.getX(i), z = gp.getZ(i), y = groundY(x, z);
       gp.setY(i, y); uv.setXY(i, x / 7, z / 7);
       tmp.copy(cSand);
       if (z > 13) tmp.lerp(cWet, smooth((z - 13) / 6));
-      if (z < -34) tmp.lerp(cDune, 0.6).lerp(cGrass, 0.35 * smooth((-34 - z) / 20) * (0.5 + 0.5 * Math.sin(x * 0.3 + z * 0.21)));
+      if (z < -34) tmp.lerp(cDune, 0.6).lerp(cGrass, 0.7 * smooth((-34 - z) / 20) * smooth(0.5 + 0.9 * Math.sin(x * 0.23 + z * 0.17) * Math.sin(x * 0.07 - z * 0.11)));
       const lot = Math.min(x + 34, 18 - x, z + 88, -64 - z), park = Math.min(x + 58, -26 - x, z + 92, -64 - z);
       if (lot > -0.5) tmp.lerp(cLot, smooth((lot + 0.5) / 1.2));
       if (park > -0.5) tmp.lerp(cLawn, smooth((park + 0.5) / 1.5));
@@ -298,6 +299,26 @@ export class World {
       g.rotateY(0); mesh(g, crateM, this.crates);
     }
     R.add(this.crates);
+    // shot 6+: the pile grows into a tower (the full half ton)
+    for (let row = 0; row < 3; row++) for (let k = 0; k < 4 - row; k++) mesh(box(0.62, 0.36, 0.42, CRATES[0] + (k - (3 - row) / 2) * 0.66 + 0.1, 0.18 + (row + 3) * 0.37, CRATES[2] + 0.5), crateM, this.tower);
+    mesh(box(0.62, 0.36, 0.42, CRATES[0] + 0.2, 0.18 + 6 * 0.37, CRATES[2] + 0.5), crateM, this.tower);
+    R.add(this.tower);
+    // shot 4: the engineer's easel with the plan drawing (no text)
+    const easelM = flat("#8a5a34");
+    for (const sx of [-0.45, 0.45]) { const leg = new THREE.Mesh(box(0.05, 1.9, 0.05, 0, 0.95, 0), easelM); leg.position.set(sx, 0, 0); leg.rotation.z = -sx * 0.18; this.easel.add(leg); }
+    const plan = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.9), new THREE.MeshBasicMaterial({ map: ctex("planHD", 512, 384, (g) => fxPlan(new Pen(g))), color: 0xeaeaea }));
+    plan.position.set(0, 1.55, 0.05); plan.layers.set(NOINK); this.easel.add(plan);
+    mesh(box(1.26, 0.96, 0.04, 0, 1.55, 0.02), easelM, this.easel);
+    this.easel.position.set(5.5, groundY(5.5, -6.6), -6.6); this.easel.rotation.y = Math.atan2(9.4 - 5.5, -12.6 + 6.6); R.add(this.easel);
+    // shot 12: the imagined neat version is a pastel diagram: grid floor + backdrop, a chopping board, a red cross
+    const gridT = repT(ctex("gridHD", 512, 512, (g) => { g.fillStyle = "#eef4f9"; g.fillRect(0, 0, 512, 512); g.strokeStyle = "#c6d6e4"; g.lineWidth = 3; for (let i = 0; i <= 512; i += 64) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 512); g.stroke(); g.beginPath(); g.moveTo(0, i); g.lineTo(512, i); g.stroke(); } }));
+    gridT.repeat.set(30, 30);
+    const gridM = new THREE.MeshBasicMaterial({ map: gridT, fog: false });
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(120, 120).rotateX(-Math.PI / 2).translate(0, 0.1, 0), gridM); floor.layers.set(NOINK); this.diagram.add(floor);
+    const wall = new THREE.Mesh(new THREE.PlaneGeometry(120, 60).translate(0, 30, 14), new THREE.MeshBasicMaterial({ map: gridT, fog: false, side: THREE.DoubleSide })); wall.layers.set(NOINK); this.diagram.add(wall);
+    mesh(box(15, 0.2, 4.4, 0, 0.2, 0), flat("#d9a46a"), this.diagram);
+    for (const r of [0.6, -0.6]) { const bar = new THREE.Mesh(box(15, 0.7, 0.3, 0, 0, 0), new THREE.MeshBasicMaterial({ color: "#e0303a", fog: false })); bar.rotation.z = r; bar.position.set(0, 2.2, -2.6); this.cross.add(bar); }
+    this.diagram.add(this.cross); this.diagram.visible = false; R.add(this.diagram);
     // the plunger box (T handle rides down on "pushed")
     mesh(box(0.5, 0.4, 0.34, 0, 0.2, 0), flat("#8a5a34"), this.plunger);
     mesh(cyl(0.025, 0.55, 0, 0.45, 0), flat("#3a3d47"), this.plungerH); mesh(cyl(0.035, 0.46, 0, 0.72, 0, "x"), flat("#3a3d47"), this.plungerH);
@@ -404,7 +425,7 @@ export class World {
     this.hemi.color.set(L.sky); this.hemi.groundColor.set(L.ground); this.hemi.intensity = L.hemiI;
     this.sun.color.set(L.sunCol); this.sun.intensity = L.sunI;
     let Rr = THREE.MathUtils.clamp(dist * 1.15 + 7, 12, 95);
-    if (s.light === "golden") Rr = Math.max(Rr, 40);
+    if (s.light === "golden" || s.light === "dusk") Rr = Math.max(Rr, 40);
     this.sun.position.copy(focus).addScaledVector(sunDir, 220); this.sun.target.position.copy(focus);
     const sc = this.sun.shadow.camera;
     sc.left = -Rr; sc.right = Rr; sc.top = Rr; sc.bottom = -Rr; sc.near = 20; sc.far = 480; sc.updateProjectionMatrix();
@@ -421,7 +442,7 @@ export class World {
     this.sky.position.copy(cam.position);
     untone(L.fog, this.fog.color); this.fog.near = L.fogNear + 20; this.fog.far = L.fogFar + 140;
     scene.fog = this.fog; scene.background = null;
-    this.sunDisc.visible = s.light === "golden";
+    this.sunDisc.visible = s.light === "golden" || s.light === "dusk";
     if (this.sunDisc.visible) { this.sunDisc.position.copy(cam.position).addScaledVector(sunDir, 900); this.sunDisc.scale.setScalar(2 * 900 * Math.tan(THREE.MathUtils.degToRad(1.7))); }
     for (let i = 0; i < this.clouds.length; i++) {
       const m = this.clouds[i]; m.lookAt(cam.position.x, m.position.y, cam.position.z); (m.material as THREE.MeshBasicMaterial).map = this.cloudMaps[s.light][i % 4];
@@ -440,17 +461,32 @@ export class World {
     const neat = id === 12 && f < 1350;
     this.whale.visible = id !== 16 && id !== 17 && !neat;
     this.cubes.visible = neat;
+    this.diagram.visible = neat; this.cross.visible = neat && f >= 1322; this.cross.scale.setScalar(neat ? Math.min(1, 0.3 + (f - 1322) / 6) : 1);
+    this.cubes.position.y = neat ? 0.25 : 0;
+    this.easel.visible = id === 4;
+    this.tower.visible = !blasted && (id === 6 || id === 7);
     this.crater.visible = blasted && id !== 13;
     this.crates.visible = !blasted && id <= 12 && !neat;
     this.pod.visible = this.podF.visible = id === 16;
     this.park.visible = id === 17;
     this.truckG.visible = id <= 15;
     this.signG.visible = id <= 15;
+    { // the sign wobbles after each hammer blow (shot 3)
+      let w = 0;
+      if (id === 3) for (const h of [300, 318, 336, 354]) { const n = f - h; if (n >= 0 && n < 20) w += 0.08 * Math.sin(n * 1.3) * Math.exp(-n / 7); }
+      this.signG.rotation.z = w;
+    }
+    { // the highway truck skids in (shot 3, cut at 372)
+      const n = f - 366, k = id === 3 ? (n < 0 ? 0 : Math.min(1, 1 - (1 - n / 22) ** 3)) : 1;
+      this.truckG.position.set(TRUCK[0] + 14 * (1 - k), groundY(TRUCK[0], TRUCK[2]), TRUCK[2] - 4 * (1 - k));
+      this.truckG.rotation.set(0, 0.5 + 0.25 * Math.sin(k * Math.PI), 0);
+    }
     this.rope.visible = this.press.visible = id >= 5 && id <= 14;
     this.plunger.visible = id >= 4 && id <= 14;
     const k = smooth((t - (T_PUSH - 0.05)) / (T_BLAST - T_PUSH));
     this.plungerH.position.y = id === 7 ? -0.3 * k : id > 7 ? -0.3 : 0;
     for (const car of this.cars) car.g.visible = id <= 15;
+    if (neat) { this.signG.visible = false; this.truckG.visible = false; this.plunger.visible = false; }
     const crushed = (id === 11 && t >= T_FLAT) || id === 13 || id === 14 || id === 15;
     this.myCar.cabin.scale.y = crushed ? 0.28 : 1; this.myCar.cabin.position.y = crushed ? 0.82 : 0.93;
     this.myCar.g.children[0].scale.y = crushed ? 0.75 : 1;
@@ -486,7 +522,8 @@ export class World {
       a.mesh.visible = true;
       a.mesh.position.set(p.x, p.y, p.z);
       a.mesh.rotation.set(0, p.yaw ?? Math.atan2(cam.position.x - p.x, cam.position.z - p.z), p.roll ?? 0);
-      a.mesh.scale.set(p.mirror ? -sc2 : sc2, sc2, sc2);
+      const sy = p.sy ?? 1;
+      a.mesh.scale.set((p.mirror ? -sc2 : sc2) / Math.sqrt(sy), sc2 * sy, sc2);
       a.mesh.castShadow = L.actorShadow;
       used.push(a);
     }
