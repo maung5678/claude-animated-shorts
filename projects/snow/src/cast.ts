@@ -316,7 +316,7 @@ export const stage = (id: number, t: number, cam: CamInfo): Stage => {
         continue;
       }
       const ph = q((beat + (id === 16 ? 0 : i * 0.02)) % 1, 12), slow = id === 16 ? 0.5 : 1;
-      stand(out, cam, t, 120 + i, VOLS[i], `v${i}`, x, z, { expr: id === 16 ? "angry" : (["laugh", "grin", "excited", "grin", "laugh"] as Expr[])[i], mode: "march", phase: id === 16 ? q(((t * slow) % 1), 12) : ph, lift: 90, dy: 0 }, 1, top);
+      stand(out, cam, t, 120 + i, VOLS[i], `v${i}`, x, z, { expr: id === 16 ? "angry" : (["laugh", "grin", "excited", "grin", "laugh"] as Expr[])[i], mode: "march", phase: id === 16 ? q(((t * slow) % 1), 60) : ph, lift: 90, dy: 0 }, 1, top);
       if (id === 16 && ((t * slow) % 1) < 0.08) fxAt(out, `spark${q(((t * slow) % 1) / 0.08, 10)}`, 200, 200, (p) => fxSpark(p, q(((t * slow) % 1) / 0.08, 10)), [x - 0.15, top + 0.1, z - 0.2], 0.5, 0.5);
     }
   }
