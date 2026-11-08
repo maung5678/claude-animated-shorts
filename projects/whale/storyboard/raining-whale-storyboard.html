@@ -1,0 +1,465 @@
+<title>Raining Whale Storyboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a storyboard desk. Header with what changes, a colour script strip, then numbered panels in reading order. */
+:root {
+  --paper: #f3f1ec;
+  --card: #fffdf8;
+  --ink: #1f1b2b;
+  --muted: #625c72;
+  --line: #d9d4ca;
+  --accent: #e8642c;     /* safety orange, the hard hats */
+  --sea: #13879b;
+  --chip: #fbe3d5;
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #17151d; --card: #211e29; --ink: #f1ede6; --muted: #aba4b8; --line: #3a3546; --accent: #ff8a4f; --sea: #4cc3d4; --chip: #3d2a22; color-scheme: dark } }
+:root[data-theme="dark"] { --paper: #17151d; --card: #211e29; --ink: #f1ede6; --muted: #aba4b8; --line: #3a3546; --accent: #ff8a4f; --sea: #4cc3d4; --chip: #3d2a22; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 40px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 6vw, 60px); line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; margin: 0 0 14px; text-wrap: balance; }
+.lede { max-width: 68ch; color: var(--muted); margin: 0; }
+.fixes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.fix { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
+.fix h3 { margin: 0 0 4px; font-size: 16px; }
+.fix .was { color: var(--muted); font-size: 13.5px; margin: 0 0 8px; }
+.fix ul { margin: 0; padding-left: 18px; font-size: 14px; }
+.script { display: grid; grid-template-columns: repeat(17, minmax(0, 1fr)); gap: 3px; border-radius: 8px; overflow: hidden; }
+.sw { height: 74px; display: flex; flex-direction: column; }
+.sw span { flex: 1; }
+.swl { display: grid; grid-template-columns: repeat(17, minmax(0, 1fr)); gap: 3px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); text-align: center; margin-top: 6px; }
+.scriptnote { font-size: 13.5px; color: var(--muted); margin: 10px 0 0; max-width: 80ch; }
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px 18px; }
+.panel { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.frame { position: relative; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 6px; overflow: hidden; border: 2px solid var(--ink); background: #ccc; }
+.frame svg { display: block; width: 100%; height: 100%; }
+.num { position: absolute; top: 6px; left: 6px; font-family: var(--font-mono); font-size: 11px; background: rgba(20,18,28,.78); color: #fff; padding: 1px 6px; border-radius: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 500; }
+.vo { font-style: italic; margin: 0; font-size: 14px; }
+.vo::before { content: "VO "; font-style: normal; font-family: var(--font-mono); font-size: 11px; color: var(--sea); }
+dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; font-size: 13.5px; }
+dt { color: var(--muted); }
+dd { margin: 0; min-width: 0; }
+.tag { display: inline-block; background: var(--chip); color: var(--ink); font-size: 12px; border-radius: 999px; padding: 0 8px; margin: 2px 4px 0 0; }
+.engine { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.engine div { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; min-width: 0; }
+.engine h3 { margin: 0 0 6px; font-size: 15px; }
+.engine ul { margin: 0; padding-left: 18px; font-size: 14px; }
+.next { border-left: 4px solid var(--accent); padding: 4px 0 4px 16px; max-width: 72ch; }
+.next p { margin: 0 0 6px; }
+@media (max-width: 640px) { .script, .swl { grid-template-columns: repeat(9, minmax(0, 1fr)); } .sw { height: 54px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Raining Whale · storyboard v2 · 69.5 s · 1080×1920</div>
+    <h1>Raining Whale Storyboard</h1>
+    <p class="lede">สตอรี่บอร์ดรอบใหม่ก่อนเรนเดอร์ แก้ 3 เรื่องที่ติมา ได้แก่ โทนภาพ ตัวละครที่นิ่ง และสีหน้า มีทั้งหมด 30 ช่อง เรียงตามเสียงพากย์เดิม (เวลาเป็นวินาทีของคลิป) แต่ละช่องบอกท่าทาง สีหน้าที่เปลี่ยน และการเคลื่อนกล้อง ภาพในช่องเป็นภาพร่าง ไว้ดูจังหวะ ท่า และสี ไม่ใช่ภาพจริงที่จะเรนเดอร์</p>
+  </header>
+
+  <section class="fixes" aria-label="สิ่งที่เปลี่ยน">
+    <div class="fix"><h3>โทนภาพ</h3><p class="was">รอบก่อน: ทรายสีครีมกินเต็มจอ ภาพซีดและแบน ส่วนช็อตปี 1979 เป็นส้มจัด</p>
+      <ul><li>ท้องฟ้าฟ้าเข้มไล่ลงขอบฟ้า ทะเลเขียวอมฟ้า ทรายเหลืองทองตัดเงาม่วง</li><li>ให้มีทรายเปียก โฟมคลื่น และหญ้าบนเนิน เพื่อแยกระยะใกล้-ไกล</li><li>คุมฉากให้กลาง ๆ แล้วใช้สีเสื้อตัวละครเป็นจุดเด่น (ส้ม แดง เขียวทหาร)</li><li>ฉากระเบิดใช้แสงวาบเหลือง-ส้ม ฉากอธิบายเป็นสีพาสเทลแบบไดอะแกรม ปี 1979 เปลี่ยนจากส้มเป็นชมพูม่วงยามเย็น</li></ul></div>
+    <div class="fix"><h3>การเคลื่อนไหว</h3><p class="was">รอบก่อน: ส่วนใหญ่ยืนนิ่งหันหน้าเข้ากล้อง</p>
+      <ul><li>ทุกช็อตต้องมีอย่างน้อย 1 action ที่ตรงกับคำพากย์</li><li>เพิ่มท่าใหม่: วิ่ง ก้มหลบ เอามือปิดหัว ชี้ กระโดด ยักไหล่ เอามือตบหน้าผาก เท้าสะเอว ยกลังวิ่ง กดคันจุดระเบิด</li><li>มีจังหวะเตรียมตัวก่อนแอ็กชัน (anticipation) และเด้งตาม (follow-through) ทั้งการยืดหดตัวและหมวกปลิว</li><li>ตัวประกอบไม่ยืนนิ่ง ให้หันมอง ชี้ หรือคุยกัน</li></ul></div>
+    <div class="fix"><h3>สีหน้า</h3><p class="was">รอบก่อน: หน้าเฉยหรือยิ้มเกือบตลอด เปลี่ยนน้อย</p>
+      <ul><li>เพิ่มสีหน้า: ภูมิใจ ยิ้มเยาะ ตื่นตระหนก โกรธ กังวล รังเกียจ หน้าตาย มึน เศร้า แกล้งไม่รู้</li><li>สีหน้าเปลี่ยนตรงคำพากย์ (ก่อนคำ 0-3 เฟรม) และกระพริบตาตอนเปลี่ยน</li><li>คิ้วขยับได้อิสระ เพิ่มเหงื่อหยด และตาโตตอนตกใจ</li><li>ช็อตใกล้ทุกช็อตเปลี่ยนสีหน้าอย่างน้อยหนึ่งครั้ง</li></ul></div>
+  </section>
+
+  <section aria-label="Colour script">
+    <h2>สีของแต่ละช็อต (Colour script)</h2>
+    <div class="script" id="script"></div>
+    <div class="swl" id="swl"></div>
+    <p class="scriptnote">แต่ละแถบคือหนึ่งช็อต จากบนลงล่างเป็นท้องฟ้า ขอบฟ้า พื้นหลัก เงา และสีเด่นของช็อต ช่วงช็อต 1-6 สว่างสดใส ช็อต 7-8 แสงวาบตอนระเบิด ช็อต 12 และ 14 เป็นสีไดอะแกรม ช็อต 16 เป็นยามเย็นปี 1979 และช็อต 17 กลับมาสดอีกครั้ง</p>
+  </section>
+
+  <section aria-label="Panels">
+    <h2>30 ช่องตามเวลา</h2>
+    <div class="board" id="board"></div>
+  </section>
+
+  <section aria-label="Engine work">
+    <h2>สิ่งที่ต้องเพิ่มในเอนจินก่อนเรนเดอร์</h2>
+    <div class="engine">
+      <div><h3>ท่าทางตัวละคร (toon.ts)</h3><ul><li>ท่าใหม่: วิ่ง ก้มหลบ ปิดหัว ชี้ กระโดด ยักไหล่ ตบหน้าผาก เท้าสะเอว ยกแขนสองข้าง ยกลัง กดคันจุดระเบิด กระทืบ นั่งทรุด</li><li>ยืด-หดตัวตอนกระโดดและตอนตกใจ หมวกปลิวแล้วตกลงพื้น</li><li>ทุกท่าให้ cast.ts สั่งตามเวลาเป็นคีย์เฟรม</li></ul></div>
+      <div><h3>สีหน้า (toon.ts)</h3><ul><li>สีหน้าใหม่ 10 แบบ: proud, smug, panic, angry, worried, disgust, deadpan, sad, innocent, dizzy</li><li>คิ้วแยกซ้าย-ขวา เหงื่อหยด หน้าแดง และตาโตช่วงสั้น ๆ ตอนตกใจ</li><li>เปลี่ยนสีหน้าทุกจุดตามคำพากย์ใน words.json</li></ul></div>
+      <div><h3>โทนภาพ (lights.ts, world.ts, grade.ts)</h3><ul><li>พาเลตต์แยกตามช็อต: วันทะเล บนเนิน ระเบิด ไดอะแกรม ยามเย็นปี 1979 และสวน</li><li>ทรายมีลายมากขึ้น มีแถบทรายเปียกเงา โฟมคลื่นหลายชั้น และกอหญ้าบนเนิน</li><li>เงาทอดยาวขึ้นและสีเงาออกม่วง วาฬเปลี่ยนเป็นเทาอมน้ำเงินมีลายย่น</li></ul></div>
+      <div><h3>ฉากและพร็อพใหม่</h3><ul><li>กระดานขาตั้งของวิศวกร (ภาพวาดไม่มีตัวหนังสือ) เชือกกั้น กระติกน้ำแข็งที่มีคนมุดหลบ</li><li>นกนางนวลเป็นลม นกเหลียวหลังมองซ้ำ (double-take) แล้วบินหนี และนกใส่ผ้ากันเปื้อนรอกิน</li><li>ฉากไดอะแกรมวาฬบนเขียงหั่นเป็นลูกเต๋า และลูกศรแสดงแรงดันของทราย (ไม่มีตัวหนังสือ)</li></ul></div>
+    </div>
+  </section>
+
+  <section class="next" aria-label="Next step">
+    <p><b>ขั้นต่อไป:</b> ถ้าบอร์ดนี้โอเค ผมจะเพิ่มท่าและสีหน้าในเอนจินก่อน แล้วส่งภาพนิ่งจริงช็อตละ 1-2 ภาพให้ดูอีกรอบ ก่อนเรนเดอร์ทั้งคลิป</p>
+    <p>ถ้าอยากแก้ช่องไหน บอกเลขช่องกับสิ่งที่อยากเปลี่ยนได้เลย เช่น "ช่อง 17 ให้มีคนหลบใต้รถ"</p>
+  </section>
+</div>
+
+<script>
+(() => {
+  // ---------- palettes (colour script) ----------
+  const P = {
+    beach: { sky0: "#2a74d4", sky1: "#9fd3f2", sea: "#139aa8", seaF: "#0f6f93", sand: "#f1c77f", shade: "#a98ab8", wet: "#c79a62", accent: "#ff6b2c" },
+    crest: { sky0: "#2f78d6", sky1: "#b6def4", sea: "#1592a3", seaF: "#11708f", sand: "#ecc174", shade: "#9b85b4", wet: "#b8a35a", accent: "#e8432e", grass: "#7fae3e" },
+    lot:   { sky0: "#2f78d6", sky1: "#b6def4", sea: "#1592a3", seaF: "#11708f", sand: "#63606e", shade: "#3f3c4d", wet: "#7c7887", accent: "#5fd0b4", grass: "#7fae3e" },
+    blast: { sky0: "#ff9a3c", sky1: "#ffe8a3", sea: "#2f9fa5", seaF: "#2b7c8e", sand: "#f4c37a", shade: "#b0759a", wet: "#c98f5c", accent: "#fff2a8" },
+    diagram: { sky0: "#e3eef7", sky1: "#f4f8fb", sea: "#9fd2db", seaF: "#7fbfcc", sand: "#f6dfae", shade: "#c9b9dc", wet: "#e8c98f", accent: "#e8642c" },
+    dusk:  { sky0: "#4f4589", sky1: "#ffc59a", sea: "#6c6fb4", seaF: "#545a9e", sand: "#e9a68f", shade: "#6a4f8e", wet: "#c98a86", accent: "#ffd27a" },
+    park:  { sky0: "#2b7fe0", sky1: "#bfe6f7", sea: "#1592a3", seaF: "#11708f", sand: "#6cc04a", shade: "#3e8a52", wet: "#8fd06a", accent: "#ff6b2c", grass: "#5aa83c" },
+  };
+  const SHOT_PAL = ["beach","beach","beach","beach","crest","beach","crest","blast","crest","lot","lot","diagram","lot","diagram","beach","dusk","park"];
+  const sc = document.getElementById("script"), sl = document.getElementById("swl");
+  SHOT_PAL.forEach((k, i) => {
+    const p = P[k], d = document.createElement("div"); d.className = "sw";
+    d.innerHTML = [p.sky0, p.sky1, p.sand, p.shade, p.accent].map((c) => `<span style="background:${c}"></span>`).join("");
+    d.title = `Shot ${i + 1}: ${k}`; sc.appendChild(d);
+    const l = document.createElement("span"); l.textContent = i + 1; sl.appendChild(l);
+  });
+
+  // ---------- drawing kit (180 x 320 frame) ----------
+  const INK = "#22182a", SKIN = ["#ffe0c2", "#f2c49c", "#d9a37a", "#b07a55"];
+  let uid = 0;
+  const bg = (pal, hor = 150, mode = "beach") => {
+    const p = P[pal], id = "g" + (uid++), hh2 = (v) => Math.max(0, v);
+    let s = `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.sky0}"/><stop offset="1" stop-color="${p.sky1}"/></linearGradient></defs>`;
+    s += `<rect width="180" height="320" fill="url(#${id})"/>`;
+    if (pal === "diagram") {
+      s += `<rect width="180" height="320" fill="${p.sky1}"/>`;
+      for (let x = 10; x < 180; x += 14) s += `<line x1="${x}" y1="0" x2="${x}" y2="320" stroke="#cfdbe6" stroke-width=".6"/>`;
+      for (let y = 10; y < 320; y += 14) s += `<line x1="0" y1="${y}" x2="180" y2="${y}" stroke="#cfdbe6" stroke-width=".6"/>`;
+      return s;
+    }
+    s += cloud(30, hor - 95, 1) + cloud(130, hor - 115, .8);
+    if (mode === "beach") {
+      s += `<rect y="${hor}" width="180" height="16" fill="${p.seaF}"/><rect y="${hor + 8}" width="180" height="${12}" fill="${p.sea}"/>`;
+      s += `<path d="M0 ${hor + 20} q15 -4 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V${hor + 26} H0Z" fill="#fff" opacity=".9"/>`;
+      s += `<rect y="${hor + 24}" width="180" height="10" fill="${p.wet}"/><rect y="${hor + 32}" width="180" height="${hh2(320 - hor - 32)}" fill="${p.sand}"/>`;
+      s += sandMarks(hor + 40, p);
+    } else if (mode === "crest") {
+      s += `<rect y="${hor}" width="180" height="10" fill="${p.sea}"/>`;
+      s += `<path d="M0 ${hor + 10} Q45 ${hor - 6} 90 ${hor + 8} T180 ${hor + 4} V320 H0Z" fill="${p.sand}"/>`;
+      for (let i = 0; i < 9; i++) s += tuft(10 + i * 21, hor + 30 + (i % 3) * 22, p.grass || "#7fae3e");
+      s += sandMarks(hor + 40, p);
+    } else if (mode === "lot") {
+      s += `<path d="M0 ${hor} Q60 ${hor - 14} 120 ${hor - 4} T180 ${hor - 6} V${hor + 6} H0Z" fill="#3f8f47"/>`;
+      for (let i = 0; i < 6; i++) s += pine(12 + i * 32, hor + 2, 18 + (i % 2) * 8);
+      s += `<rect y="${hor + 4}" width="180" height="${hh2(320 - hor)}" fill="${p.sand}"/>`;
+      for (let i = 0; i < 5; i++) s += `<rect x="${i * 44 - 10}" y="${hor + 60 + i * 0}" width="3" height="40" fill="#e9e6dc" opacity=".7" transform="skewX(-25)"/>`;
+    } else if (mode === "park") {
+      s += `<rect y="${hor}" width="180" height="8" fill="${p.seaF}"/>`;
+      s += `<rect y="${hor + 6}" width="180" height="${hh2(320 - hor)}" fill="${p.sand}"/>`;
+      s += tree(18, hor + 12, 34) + tree(160, hor + 18, 40);
+    } else if (mode === "dusk") {
+      s += `<circle cx="132" cy="${hor - 8}" r="16" fill="#ffe3a8"/><rect y="${hor}" width="180" height="20" fill="${p.sea}"/>`;
+      s += `<path d="M0 ${hor + 18} q15 -4 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V${hor + 24} H0Z" fill="#ffe9d6" opacity=".8"/>`;
+      s += `<rect y="${hor + 22}" width="180" height="${hh2(320 - hor)}" fill="${p.sand}"/>`;
+    }
+    return s;
+  };
+  const cloud = (x, y, k) => `<g transform="translate(${x} ${y}) scale(${k})" fill="#fff"><ellipse cx="0" cy="0" rx="18" ry="9"/><ellipse cx="14" cy="-4" rx="13" ry="10"/><ellipse cx="-12" cy="2" rx="11" ry="7"/></g>`;
+  const tuft = (x, y, c) => `<path d="M${x} ${y} l-4 -9 M${x} ${y} l0 -11 M${x} ${y} l4 -9" stroke="${c}" stroke-width="2" stroke-linecap="round"/>`;
+  const pine = (x, y, h) => `<path d="M${x} ${y - h} l${h * .35} ${h} h${-h * .7}Z" fill="#2f6f45" stroke="${INK}" stroke-width="1"/>`;
+  const tree = (x, y, h) => `<rect x="${x - 2}" y="${y - h * .45}" width="4" height="${h * .45}" fill="#8a5a3c"/><circle cx="${x}" cy="${y - h * .65}" r="${h * .33}" fill="#4f9e3b" stroke="${INK}" stroke-width="1.2"/>`;
+  const sandMarks = (y0, p) => { let s = ""; for (let i = 0; i < 10; i++) s += `<path d="M${(i * 37) % 170} ${y0 + (i * 53) % (300 - y0)} q6 -2 12 0" stroke="${p.shade}" stroke-width="1" fill="none" opacity=".5"/>`; return s; };
+  const shadow = (x, y, w, pal) => `<ellipse cx="${x}" cy="${y}" rx="${w}" ry="${w * .22}" fill="${P[pal].shade}" opacity=".75"/>`;
+
+  // ---------- face + person ----------
+  const face = (cx, cy, r, e) => {
+    const ex = r * .36, ey = cy - r * .08, er = r * .1;
+    let s = "";
+    const brow = (l, r2) => `<path d="M${cx - ex - er * 1.6} ${ey - r * .3 + l} L${cx - ex + er * 1.6} ${ey - r * .3 - l}" stroke="${INK}" stroke-width="${r * .09}" stroke-linecap="round"/><path d="M${cx + ex - er * 1.6} ${ey - r * .3 - r2} L${cx + ex + er * 1.6} ${ey - r * .3 + r2}" stroke="${INK}" stroke-width="${r * .09}" stroke-linecap="round"/>`;
+    const dots = () => `<circle cx="${cx - ex}" cy="${ey}" r="${er}" fill="${INK}"/><circle cx="${cx + ex}" cy="${ey}" r="${er}" fill="${INK}"/>`;
+    const wide = () => `<circle cx="${cx - ex}" cy="${ey}" r="${er * 2.3}" fill="#fff" stroke="${INK}" stroke-width="${r * .06}"/><circle cx="${cx + ex}" cy="${ey}" r="${er * 2.3}" fill="#fff" stroke="${INK}" stroke-width="${r * .06}"/><circle cx="${cx - ex}" cy="${ey}" r="${er * .8}" fill="${INK}"/><circle cx="${cx + ex}" cy="${ey}" r="${er * .8}" fill="${INK}"/>`;
+    const happy = () => `<path d="M${cx - ex - er * 1.4} ${ey + er} q${er * 1.4} ${-er * 2.4} ${er * 2.8} 0 M${cx + ex - er * 1.4} ${ey + er} q${er * 1.4} ${-er * 2.4} ${er * 2.8} 0" stroke="${INK}" stroke-width="${r * .08}" fill="none" stroke-linecap="round"/>`;
+    const lids = () => `<path d="M${cx - ex - er * 1.5} ${ey} h${er * 3} M${cx + ex - er * 1.5} ${ey} h${er * 3}" stroke="${INK}" stroke-width="${r * .08}" stroke-linecap="round"/>` + dots();
+    const spiral = () => [cx - ex, cx + ex].map((x) => `<path d="M${x} ${ey} m-${er} 0 a${er} ${er} 0 1 1 ${er * 2} 0 a${er * 1.5} ${er * 1.5} 0 1 1 -${er * 3} 0" stroke="${INK}" stroke-width="${r * .05}" fill="none"/>`).join("");
+    const m = (d, fill = "none") => `<path d="${d}" stroke="${INK}" stroke-width="${r * .08}" fill="${fill}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const my = cy + r * .42, mw = r * .32;
+    const sweat = () => `<path d="M${cx + r * .95} ${cy - r * .4} q${r * .18} ${r * .3} 0 ${r * .38} q${-r * .18} ${-r * .08} 0 ${-r * .38}Z" fill="#9fdcff" stroke="${INK}" stroke-width="${r * .04}"/>`;
+    switch (e) {
+      case "smug": s += lids() + brow(-r * .02, r * .06) + m(`M${cx - mw} ${my} q${mw} ${r * .2} ${mw * 1.6} ${-r * .12}`); break;
+      case "proud": s += happy() + brow(-r * .06, -r * .06) + m(`M${cx - mw} ${my - r * .05} q${mw} ${r * .35} ${mw * 2} 0`); break;
+      case "grin": s += happy() + m(`M${cx - mw} ${my - r * .08} h${mw * 2} q${-mw} ${r * .45} ${-mw * 2} 0Z`, "#7a2234"); break;
+      case "laugh": s += happy() + brow(-r * .08, -r * .08) + m(`M${cx - mw * 1.1} ${my - r * .1} h${mw * 2.2} q${-mw * 1.1} ${r * .6} ${-mw * 2.2} 0Z`, "#7a2234"); break;
+      case "shock": s += wide() + brow(-r * .12, -r * .12) + `<ellipse cx="${cx}" cy="${my + r * .02}" rx="${r * .14}" ry="${r * .2}" fill="#7a2234" stroke="${INK}" stroke-width="${r * .07}"/>`; break;
+      case "panic": s += wide() + brow(r * .1, r * .1) + m(`M${cx - mw * 1.2} ${my} q${mw * .6} ${-r * .14} ${mw * 1.2} 0 t${mw * 1.2} 0`) + sweat(); break;
+      case "angry": s += dots() + brow(r * .14, r * .14) + m(`M${cx - mw} ${my + r * .06} q${mw} ${-r * .22} ${mw * 2} 0`); break;
+      case "worried": s += dots() + brow(-r * .12, -r * .12).replace(/L/g, "L") + m(`M${cx - mw} ${my} q${mw * .5} ${-r * .1} ${mw} 0 t${mw} 0`) + sweat(); break;
+      case "disgust": s += lids() + brow(r * .08, -r * .04) + m(`M${cx - mw} ${my} l${mw * .6} ${-r * .08} l${mw * .7} ${r * .08} l${mw * .7} ${-r * .06}`) + `<path d="M${cx - r * .7} ${cy + r * .1} q${r * .1} ${r * .2} ${r * .2} 0" stroke="#7fa83a" stroke-width="${r * .08}" fill="none"/>`; break;
+      case "deadpan": s += lids() + m(`M${cx - mw} ${my} h${mw * 2}`); break;
+      case "dizzy": s += spiral() + m(`M${cx - mw} ${my} q${mw * .5} ${-r * .1} ${mw} 0 t${mw} 0`); break;
+      case "sad": s += dots() + brow(-r * .1, -r * .1) + m(`M${cx - mw} ${my + r * .08} q${mw} ${-r * .24} ${mw * 2} 0`) + `<path d="M${cx - ex} ${ey + er * 1.5} v${r * .25}" stroke="#7fc8ff" stroke-width="${r * .08}" stroke-linecap="round"/>`; break;
+      case "innocent": s += happy() + brow(-r * .1, -r * .1) + `<circle cx="${cx + r * .1}" cy="${my}" r="${r * .08}" fill="none" stroke="${INK}" stroke-width="${r * .07}"/>`; break;
+      case "excited": s += wide() + brow(-r * .1, -r * .1) + m(`M${cx - mw} ${my - r * .05} h${mw * 2} q${-mw} ${r * .4} ${-mw * 2} 0Z`, "#7a2234"); break;
+      default: s += dots() + m(`M${cx - mw * .6} ${my} q${mw * .6} ${r * .1} ${mw * 1.2} 0`);
+    }
+    return s;
+  };
+  const hat = (cx, cy, r, h) => {
+    if (!h) return "";
+    const [k, c] = h;
+    if (k === "hard") return `<path d="M${cx - r * 1.05} ${cy - r * .25} a${r * 1.05} ${r * .95} 0 0 1 ${r * 2.1} 0Z" fill="${c}" stroke="${INK}" stroke-width="${r * .1}"/><rect x="${cx - r * 1.3}" y="${cy - r * .32}" width="${r * 2.6}" height="${r * .18}" rx="${r * .08}" fill="${c}" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    if (k === "cap") return `<path d="M${cx - r * .95} ${cy - r * .35} a${r * .95} ${r * .8} 0 0 1 ${r * 1.9} 0Z" fill="${c}" stroke="${INK}" stroke-width="${r * .1}"/><path d="M${cx + r * .3} ${cy - r * .38} h${r * .95}" stroke="${INK}" stroke-width="${r * .22}" stroke-linecap="round"/>`;
+    if (k === "hair") return `<path d="M${cx - r * .98} ${cy - r * .1} a${r} ${r} 0 0 1 ${r * 1.96} 0 q${-r * .5} ${-r * .3} ${-r} ${-r * .15} q${-r * .5} ${r * .2} ${-r * .96} ${r * .15}Z" fill="${c}" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    return "";
+  };
+  // pose: arm end points [lx, ly, rx, ry] relative to shoulders (in head radii), legs [lx, ly, rx, ry] relative to hips
+  const POSE = {
+    stand:  { a: [-.5, 2.4, .5, 2.4], l: [-.5, 2.6, .5, 2.6] },
+    hips:   { a: [-1.2, 1.2, 1.2, 1.2], l: [-.6, 2.6, .6, 2.6], elbow: true },
+    point:  { a: [-.5, 2.4, 2.6, -.6], l: [-.5, 2.6, .5, 2.6] },
+    up:     { a: [-1.3, -2.2, 1.3, -2.2], l: [-.8, 2.5, .8, 2.5] },
+    wave:   { a: [-.5, 2.4, 1.5, -1.8], l: [-.5, 2.6, .5, 2.6] },
+    run:    { a: [-1.8, .8, 1.6, -.6], l: [-1.6, 2.0, 1.5, 2.3], tilt: 14 },
+    duck:   { a: [-.9, -1.4, .9, -1.4], l: [-1.0, 1.4, 1.0, 1.4], squash: .72 },
+    carry:  { a: [-.5, 1.1, .5, 1.1], l: [-.5, 2.6, .5, 2.6] },
+    push:   { a: [-.3, 2.2, .3, 2.2], l: [-.7, 2.4, .7, 2.4], squash: .9 },
+    jump:   { a: [-1.6, -1.6, 1.6, -1.6], l: [-.9, 1.6, .9, 1.4], lift: 18, stretch: 1.12 },
+    shrug:  { a: [-1.8, .5, 1.8, .5], l: [-.5, 2.6, .5, 2.6] },
+    palm:   { a: [-.5, 2.4, .2, -.9], l: [-.5, 2.6, .5, 2.6] },
+    sit:    { a: [-.8, 1.6, .8, 1.6], l: [-1.2, 1.2, 1.2, 1.2], sit: true },
+    stomp:  { a: [-1.3, .4, 1.3, .2], l: [-.5, 2.6, .8, 1.2] },
+    hold:   { a: [-.5, 2.4, .9, 1.0], l: [-.5, 2.6, .5, 2.6] },
+    flinch: { a: [-1.5, -.2, 1.4, -.5], l: [-.9, 2.5, .7, 2.5], tilt: -10 },
+  };
+  /** person with feet at (x, y), height h px; o: {c, pants, hat, skin, pose, e, flip, prop, mo} */
+  const man = (x, y, h, o) => {
+    const pz = POSE[o.pose || "stand"], r = h * .17, flip = o.flip ? -1 : 1;
+    const st = pz.stretch || 1, sq = pz.squash || 1, lift = (pz.lift || 0) * h / 60;
+    const H = h * st * sq, hip = y - lift - (pz.sit ? r * 1.4 : r * 2.6) * sq;
+    const bodyH = r * 2.6 * st * sq, bw = r * 1.05;
+    const bcy = hip - bodyH * .45, sh = hip - bodyH * .85, hc = sh - r * 1.05;
+    let s = `<g transform="translate(${x} 0) scale(${flip} 1) rotate(${(pz.tilt || 0)} 0 ${hip})">`;
+    const lc = o.pants || "#3b3f52";
+    // legs
+    const [l1x, l1y, l2x, l2y] = pz.l;
+    s += `<path d="M${-r * .35} ${hip} L${l1x * r} ${hip + l1y * r}" stroke="${INK}" stroke-width="${r * .34}" stroke-linecap="round"/><path d="M${r * .35} ${hip} L${l2x * r} ${hip + l2y * r}" stroke="${INK}" stroke-width="${r * .34}" stroke-linecap="round"/>`;
+    s += `<path d="M${-r * .35} ${hip} L${l1x * r} ${hip + l1y * r}" stroke="${lc}" stroke-width="${r * .2}" stroke-linecap="round"/><path d="M${r * .35} ${hip} L${l2x * r} ${hip + l2y * r}" stroke="${lc}" stroke-width="${r * .2}" stroke-linecap="round"/>`;
+    s += `<ellipse cx="${l1x * r - r * .2}" cy="${hip + l1y * r}" rx="${r * .38}" ry="${r * .18}" fill="${INK}"/><ellipse cx="${l2x * r + r * .2}" cy="${hip + l2y * r}" rx="${r * .38}" ry="${r * .18}" fill="${INK}"/>`;
+    // arms behind
+    const [a1x, a1y, a2x, a2y] = pz.a;
+    const arm = (sx, ex, ey) => `<path d="M${sx} ${sh} Q${(sx + ex * r) / 2 + (pz.elbow ? Math.sign(ex) * r * .9 : 0)} ${(sh + sh + ey * r) / 2} ${ex * r} ${sh + ey * r}" stroke="${INK}" stroke-width="${r * .26}" fill="none" stroke-linecap="round"/><circle cx="${ex * r}" cy="${sh + ey * r}" r="${r * .22}" fill="${INK}"/>`;
+    s += arm(-bw * .8, a1x, a1y) + arm(bw * .8, a2x, a2y);
+    // body
+    s += `<ellipse cx="0" cy="${bcy}" rx="${bw}" ry="${bodyH * .58}" fill="${o.c}" stroke="${INK}" stroke-width="${r * .14}"/>`;
+    if (o.vest) s += `<path d="M${-bw * .6} ${bcy - bodyH * .3} v${bodyH * .7} M${bw * .6} ${bcy - bodyH * .3} v${bodyH * .7}" stroke="#f6f0d8" stroke-width="${r * .22}"/>`;
+    if (o.splat) for (let i = 0; i < 5; i++) s += `<circle cx="${(i - 2) * r * .35}" cy="${bcy - r * .3 + (i % 2) * r * .5}" r="${r * .18}" fill="#d42a1e"/>`;
+    for (let i = 0; i < 3; i++) s += `<circle cx="${r * .05}" cy="${bcy - bodyH * .25 + i * bodyH * .22}" r="${r * .08}" fill="${INK}"/>`;
+    // prop
+    if (o.prop === "crate") s += `<rect x="${-r * 1.4}" y="${sh + r * .55}" width="${r * 2.8}" height="${r * 1.5}" fill="#c99a5d" stroke="${INK}" stroke-width="${r * .12}"/><rect x="${-r * 1.4}" y="${sh + r * 1.05}" width="${r * 2.8}" height="${r * .45}" fill="#d23a35"/>`;
+    if (o.prop === "clip") s += `<rect x="${r * .4}" y="${sh + r * .4}" width="${r * 1.1}" height="${r * 1.4}" fill="#f7f3e6" stroke="${INK}" stroke-width="${r * .1}"/>`;
+    if (o.prop === "mic") s += `<path d="M${r * .9} ${sh + r} l${r * .4} ${-r * 1.0}" stroke="${INK}" stroke-width="${r * .2}"/><circle cx="${r * 1.35}" cy="${sh - r * .1}" r="${r * .28}" fill="#4a4d57" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    if (o.prop === "pointer") s += `<path d="M${2.6 * r} ${sh - .6 * r} l${r * 2.2} ${-r * .9}" stroke="#8a5a34" stroke-width="${r * .14}" stroke-linecap="round"/>`;
+    if (o.prop === "shovel") s += `<path d="M${r * .9} ${sh} v${r * 4.4}" stroke="#8a5a34" stroke-width="${r * .18}"/><path d="M${r * .45} ${sh + r * 4.3} h${r * .9} l-${r * .2} ${r * .8} h-${r * .5}Z" fill="#8d949c" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    if (o.prop === "tnt") s += `<rect x="${-r * 2.2}" y="${sh + r * .8}" width="${r * 1.3}" height="${r * 1.0}" fill="#c99a5d" stroke="${INK}" stroke-width="${r * .1}"/>`;
+    // head
+    const skin = o.skin || SKIN[0];
+    s += `<ellipse cx="0" cy="${hc}" rx="${r}" ry="${r * 1.04}" fill="${skin}" stroke="${INK}" stroke-width="${r * .12}"/>`;
+    s += `<g transform="scale(${flip} 1)">` + face(0, hc, r, o.e || "neutral") + `</g>`;
+    if (o.mo) s += `<path d="M${-r * .35} ${hc + r * .3} q${r * .35} ${-r * .15} ${r * .7} 0" stroke="${o.mo}" stroke-width="${r * .16}" fill="none" stroke-linecap="round"/>`;
+    if (o.hatOff) s += `<g transform="translate(${r * .6} ${-r * 1.8}) rotate(25 0 ${hc})">${hat(0, hc, r, o.hat)}</g>`;
+    else s += hat(0, hc, r, o.hat);
+    if (o.goo) s += `<path d="M${-r * .7} ${hc - r * .95} q${r * .7} ${-r * .8} ${r * 1.4} 0 q${-r * .2} ${r * .3} ${-r * .3} ${r * .1} q${-r * .2} ${r * .4} ${-r * .4} 0 q${-r * .3} ${r * .3} ${-r * .7} ${-r * .1}Z" fill="#d9a296" stroke="${INK}" stroke-width="${r * .08}"/>`;
+    s += `</g>`;
+    return s;
+  };
+  // outfits
+  const ENG = { c: "#f6f4ee", pants: "#5a5f6e", hat: ["hard", "#f8f6f0"], skin: SKIN[1], mo: "#4a3020" };
+  const WRK = (k = 0) => ({ c: ["#ff7a26", "#f2621c", "#ff9330"][k % 3], pants: "#2f4470", hat: ["hard", "#ffcc29"], skin: SKIN[k % 4], vest: true });
+  const WAR = { c: "#5f6d34", pants: "#4a4038", hat: ["cap", "#6b4a33"], skin: SKIN[2], mo: "#5a4030" };
+  const REP = { c: "#c23a4f", hat: ["hair", "#3a2a20"], skin: SKIN[0] };
+  const CAMM = { c: "#2f6fd0", hat: ["cap", "#1f4a55"], skin: SKIN[3] };
+  const KIDO = { c: "#ff9a2f", pants: "#2f5aa0", hat: ["cap", "#e8332b"], skin: SKIN[0] };
+  const FOLK = (k) => ({ c: ["#e2a92e", "#c25a7a", "#2f8a8a", "#8b5e3c", "#7c9a2f", "#5a7fe0"][k % 6], hat: ["hair", ["#3a2a20", "#7a4a2a", "#d9b46a", "#a8643a"][k % 4]], skin: SKIN[k % 4] });
+
+  // ---------- props + fx ----------
+  const whale = (x, y, w, o = {}) => { const k = w / 120; return `<g transform="translate(${x} ${y}) scale(${o.flip ? -k : k} ${k})">
+    <path d="M-60 0 Q-62 -38 -20 -42 L45 -40 Q62 -38 62 -10 Q62 0 50 2 L-60 2 Q-75 -6 -82 -16 Q-92 -26 -98 -14 Q-90 -6 -98 4 Q-86 6 -76 2Z" fill="#4c5a7c" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M-50 -2 Q0 8 52 -2" stroke="#7d87a3" stroke-width="7" fill="none" opacity=".7"/>
+    ${[0, 1, 2, 3, 4].map((i) => `<path d="M${-20 + i * 12} -36 q4 6 0 12" stroke="#33405c" stroke-width="1.6" fill="none"/>`).join("")}
+    <circle cx="30" cy="-18" r="2.6" fill="${INK}"/><path d="M38 -4 L60 -6" stroke="${INK}" stroke-width="1.6"/>
+    ${o.cubes ? "" : ""}</g>`; };
+  const cubeWhale = (x, y, w) => { let s = ""; const k = w / 120; for (let i = 0; i < 12; i++) for (let j = 0; j < (i < 2 ? 2 : i > 9 ? 3 : 4); j++) s += `<rect x="${x + (-62 + i * 10) * k}" y="${y - (j + 1) * 10 * k}" width="${8.5 * k}" height="${8.5 * k}" fill="#4c5a7c" stroke="${INK}" stroke-width="1"/>`; return s; };
+  const crates = (x, y, cols, rows, s = 1) => { let o = ""; for (let r = 0; r < rows; r++) for (let c = 0; c < cols - r; c++) { const cx = x + (c + r * .5) * 15 * s, cy = y - (r + 1) * 9 * s; o += `<rect x="${cx}" y="${cy}" width="${14 * s}" height="${8.5 * s}" fill="#c99a5d" stroke="${INK}" stroke-width="1"/><rect x="${cx}" y="${cy + 3 * s}" width="${14 * s}" height="${2.6 * s}" fill="#d23a35"/>`; } return o; };
+  const gull = (x, y, s, m = "fly") => {
+    if (m === "stand") return `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#fff" stroke="${INK}" stroke-width="1.2"/><circle cx="7" cy="-7" r="4.5" fill="#fff" stroke="${INK}" stroke-width="1.2"/><path d="M11 -7 l5 1.5 l-5 1.5Z" fill="#f2b630"/><circle cx="8" cy="-8" r=".9" fill="${INK}"/><path d="M-9 -1 l-6 -3 l2 6Z" fill="#8f98a6"/><path d="M-2 6 v5 M2 6 v5" stroke="#e89a3a" stroke-width="1.4"/></g>`;
+    if (m === "faint") return `<g transform="translate(${x} ${y}) scale(${s}) rotate(180)"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#fff" stroke="${INK}" stroke-width="1.2"/><circle cx="7" cy="-7" r="4.5" fill="#fff" stroke="${INK}" stroke-width="1.2"/><path d="M5 -9 l3 3 M8 -9 l-3 3" stroke="${INK}" stroke-width=".9"/><path d="M-2 6 v5 M2 6 v5" stroke="#e89a3a" stroke-width="1.4"/></g>`;
+    if (m === "bib") return gull(x, y, s, "stand") + `<path d="M${x + 3 * s} ${y - 3 * s} l${4 * s} ${7 * s} l${4 * s} ${-6 * s}Z" fill="#fff" stroke="#d23a35" stroke-width="1"/>`;
+    return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -4 Q-7 -9 0 0 Q7 -9 14 -4" stroke="${INK}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M-14 -4 Q-7 -9 0 0 Q7 -9 14 -4" stroke="#fff" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>`;
+  };
+  const burst = (x, y, r, c = "#fff3b0") => { let p = ""; for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2, rr = i % 2 ? r * .55 : r; p += `${i ? "L" : "M"}${x + Math.cos(a) * rr} ${y + Math.sin(a) * rr}`; } return `<path d="${p}Z" fill="${c}" stroke="${INK}" stroke-width="2"/>`; };
+  const plume = (x, y, s) => { let o = ""; const pts = [[0, 0, 22], [-16, -14, 18], [16, -12, 19], [-6, -34, 20], [12, -38, 17], [0, -58, 18], [-18, -50, 14], [18, -60, 13]]; for (const [dx, dy, r] of pts) o += `<circle cx="${x + dx * s}" cy="${y + dy * s}" r="${r * s}" fill="#f0d9a6" stroke="${INK}" stroke-width="1.4"/>`; for (const [dx, dy, r] of pts.slice(3)) o += `<circle cx="${x + dx * s - 3}" cy="${y + dy * s - 3}" r="${r * s * .55}" fill="#fff3d6"/>`; return o; };
+  const chunk = (x, y, r, rot = 0) => `<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M${-r} 0 Q${-r} ${-r * .9} 0 ${-r * .8} Q${r * 1.1} ${-r * .9} ${r} 0 Q${r * .9} ${r * .8} 0 ${r * .7} Q${-r * .9} ${r * .8} ${-r} 0Z" fill="#d9a296" stroke="${INK}" stroke-width="1.4"/><path d="M${-r * .5} ${-r * .3} q${r * .3} ${-r * .2} ${r * .6} 0" stroke="#f3cfc4" stroke-width="${r * .25}" fill="none" stroke-linecap="round"/></g>`;
+  const fallLines = (x, y, len) => `<path d="M${x - 4} ${y - len} v${len * .7} M${x + 4} ${y - len * .8} v${len * .6}" stroke="${INK}" stroke-width="1.2" opacity=".6"/>`;
+  const speed = (x, y, n, len, dir = 1) => { let o = ""; for (let i = 0; i < n; i++) o += `<path d="M${x} ${y + i * 6} h${-dir * len}" stroke="${INK}" stroke-width="1.3" opacity=".55" stroke-linecap="round"/>`; return o; };
+  const stink = (x, y) => [0, 1, 2].map((i) => `<path d="M${x + i * 12} ${y} q-6 -8 0 -16 t0 -16 t0 -16" stroke="#7fa83a" stroke-width="3.2" fill="none" stroke-linecap="round"/>`).join("");
+  const stars = (x, y) => [[-10, 0], [0, -6], [10, 0]].map(([dx, dy]) => `<path d="M${x + dx} ${y + dy - 4} l1.2 3 3 .2 -2.4 2 .8 3 -2.6 -1.6 -2.6 1.6 .8 -3 -2.4 -2 3 -.2Z" fill="#ffd23f" stroke="${INK}" stroke-width=".8"/>`).join("");
+  const sparkle = (x, y, r) => `<path d="M${x} ${y - r} L${x + r * .25} ${y - r * .25} L${x + r} ${y} L${x + r * .25} ${y + r * .25} L${x} ${y + r} L${x - r * .25} ${y + r * .25} L${x - r} ${y} L${x - r * .25} ${y - r * .25}Z" fill="#fff7c2" stroke="${INK}" stroke-width="1"/>`;
+  const car = (x, y, w, c, o = {}) => { const k = w / 90, cr = o.crushed; return `<g transform="translate(${x} ${y}) scale(${k})">
+    <rect x="-45" y="-24" width="90" height="16" rx="4" fill="${c}" stroke="${INK}" stroke-width="2"/>
+    ${cr ? `<path d="M-24 -24 L-20 -30 L18 -29 L24 -24Z" fill="${c}" stroke="${INK}" stroke-width="2"/>` : `<path d="M-24 -24 L-16 -42 L18 -42 L26 -24Z" fill="${c}" stroke="${INK}" stroke-width="2"/><path d="M-19 -26 L-13 -39 H0 V-26Z M4 -26 V-39 H16 L22 -26Z" fill="#a7d4ef" stroke="${INK}" stroke-width="1.4"/>`}
+    <circle cx="-27" cy="-8" r="8" fill="${INK}"/><circle cx="27" cy="-8" r="8" fill="${INK}"/><circle cx="-27" cy="-8" r="3" fill="#cfd3da"/><circle cx="27" cy="-8" r="3" fill="#cfd3da"/>
+    <rect x="-47" y="-14" width="6" height="4" fill="#dfe3ea" stroke="${INK}"/><rect x="41" y="-14" width="6" height="4" fill="#dfe3ea" stroke="${INK}"/>
+    ${o.bow ? `<path d="M0 -42 l-14 -9 -3 10Z M0 -42 l14 -9 3 10Z" fill="#e0303a" stroke="${INK}" stroke-width="1.4"/><circle cx="0" cy="-42" r="4" fill="#f04650" stroke="${INK}" stroke-width="1.2"/>` : ""}</g>`; };
+  const truck = (x, y, w) => { const k = w / 100; return `<g transform="translate(${x} ${y}) scale(${k})"><rect x="-50" y="-30" width="58" height="20" fill="#5b5f6b" stroke="${INK}" stroke-width="2"/><rect x="8" y="-46" width="40" height="36" rx="4" fill="#ff7a26" stroke="${INK}" stroke-width="2"/><rect x="24" y="-42" width="20" height="14" fill="#a7d4ef" stroke="${INK}" stroke-width="1.4"/><rect x="8" y="-22" width="40" height="5" fill="#fff"/><circle cx="-34" cy="-8" r="9" fill="${INK}"/><circle cx="30" cy="-8" r="9" fill="${INK}"/><rect x="24" y="-52" width="8" height="6" fill="#ffc83a" stroke="${INK}"/></g>`; };
+  const sign = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-2" y="-70" width="4" height="70" fill="#8d949c" stroke="${INK}" stroke-width="1.2"/><path d="M0 -100 L28 -72 L0 -44 L-28 -72Z" fill="#f4c531" stroke="${INK}" stroke-width="3"/><path d="M-16 -72 Q-14 -82 2 -82 L12 -80 Q16 -74 12 -68 L-14 -68 L-20 -64 L-18 -72 L-22 -78Z" fill="${INK}"/></g>`;
+  const easel = (x, y, s, panel = "plan") => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-18 0 L-6 -60 M18 0 L6 -60 M0 -50 L0 0" stroke="#8a5a34" stroke-width="3"/><rect x="-26" y="-74" width="52" height="40" fill="#fbf8ef" stroke="${INK}" stroke-width="2"/>
+    ${panel === "plan" ? `<path d="M-20 -52 q4 -10 16 -10 h10 q4 2 4 8 h-30Z" fill="#4c5a7c"/><path d="M6 -58 l6 0" stroke="${INK}"/><path d="M8 -50 l4 0 M12 -54 l6 -4" stroke="#e8642c" stroke-width="1.5"/>${[0, 1, 2, 3].map((i) => `<rect x="${10 + i * 4}" y="${-46 + (i % 2) * 3}" width="2.4" height="2.4" fill="#4c5a7c"/>`).join("")}<path d="M-16 -42 q3 -3 6 0 q3 -3 6 0" stroke="${INK}" fill="none"/>` : ""}</g>`;
+  const plunger = (x, y, s, down = 0) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-16" y="-24" width="32" height="24" fill="#8a5a34" stroke="${INK}" stroke-width="2"/><path d="M0 -24 v${-18 + down * 14}" stroke="${INK}" stroke-width="3"/><path d="M-12 ${-42 + down * 14} h24" stroke="${INK}" stroke-width="5" stroke-linecap="round"/></g>`;
+  const tvcam = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -30 L-14 0 M0 -30 L14 0 M0 -30 L0 0" stroke="${INK}" stroke-width="2.4"/><rect x="-14" y="-46" width="30" height="16" rx="2" fill="#3a3d47" stroke="${INK}" stroke-width="1.6"/><rect x="16" y="-42" width="8" height="8" fill="#22242a" stroke="${INK}"/><circle cx="-6" cy="-50" r="6" fill="#2a2c33" stroke="${INK}"/><circle cx="8" cy="-50" r="6" fill="#2a2c33" stroke="${INK}"/><circle cx="-10" cy="-38" r="1.6" fill="#e2453c"/></g>`;
+  const rope = (y) => { let o = ""; for (let x = 6; x < 180; x += 40) o += `<rect x="${x}" y="${y - 22}" width="3.5" height="24" fill="#8a5a34" stroke="${INK}" stroke-width="1"/>`; o += `<path d="M6 ${y - 18} q20 6 40 0 t40 0 t40 0 t40 0 t40 0" stroke="#e7d7a8" stroke-width="2" fill="none"/>`; return o; };
+  const ketchup = (x, y, len) => `<path d="M${x} ${y} q${len * .5} ${-len * .35} ${len} ${-len * .1}" stroke="${INK}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M${x} ${y} q${len * .5} ${-len * .35} ${len} ${-len * .1}" stroke="#d42a1e" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="${x - 8}" y="${y - 2}" width="12" height="4" fill="#d42a1e" stroke="${INK}"/>`;
+  const arrow = (x1, y1, x2, y2, c = "#e8642c") => { const a = Math.atan2(y2 - y1, x2 - x1); return `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${c}" stroke-width="4" stroke-linecap="round"/><path d="M${x2} ${y2} l${-9 * Math.cos(a - .5)} ${-9 * Math.sin(a - .5)} M${x2} ${y2} l${-9 * Math.cos(a + .5)} ${-9 * Math.sin(a + .5)}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`; };
+  const bench = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-26" y="-16" width="52" height="5" fill="#8a5a34" stroke="${INK}"/><rect x="-26" y="-30" width="52" height="5" fill="#8a5a34" stroke="${INK}"/><path d="M-22 -11 v11 M22 -11 v11" stroke="${INK}" stroke-width="3"/></g>`;
+  const parkSign = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-30 0 v-70 M30 0 v-70" stroke="#8a5a34" stroke-width="5"/><rect x="-38" y="-108" width="76" height="48" rx="4" fill="#2f6a43" stroke="${INK}" stroke-width="2"/><rect x="-33" y="-103" width="66" height="38" rx="3" fill="#f3ead3"/>${[...Array(10)].map((_, i) => { const a = i / 10 * Math.PI * 2; return `<path d="M${Math.cos(a) * 16} ${-84 + Math.sin(a) * 12} L${Math.cos(a) * 22} ${-84 + Math.sin(a) * 16}" stroke="#e8642c" stroke-width="2"/>`; }).join("")}<path d="M-14 -84 q2 -8 14 -8 h6 q4 4 0 10 h-18 l-4 3 l0 -5 l-4 -5Z" fill="${INK}"/></g>`;
+  const cooler = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-18" y="-20" width="36" height="20" rx="3" fill="#e0303a" stroke="${INK}" stroke-width="2"/><rect x="-18" y="-24" width="36" height="6" rx="2" fill="#f4f1ea" stroke="${INK}" stroke-width="2"/></g>`;
+  const board = (x, y, w) => `<rect x="${x - w / 2}" y="${y}" width="${w}" height="10" rx="3" fill="#d9a46a" stroke="${INK}" stroke-width="1.6"/>`;
+  const wrap = (s) => `<svg viewBox="0 0 180 320" xmlns="http://www.w3.org/2000/svg" role="img">${s}</svg>`;
+
+  // ---------- the 30 panels ----------
+  const PANELS = [
+    { t: "0.0", sh: 1, pal: "beach", vo: "In 1970, Oregon tried to get rid of a dead whale…",
+      act: "คนงาน 2 คนวิ่งแบกลังระเบิดเข้าเฟรมจากซ้าย ทรายกระเด็นตามเท้า วิศวกรยืนเท้าสะเอวหน้าวาฬ แล้วชี้ไปที่วาฬ",
+      ex: "วิศวกร: ภูมิใจ → ยิ้มเยาะ ตอนคำว่า \"dynamite\"", cam: "มุมต่ำ 3/4 ดอลลี่เข้าช้า ๆ",
+      d: () => bg("beach", 150) + whale(118, 220, 150) + shadow(118, 222, 70, "beach") + man(40, 262, 62, { ...WRK(0), pose: "run", e: "excited", prop: "crate" }) + speed(18, 238, 3, 14) + man(84, 270, 70, { ...ENG, pose: "hips", e: "proud" }) + gull(150, 70, 1) },
+    { t: "3.2", sh: 1, pal: "beach", vo: "…with half a ton of dynamite.",
+      act: "ลังใบสุดท้ายกระแทกลงบนกอง ฝุ่นทรายฟุ้ง นกนางนวลบนกองลังสะดุ้งตาโต คนงานปาดเหงื่อ",
+      ex: "คนงาน: เหนื่อยแต่ยิ้ม · นก: ตกใจ", cam: "ตัดเข้าใกล้กองลัง ซูมกระแทก + เอียงกล้อง 4°",
+      d: () => bg("beach", 110) + whale(140, 200, 260) + crates(8, 290, 7, 5, 1.55) + gull(96, 196, 1.5, "stand") + `<path d="M98 180 l-4 -8 M104 180 l4 -8 M101 178 v-9" stroke="${INK}" stroke-width="1.4"/>` + man(150, 300, 78, { ...WRK(1), pose: "palm", e: "grin" }) },
+    { t: "4.8", sh: 2, pal: "beach", vo: "A forty-five foot sperm whale had washed up on a beach near Florence…",
+      act: "มุมสูงเห็นวาฬยาวเต็มชายหาด มีคนตัวเล็กเดินรอบ ๆ ให้เห็นขนาด เด็กคนหนึ่งยืดแขนวัดความยาว คลื่นซัดเข้า-ออก",
+      ex: "ไกลเกินกว่าจะเห็นสีหน้า ใช้ท่าทางเล่าแทน", cam: "เครนลงจากฟ้า ไหลตามลำตัววาฬจากหางไปหัว",
+      d: () => bg("beach", 70) + whale(92, 220, 168) + shadow(92, 222, 80, "beach") + man(24, 250, 26, { ...FOLK(1), pose: "up", e: "excited" }) + man(160, 246, 26, { ...FOLK(2), pose: "point", e: "shock", flip: true }) + man(60, 270, 26, { ...KIDO, pose: "shrug", e: "excited" }) },
+    { t: "9.1", sh: 2, pal: "beach", vo: "…and it was starting to stink.",
+      act: "นกนางนวลร่อนลงบนหัววาฬ ดมกลิ่นแล้วล้มหงายเป็นลม ผู้หญิงที่เดินผ่านบีบจมูก หน้าเขียว",
+      ex: "ผู้หญิง: รังเกียจ · นก: ตาเป็นกากบาท", cam: "ตัดเข้าใกล้หัววาฬ ดันเข้าเร็วที่คำว่า \"stink\"",
+      d: () => bg("beach", 120) + whale(70, 240, 230) + stink(80, 120) + gull(120, 168, 1.6, "faint") + man(150, 300, 84, { ...FOLK(1), pose: "palm", e: "disgust", flip: true }) },
+    { t: "9.7", sh: 3, pal: "beach", vo: "In Oregon, the beach counted as a highway…",
+      act: "คนงานตอกป้ายรูปวาฬลงทราย ป้ายเด้งไปมา แล้วมีนกเกาะบนป้าย",
+      ex: "คนงาน: หน้าตาย จริงจัง · นก: งง", cam: "MS ป้าย ดันเข้าตอน \"highway\"",
+      d: () => bg("beach", 140) + sign(92, 270, 1.4) + gull(92, 122, 1.2, "stand") + man(44, 290, 74, { ...WRK(2), pose: "up", e: "deadpan" }) + `<path d="M30 200 l24 -8" stroke="#8d949c" stroke-width="5"/>` + speed(112, 170, 3, 10, -1) },
+    { t: "12.4", sh: 3, pal: "beach", vo: "…so the job went to the highway department.",
+      act: "รถบรรทุกส้มของกรมทางหลวงเบรกไถลบนทราย ไฟหมุนติด คนงาน 3 คนกระโดดลงมาเรียงแถว วิศวกรก้าวลงพร้อมแฟ้ม",
+      ex: "คนงาน: ตื่นเต้น · วิศวกร: มั่นใจ", cam: "ตัดกระแทก แพนตามรถที่ไถลมาหยุด",
+      d: () => bg("beach", 140) + truck(100, 250, 130) + speed(170, 225, 4, 22, -1) + man(30, 290, 60, { ...WRK(0), pose: "jump", e: "excited" }) + man(62, 296, 60, { ...WRK(1), pose: "stand", e: "grin" }) + man(150, 304, 70, { ...ENG, pose: "hold", prop: "clip", e: "smug", flip: true }) },
+    { t: "13.8", sh: 4, pal: "beach", vo: "Their plan: blow it into pieces so small…",
+      act: "วิศวกรตั้งกระดานขาตั้งหน้าวาฬ แล้วใช้ไม้ชี้อธิบายภาพ (วาฬ → ชิ้นเล็ก → นก) แบบครูสอนหนังสือ",
+      ex: "วิศวกร: ยิ้มเยาะ เลิกคิ้ว", cam: "MS นิ่งแต่ดันเข้าช้า ๆ",
+      d: () => bg("beach", 130) + whale(130, 200, 170) + easel(118, 300, 1.5) + man(50, 300, 90, { ...ENG, pose: "point", prop: "pointer", e: "smug" }) },
+    { t: "16.2", sh: 4, pal: "beach", vo: "…the seagulls would clean up the rest.",
+      act: "นกนางนวล 5 ตัวผูกผ้ากันเปื้อนยืนเรียงบนตัววาฬ ขยับปากรอกิน อีกฝูงบินวนอยู่ด้านบน",
+      ex: "นก: ตื่นเต้น เลียปาก", cam: "ตัดไปมุมต่ำมองขึ้น กล้องเอียงตาม",
+      d: () => bg("beach", 160) + whale(90, 260, 200) + [30, 60, 90, 120, 150].map((x, i) => gull(x, 192 + (i % 2) * 4, 1.3, "bib")).join("") + gull(50, 90, 1) + gull(120, 70, 1.2) + gull(90, 110, .8) },
+    { t: "17.8", sh: 5, pal: "crest", vo: "A man in the crowd who knew explosives from the army…",
+      act: "ฝูงชนบนเนินทรายหลังเชือกกั้น ชายเสื้อทหารยกมือ คนรอบข้างหันมามอง",
+      ex: "ชายเสื้อทหาร: ขมวดคิ้ว กังวล · ฝูงชน: สงสัย", cam: "กว้าง แล้วตัดเข้าหาเขาที่คำว่า \"army\"",
+      d: () => bg("crest", 130, "crest") + rope(266) + man(30, 270, 52, { ...FOLK(0), e: "neutral", flip: true }) + man(64, 274, 56, { ...FOLK(3), e: "neutral" }) + man(98, 282, 66, { ...WAR, pose: "wave", e: "worried" }) + man(140, 272, 54, { ...FOLK(5), e: "neutral", flip: true }) + man(166, 276, 50, { ...FOLK(2), e: "neutral", flip: true }) },
+    { t: "20.0", sh: 5, pal: "crest", vo: "…said that was way too much.",
+      act: "ชายเสื้อทหารโบกแขนทั้งสองข้าง ส่ายหัว (มีเส้นแสดงการส่าย) ไกลออกไปวิศวกรโบกมือไล่",
+      ex: "ชายเสื้อทหาร: ตื่นตระหนก มีเหงื่อ · วิศวกร: รำคาญ", cam: "MS แล้วเอียงกล้อง 4° ตอน \"way too much\"",
+      d: () => bg("crest", 120, "crest") + man(130, 290, 22, { ...ENG, pose: "wave", e: "angry", flip: true }) + man(70, 314, 116, { ...WAR, pose: "up", e: "panic" }) + `<path d="M22 150 q-8 10 0 20 M118 150 q8 10 0 20" stroke="${INK}" stroke-width="2" fill="none"/>` },
+    { t: "21.7", sh: 6, pal: "beach", vo: "The engineers used the full half ton anyway.",
+      act: "คนงานเรียงลังสูงขึ้นเป็นหอคอย วิศวกรปีนบันไดวางลังใบสุดท้ายบนยอด แล้วปัดมือ",
+      ex: "วิศวกร: ภูมิใจ · คนงานข้างล่าง: กังวล เหงื่อตก", cam: "ดันเข้าแรง เอียงกล้องเล็กน้อย",
+      d: () => bg("beach", 150) + whale(120, 230, 200) + crates(26, 290, 6, 6, 1.5) + man(84, 162, 46, { ...ENG, pose: "up", e: "proud", prop: "tnt" }) + man(158, 300, 66, { ...WRK(0), pose: "carry", prop: "crate", e: "worried", flip: true }) },
+    { t: "23.9", sh: 7, pal: "crest", vo: "The crowd was moved back…",
+      act: "คนงานกางแขนต้อนฝูงชนถอยหลัง ฝูงชนถอยเป็นกลุ่ม เด็กขี่คอพ่อ ทุกคนชะเง้อดู",
+      ex: "ฝูงชน: ตื่นเต้น", cam: "กว้างจากหลังฝูงชน มองลงไปที่วาฬตัวเล็ก ๆ ไกล ๆ",
+      d: () => bg("crest", 120, "crest") + whale(100, 170, 38) + rope(240) + man(34, 296, 64, { ...WRK(1), pose: "shrug", e: "stern" }) + man(84, 300, 70, { ...FOLK(4), pose: "stand", e: "excited", flip: true }) + man(84, 226, 30, { ...KIDO, pose: "up", e: "laugh" }) + man(140, 296, 64, { ...FOLK(1), pose: "point", e: "excited", flip: true }) },
+    { t: "25.3", sh: 7, pal: "crest", vo: "…the TV cameras rolled…",
+      act: "ตากล้องหมุนก้านกล้องฟิล์ม นักข่าวหญิงหันเข้ากล้องพร้อมไมค์ แล้วชูนิ้วโป้ง",
+      ex: "นักข่าว: ยิ้มกว้าง · ตากล้อง: ตั้งใจ ลิ้นแลบ", cam: "ตัดเข้าที่กล้องโทรทัศน์ เอียงกล้อง 4°",
+      d: () => bg("crest", 130, "crest") + tvcam(120, 300, 2.2) + man(150, 304, 74, { ...CAMM, pose: "carry", e: "smug", flip: true }) + man(56, 310, 96, { ...REP, pose: "hold", prop: "mic", e: "grin" }) },
+    { t: "27.0", sh: 7, pal: "crest", vo: "…and someone pushed the button.",
+      act: "วิศวกรเขย่งปลายเท้า (เตรียมตัว) แล้วกดคันจุดระเบิดลงเต็มแรงจนตัวยุบ",
+      ex: "วิศวกร: ยิ้มกว้างจนน่ากลัว มีเหงื่อหยด", cam: "CU ซูมกระแทกตอน \"button\"",
+      d: () => bg("crest", 100, "crest") + plunger(90, 300, 2.6, 1) + man(90, 252, 140, { ...ENG, pose: "push", e: "grin" }) + `<path d="M60 170 l-10 -6 M120 170 l10 -6" stroke="${INK}" stroke-width="2"/>` },
+    { t: "27.7", sh: 7, pal: "blast", vo: "(ตูม · ไม่มีเสียงพากย์)",
+      act: "แสงวาบ แล้วตามด้วยดอกไฟแตกและกลุ่มฝุ่นทราย ฝูงชนบนเนินผงะพร้อมกัน หมวกปลิว",
+      ex: "ฝูงชน: ผงะ (เห็นแค่ท่า)", cam: "กว้างจากเนิน กล้องสั่น 2 ครั้ง",
+      d: () => bg("blast", 170) + plume(90, 140, 1.6) + burst(90, 166, 50) + whale(90, 190, 60) + rope(300) + [20, 60, 120, 160].map((x, i) => man(x, 318, 46, { ...FOLK(i), pose: "flinch", e: "shock", flip: i > 1, hatOff: i === 2 })).join("") },
+    { t: "28.3", sh: 8, pal: "blast", vo: "Then it started raining whale.",
+      act: "มองจากฝูงชนขึ้นฟ้า ก้อนไขมันวาฬหลายสิบก้อนลอยอยู่บนฟ้า นิ่งไปครู่หนึ่งก่อนเริ่มร่วง",
+      ex: "ฝูงชน: อ้าปากค้าง ตาโต", cam: "มุมต่ำมองขึ้น ซูมออกช้า ๆ",
+      d: () => bg("blast", 330) + [[30, 60, 10, 10], [80, 40, 14, -20], [130, 70, 9, 30], [60, 110, 7, 0], [150, 120, 12, 60], [110, 150, 6, 0], [20, 160, 8, 40], [90, 90, 5, 0], [160, 40, 6, 0]].map(([x, y, r, a]) => chunk(x, y, r, a)).join("") + man(40, 330, 110, { ...FOLK(0), e: "shock" }) + man(140, 340, 120, { ...FOLK(3), e: "shock", flip: true }) },
+    { t: "30.5", sh: 8, pal: "crest", vo: "Chunks of blubber came down on the dunes, the cars, and the people.",
+      act: "ฝูงชนแตกกระเจิง คนหนึ่งวิ่งพร้อมเอาเสื้อคลุมหัว อีกคนมุดใต้กระติก ก้อนไขมันตกแปะบนทรายและหลังคารถ",
+      ex: "ทุกคน: ตื่นตระหนก มีเหงื่อ", cam: "3 คัตเร็ว: เนินทราย → รถ → คน",
+      d: () => bg("crest", 110, "crest") + car(130, 200, 70, "#c9773a") + chunk(126, 162, 9, 20) + fallLines(126, 150, 30) + man(40, 290, 64, { ...FOLK(1), pose: "run", e: "panic" }) + speed(18, 260, 3, 14) + man(102, 300, 60, { ...FOLK(4), pose: "duck", e: "panic" }) + cooler(150, 300, 1.4) + chunk(60, 200, 10, 0) + fallLines(60, 190, 40) + chunk(150, 250, 7, 0) },
+    { t: "33.7", sh: 9, pal: "crest", vo: "Luckily, nobody got hurt.",
+      act: "ทุกคนค่อย ๆ ลุกขึ้นจากทราย ตัวเปื้อนไขมัน ผู้ชายคนหนึ่งมีก้อนไขมันแปะบนหัวเหมือนหมวก มีดาวหมุนรอบหัว เด็กหัวเราะชี้",
+      ex: "ผู้ใหญ่: มึน · เด็ก: หัวเราะ", cam: "MS ดันเข้าช้า ๆ",
+      d: () => bg("crest", 120, "crest") + man(56, 300, 100, { ...FOLK(3), e: "dizzy", goo: true }) + stars(56, 160) + man(132, 304, 70, { ...FOLK(1), pose: "sit", e: "dizzy" }) + man(156, 300, 44, { ...KIDO, pose: "point", e: "laugh", flip: true }) },
+    { t: "35.5", sh: 10, pal: "lot", vo: "Unluckily, the man who warned them had just bought a brand new car…",
+      act: "ชายเสื้อทหารขัดรถใหม่สีเขียวมิ้นต์ที่มีโบว์แดงบนหลังคา แสงวิบวับ แล้วเขาพิงรถอย่างภูมิใจ",
+      ex: "เขา: ยิ้มกว้าง ภูมิใจมาก", cam: "MS แล้วดันเข้าช้า ๆ ตอน \"brand new car\"",
+      d: () => bg("lot", 120, "lot") + car(110, 270, 130, "#7fd2b8", { bow: true }) + sparkle(70, 210, 10) + sparkle(150, 200, 8) + man(40, 300, 96, { ...WAR, pose: "hips", e: "proud" }) },
+    { t: "41.3", sh: 11, pal: "lot", vo: "One chunk flattened it.",
+      act: "ก้อนไขมันยักษ์ตกทับรถจนแบน แตรรถดังค้าง ชายเสื้อทหารตกใจจนตัวลอย หมวกกระเด็น แล้วยืนหน้าตาย",
+      ex: "ตกใจ → หน้าตาย (2 จังหวะ)", cam: "กว้างขึ้นให้เห็นก้อนที่ตก กล้องสั่นตอนกระแทก",
+      d: () => bg("lot", 120, "lot") + car(110, 280, 130, "#7fd2b8", { crushed: true }) + chunk(110, 228, 30, 10) + burst(110, 250, 30, "#fff3b0").replace("stroke-width=\"2\"", "stroke-width=\"1.4\"") + man(40, 286, 96, { ...WAR, pose: "jump", e: "shock", hatOff: true }) },
+    { t: "42.5", sh: 12, pal: "diagram", vo: "You see, a blast doesn't break things into neat little pieces.",
+      act: "ภาพฝันในโทนพาสเทล: วาฬบนเขียงหั่นเป็นลูกเต๋าเรียงเป๊ะ วิศวกรโผล่หน้าเข้ามาพยักหน้า แล้วกากบาทแดงขีดทับภาพ",
+      ex: "วิศวกร: ยิ้มเพ้อฝัน → เขิน", cam: "ตรง ๆ นิ่ง เหมือนแผ่นภาพอธิบาย",
+      d: () => bg("diagram") + board(90, 190, 160) + cubeWhale(90, 190, 140) + `<path d="M30 110 L150 200 M150 110 L30 200" stroke="#e0303a" stroke-width="7" stroke-linecap="round" opacity=".9"/>` + man(40, 310, 90, { ...ENG, pose: "shrug", e: "innocent" }) },
+    { t: "45.0", sh: 12, pal: "diagram", vo: "It pushes out wherever it's easiest to go.",
+      act: "ภาพตัดขวางแบบสโลว์: ระเบิดอยู่ใต้วาฬ ทรายด้านล่างดันกลับ (ลูกศรขึ้น) แรงจึงพุ่งขึ้นฟ้าพาวาฬไปด้วย",
+      ex: "ไม่มีตัวละคร เป็นภาพอธิบาย", cam: "กว้างด้านข้าง ซูมออกช้า",
+      d: () => bg("diagram") + `<rect y="200" width="180" height="120" fill="${P.diagram.sand}"/>` + [...Array(14)].map((_, i) => `<circle cx="${8 + i * 13}" cy="${230 + (i % 3) * 22}" r="2" fill="#d4b47e"/>`).join("") + whale(90, 196, 120) + burst(90, 206, 18) + arrow(60, 260, 60, 214) + arrow(120, 260, 120, 214) + arrow(90, 160, 90, 60) + arrow(70, 160, 40, 90) + arrow(110, 160, 140, 90) },
+    { t: "48.2", sh: 13, pal: "lot", vo: "Ever stomped on a ketchup packet?",
+      act: "เด็กกระโดดสูง แล้วกระทืบซองซอสมะเขือเทศเต็มแรง",
+      ex: "เด็ก: ยิ้มซน", cam: "มุมต่ำข้างลานจอดรถ",
+      d: () => bg("lot", 140, "lot") + man(80, 250, 80, { ...KIDO, pose: "jump", e: "grin" }) + `<rect x="74" y="292" width="16" height="5" fill="#d42a1e" stroke="${INK}"/>` + speed(80, 300, 2, 0) + man(150, 300, 84, { ...ENG, pose: "hold", prop: "clip", e: "smug", flip: true }) },
+    { t: "50.0", sh: 13, pal: "lot", vo: "It doesn't spread out nicely, it shoots out one side.",
+      act: "ซอสพุ่งออกด้านเดียวเป็นสาย เข้าเสื้อขาวของวิศวกรเต็ม ๆ วิศวกรมองเสื้อ แล้วหันมามองกล้อง",
+      ex: "วิศวกร: ตกใจ → หน้าบึ้ง (มองกล้อง) · เด็ก: หน้าแบบ \"อุ๊ปส์\"", cam: "ตัดเข้าใกล้วิศวกรตอน \"one side\"",
+      d: () => bg("lot", 120, "lot") + man(110, 310, 120, { ...ENG, pose: "shrug", e: "angry", splat: true }) + ketchup(10, 300, 80) + man(28, 314, 50, { ...KIDO, pose: "palm", e: "worried" }) },
+    { t: "51.6", sh: 14, pal: "diagram", vo: "The sand pushed back, so the blast threw the whale up and over everyone.",
+      act: "มุมต่ำในฝูงชน ก้อนไขมันโค้งข้ามหัวไปเป็นแนว คนก้มหลบพร้อมกันเป็นคลื่น",
+      ex: "ฝูงชน: ตื่นตระหนก", cam: "มุมต่ำมองขึ้น ก้อนพุ่งผ่านกล้อง",
+      d: () => bg("crest", 330) + `<path d="M-10 250 Q90 -40 200 220" stroke="#fff" stroke-width="3" stroke-dasharray="6 6" fill="none"/>` + [[30, 120, 9], [70, 60, 12], [120, 70, 10], [160, 140, 8]].map(([x, y, r]) => chunk(x, y, r, x)).join("") + [24, 66, 110, 154].map((x, i) => man(x, 330, 70, { ...FOLK(i + 1), pose: "duck", e: "panic", flip: i % 2 === 1 })).join("") },
+    { t: "55.2", sh: 15, pal: "beach", vo: "Most of the whale was still there…",
+      act: "วาฬยังอยู่เกือบเต็มตัว มีหลุมดำข้างตัว คนงานยืนจ้อง วิศวกรเกาหัว คนงานคนหนึ่งเอามือตบหน้าผาก",
+      ex: "วิศวกร: งง → เศร้า · คนงาน: เซ็ง", cam: "กว้าง ดันเข้าช้า",
+      d: () => bg("beach", 140) + whale(100, 230, 190) + `<ellipse cx="70" cy="244" rx="40" ry="8" fill="#6b5a46"/>` + man(40, 300, 70, { ...WRK(0), pose: "palm", e: "deadpan", prop: "shovel" }) + man(104, 304, 76, { ...ENG, pose: "palm", e: "sad" }) + man(158, 300, 66, { ...WRK(2), pose: "shrug", e: "deadpan", flip: true }) },
+    { t: "57.1", sh: 15, pal: "beach", vo: "…and the seagulls never came back.",
+      act: "นกนางนวลตัวหนึ่งร่อนลงมา เห็นสภาพแล้วหันกลับไปมองซ้ำ (double-take) จากนั้นบินหนีสุดแรง มีเส้นความเร็ว",
+      ex: "นก: ตกใจ → หนี", cam: "MS ติดตามนกออกนอกเฟรม",
+      d: () => bg("beach", 160) + whale(100, 260, 200) + gull(140, 90, 1.6) + speed(170, 82, 4, 34, -1) + man(50, 310, 70, { ...ENG, pose: "point", e: "worried" }) },
+    { t: "58.9", sh: 16, pal: "dusk", vo: "Nine years later, forty-one whales washed up on the same beach…",
+      act: "ยามเย็นสีชมพูม่วง มีวาฬเรียงยาวสุดชายหาด คนงานแบกพลั่วเดินเรียงแถวเข้ามา",
+      ex: "คนงาน: ตั้งใจ จริงจัง", cam: "เครนสูงแล้วไหลตามแนววาฬ",
+      d: () => bg("dusk", 120, "dusk") + [0, 1, 2, 3, 4, 5].map((i) => whale(20 + i * 34, 190 + i * 22, 40 + i * 14, { flip: i % 2 })).join("") + man(150, 310, 50, { ...WRK(0), pose: "carry", prop: "shovel", e: "stern", flip: true }) + man(120, 314, 50, { ...WRK(1), pose: "carry", prop: "shovel", e: "stern", flip: true }) },
+    { t: "63.1", sh: 16, pal: "dusk", vo: "…and nobody even mentioned dynamite.",
+      act: "วิศวกร (หนวดเริ่มหงอก) ค่อย ๆ ซ่อนลังระเบิดไว้ข้างหลัง ผิวปากทำไม่รู้ไม่ชี้ คนงานหันมามองค้อนพร้อมกัน",
+      ex: "วิศวกร: แกล้งไม่รู้ · คนงาน: โกรธ", cam: "MS ดันเข้าตอน \"dynamite\"",
+      d: () => bg("dusk", 120, "dusk") + man(70, 310, 110, { ...ENG, mo: "#d8d4cc", pose: "carry", prop: "tnt", e: "innocent" }) + `<path d="M104 140 q6 -6 12 0 t12 0" stroke="${INK}" stroke-width="1.6" fill="none"/>` + man(150, 300, 70, { ...WRK(2), pose: "hips", e: "angry", flip: true, prop: "shovel" }) },
+    { t: "64.1", sh: 17, pal: "park", vo: "And in 2020, the town voted to name a park after it…",
+      act: "สวนสาธารณะบนเนิน มีป้ายรูปวาฬระเบิด (ไม่มีตัวหนังสือ) เด็ก ๆ วิ่งเล่น ชายเสื้อทหารวัยชรานั่งบนม้านั่งพร้อมรถคันใหม่",
+      ex: "ชายชรา: ยิ้ม · เด็ก: หัวเราะ", cam: "MS แล้วไหลเข้าหาป้าย",
+      d: () => bg("park", 140, "park") + parkSign(90, 250, 1.2) + bench(140, 300, 1.4) + man(140, 302, 64, { ...WAR, mo: "#e6e1d8", pose: "sit", e: "proud" }) + man(36, 300, 50, { ...KIDO, pose: "run", e: "laugh" }) + speed(18, 270, 3, 10) },
+    { t: "67.9", sh: 17, pal: "park", vo: "…Exploding Whale Memorial Park.",
+      act: "นกนางนวลร่อนลงเกาะป้าย ชายชราแตะหมวกให้กล้อง แล้วกล้องเครนถอยออกเห็นทะเลพร้อมดนตรีปิดท้าย",
+      ex: "ชายชรา: ขยิบตา", cam: "เครนถอยออก เปิดภาพทะเล",
+      d: () => bg("park", 170, "park") + parkSign(70, 260, 1.0) + gull(70, 148, 1.3, "stand") + bench(140, 300, 1.2) + man(140, 300, 60, { ...WAR, mo: "#e6e1d8", pose: "wave", e: "smug" }) },
+  ];
+
+  const boardEl = document.getElementById("board");
+  PANELS.forEach((p, i) => {
+    const el = document.createElement("article"); el.className = "panel";
+    el.innerHTML = `<div class="frame">${wrap(p.d())}<span class="num">${String(i + 1).padStart(2, "0")}</span></div>
+      <div class="meta"><b>ช็อต ${p.sh}</b><span>${p.t} s</span><span>เฟรม ${Math.round(parseFloat(p.t) * 30)}</span></div>
+      <p class="vo">${p.vo}</p>
+      <dl><dt>Action</dt><dd>${p.act}</dd><dt>สีหน้า</dt><dd>${p.ex}</dd><dt>กล้อง</dt><dd>${p.cam}</dd></dl>`;
+    boardEl.appendChild(el);
+  });
+})();
+</script>
