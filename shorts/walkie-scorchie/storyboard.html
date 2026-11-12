@@ -1,0 +1,472 @@
+<title>The Tower That Cooked a Car</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a production storyboard sheet. Header with the logline and numbers, then one card per shot
+   (9:16 sketch beside its timecode, voice line and direction), then facts, cast, sound and sign-off. */
+:root{
+  --bg:#eceff2; --paper:#f8f9fa; --ink:#14171c; --muted:#5b6370; --line:#cdd3da;
+  --beam:#e8970c; --beam-soft:#fbe7c3; --glass:#3f6f99; --note:#c2307a;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111418; --paper:#1a1e24; --ink:#e7eaee; --muted:#9aa3ae; --line:#2e353e;
+  --beam:#f4a92a; --beam-soft:#3a2c14; --glass:#7fb0dc; --note:#f070b0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111418; --paper:#1a1e24; --ink:#e7eaee; --muted:#9aa3ae; --line:#2e353e;
+  --beam:#f4a92a; --beam-soft:#3a2c14; --glass:#7fb0dc; --note:#f070b0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body)}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 80px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,64px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:28px;font-weight:800;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:800}
+p{margin:0}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px;align-items:end}
+header .lede{display:flex;flex-direction:column;gap:16px}
+.logline{font-size:18px;max-width:60ch}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.stats div{background:var(--paper);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.stats b{font:800 26px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.hook{border-left:4px solid var(--beam);padding:4px 0 4px 16px;font:500 20px/1.4 var(--f-body);max-width:60ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px}
+section{display:flex;flex-direction:column;gap:20px}
+.acts{display:flex;flex-direction:column;gap:36px}
+.act{display:flex;flex-direction:column;gap:14px}
+.act-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px}
+.act-head span{color:var(--muted);font-size:14px}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:16px}
+.shot{background:var(--paper);border:1px solid var(--line);display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;padding:12px}
+.shot canvas{width:150px;aspect-ratio:9/16;height:auto;display:block;border:1px solid var(--ink);background:#fff}
+.meta{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tc{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font:500 12px/1.2 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.tc b{color:var(--ink);font-weight:500}
+.vo{font-weight:600;font-size:14.5px;line-height:1.4}
+.vo::before{content:"VO ";font:500 11px var(--f-mono);color:var(--beam);letter-spacing:.06em}
+dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;font-size:13px;line-height:1.4}
+dt{font:500 11px/1.6 var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+dd{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 11px/1 var(--f-mono);padding:4px 7px;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+.chip.day{border-color:var(--glass);color:var(--glass)}
+.chip.gold{border-color:var(--beam);color:var(--beam)}
+.chip.fx{border-color:var(--note);color:var(--note)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px}
+.box{background:var(--paper);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box ul,.box ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.script{font-size:16px;line-height:1.7;max-width:70ch;display:flex;flex-direction:column;gap:2px}
+.script p{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px}
+.script .t{font:400 12px/2.2 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.script .beat{grid-column:2;font:500 11px var(--f-mono);color:var(--beam);text-transform:uppercase;letter-spacing:.08em;margin-top:10px}
+.cast{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:12px}
+.cast figure{margin:0;background:var(--paper);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px}
+.cast canvas{width:100%;aspect-ratio:3/4;height:auto;background:#fff;border:1px solid var(--line)}
+.cast figcaption{font-size:13px;line-height:1.35}
+.cast figcaption b{display:block;font-family:var(--f-display);font-size:15px}
+a{color:var(--glass)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+.tbl{overflow-x:auto}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:760px){header{grid-template-columns:1fr}}
+@media (max-width:420px){.shot{grid-template-columns:110px minmax(0,1fr)}.shot canvas{width:110px}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="lede">
+    <p class="eyebrow">Storyboard v1 · for approval · 1080×1920 · 30 fps</p>
+    <h1>The Tower That Cooked a Car</h1>
+    <p class="logline">London, 2013. A new glass skyscraper with a curved face focuses the summer sun onto the street below. It melts a parked car, scorches a doormat and fries a reporter's egg. Then it turns out the architect had done it once before.</p>
+  </div>
+  <div class="stats">
+    <div><b>67.7 s</b><span>runtime (2,031 frames)</span></div>
+    <div><b>18</b><span>shots, 2 crossfades</span></div>
+    <div><b>243</b><span>words at 3.7 per second</span></div>
+    <div><b>3</b><span>looks: day, golden, desert</span></div>
+  </div>
+</header>
+
+<p class="hook">“In twenty thirteen, a brand new London skyscraper melted a car parked across the street.”</p>
+
+<div class="legend">
+  <span><i style="background:var(--note)"></i>Pink dashed lines are camera notes: arrows show moves, the inner box is the end framing of a push-in</span>
+  <span><i style="background:var(--beam)"></i>Amber is the reflected sunbeam</span>
+</div>
+
+<section>
+  <h2>Shots</h2>
+  <div class="acts" id="acts"></div>
+</section>
+
+<section>
+  <h2>Cast</h2>
+  <p style="color:var(--muted);max-width:65ch">All original characters, drawn in the skill's bean-head style: 3.5 head-heights, stick limbs, plum ink, no blush. Nobody is named and no real person is drawn.</p>
+  <div class="cast" id="cast"></div>
+</section>
+
+<section>
+  <h2>Script</h2>
+  <div class="script" id="script"></div>
+</section>
+
+<div class="cols">
+  <section class="box">
+    <h3>Facts behind every joke</h3>
+    <ul>
+      <li>20 Fenchurch Street, City of London, about 160 m tall, wider at the top. Its concave south face focused sunlight onto Eastcheap in late summer 2013. Press names: “Walkie-Scorchie”, “Fryscraper”.</li>
+      <li>A parked luxury car had its wing mirror, badge and panels melted. The developers paid the £946 repair bill.</li>
+      <li>A shop's doormat was scorched and bicycle parts melted. The City suspended three parking bays.</li>
+      <li>A City A.M. reporter fried an egg in a pan on the pavement; Sky News filmed one too. Spot readings of 91 °C and 117 °C were reported.</li>
+      <li>A permanent sunshade of horizontal aluminium fins was fitted in 2014. The building won the Carbuncle Cup (worst new UK building) in 2015.</li>
+      <li>The same architect's Vdara hotel in Las Vegas (opened 2009) had a curved south face whose “death ray” singed guests' hair and melted plastic by the pool in 2010.</li>
+    </ul>
+    <p style="font-size:13px;color:var(--muted)">Sources: <a href="https://en.wikipedia.org/wiki/20_Fenchurch_Street" target="_blank" rel="noopener">Wikipedia: 20 Fenchurch Street</a>, <a href="https://www.nbcnews.com/news/world/it-hotter-anywhere-ive-ever-been-london-skyscraper-melts-cars-flna8C11066086" target="_blank" rel="noopener">NBC News</a>, <a href="https://www.ibtimes.co.uk/london-skyscraper-sun-melt-video-503433" target="_blank" rel="noopener">IBTimes</a>, <a href="https://www.imperial.ac.uk/news/190748/did-british-weather-save-from-walkie/" target="_blank" rel="noopener">Imperial College</a>, <a href="https://en.wikipedia.org/wiki/Vdara" target="_blank" rel="noopener">Wikipedia: Vdara</a>, <a href="https://www.architecturalrecord.com/articles/5365-vi-oly-s-vdara-hotel-accused-of-scorching-sunbathers" target="_blank" rel="noopener">Architectural Record</a>.</p>
+  </section>
+  <section class="box">
+    <h3>Sound plan</h3>
+    <ul>
+      <li><b>Score:</b> an original cheeky pizzicato-and-bassoon two-step at 112 BPM. It thins out to a held note for the explanation, then returns brighter for Las Vegas. Standard mix: music +3 dB, SFX −6 dB, voice unchanged, −14 LUFS.</li>
+      <li><b>Hook:</b> a rising sizzle, then a drooping wobble as the car sags, then a white flash with a cymbal swell.</li>
+      <li><b>Street:</b> key-fob chirp, footsteps, a melting “bloop” for the mirror, a rubbery warble for the wavy panels.</li>
+      <li><b>Heat:</b> fat sizzle and an egg crack, a smoke puff for the doormat, a squish for the bike seat.</li>
+      <li><b>Weather:</b> a soft rain hush that cuts dead when the sun comes out, then a “ta-da” glint.</li>
+      <li><b>Explanation:</b> glassy pings for each bounced ray, a tight “zap” where they meet, and a pigeon flap.</li>
+      <li><b>Ending:</b> ratchet clicks for the fins, a sad trombone for the award, and a pool splash on the last word.</li>
+    </ul>
+  </section>
+</div>
+
+<section class="box">
+  <h3>Before I start building, please decide</h3>
+  <ol>
+    <li>Is the topic and the script OK as written? Once you approve it, I build everything else without stopping (your “just do it” rule).</li>
+    <li>Voice: do you record <code>voice.wav</code> yourself, or should I generate one? The timings above are estimates at 3.7 words per second. Once the real voice and <code>words.json</code> exist, I retime every shot to them.</li>
+    <li>Shot 16: the award is shown as a lumpy trophy with no writing on it. Is that clear enough, or should the shot show a vote instead?</li>
+    <li>Shot 18: Las Vegas is a new world (desert, palm trees, pool). It adds about a day of world-building. The cheaper option is to stay in London and show the hotel on a TV in a shop window.</li>
+  </ol>
+</section>
+</div>
+
+<script>
+// ---------- data ----------
+const ACTS=[
+ {name:"Hook",note:"0–4.2 s",ids:[1]},
+ {name:"Setting",note:"4.2–14 s",ids:[2,3]},
+ {name:"Escalation",note:"14–37 s",ids:[4,5,6,7,8,9]},
+ {name:"Deadpan double line",note:"37–41 s",ids:[10,11]},
+ {name:"Explanation",note:"41–54 s, golden light",ids:[12,13,14,15]},
+ {name:"Consequence and twist",note:"54–67.7 s",ids:[16,17,18]},
+];
+const SHOTS=[
+ {id:1,a:0,b:125,light:"day",vo:"In twenty thirteen, a brand new London skyscraper melted a car parked across the street.",
+  pic:"Low street angle. The tower looms with its curved face lit. An amber beam lands on a black car, which sags and drips like wax.",
+  cam:"Starts low on the car and tilts up the beam to the tower. Rolls 4° on “melted”. A white flash follows the hook.",
+  lens:"cInf 15 at start (car close-up), 0 once on the tower",fx:["beam","drip","flash"],draw:"hook"},
+ {id:2,a:125,b:290,light:"day",vo:"It's late summer, and London's newest tower is a giant of shiny glass that gets wider as it goes up.",
+  pic:"Aerial over the City: painted rooftops, a river, church spires. The tower stands out and widens toward the top.",
+  cam:"Glides up and back over 36 frames, then holds with a creeping push. The tilt-up follows the widening shape on “wider as it goes up”.",
+  lens:"Sharp (wide aerial)",fx:[],draw:"aerial"},
+ {id:3,a:290,b:416,light:"day",vo:"Its whole south side curves inward, like a huge glass bowl tipped toward the street.",
+  pic:"Side profile of the tower. The south face caves in like a bowl. A cartoon bowl effect card appears, tipping on “tipped”.",
+  cam:"Slow orbit to a side profile. A small tip-roll matches the bowl.",
+  lens:"Sharp",fx:["bowl card"],draw:"profile"},
+ {id:4,a:416,b:525,light:"day",vo:"One sunny afternoon, a man parks his shiny black car right underneath it.",
+  pic:"Eastcheap street, terraced shopfronts. The driver (grey suit, briefcase) steps out, the key fob chirps and the car blinks. Tower overhead.",
+  cam:"Medium shot that pushes in. A lamp post in the foreground.",
+  lens:"cInf 11, focus on the driver's eyes",fx:["fob blink"],draw:"park"},
+ {id:5,a:525,b:666,light:"day",vo:"He comes back a couple of hours later, and his wing mirror is drooping like a candle.",
+  pic:"The driver walks back in, holding a coffee. Hard cut to an insert of the wing mirror, drooping like a candle, with one drip.",
+  cam:"Starts wide, then cuts to the insert on “wing mirror”. Push of 0.6% per frame on “candle”.",
+  lens:"Insert cInf 14",fx:["drip"],draw:"mirror"},
+ {id:6,a:666,b:759,light:"day",vo:"The badge has melted, and the panels have gone all wavy.",
+  pic:"The car side reflects a wobbly street. The round badge has melted into a puddle. The driver's coffee drops.",
+  cam:"Glides along the car body. Impact kick on “wavy”.",
+  lens:"cInf 12",fx:["wobble lines","kick"],draw:"panels"},
+ {id:7,a:759,b:876,light:"day",vo:"Down the street, a shop's doormat is scorched, and bike seats are going soft.",
+  pic:"A shopkeeper in an apron stamps out a smoking doormat. In the foreground, a bike seat sags over its frame.",
+  cam:"Whip pan down the street, following the beam spot. Rack focus from the doormat to the bike seat.",
+  lens:"cInf 10, then rack",fx:["smoke puff"],draw:"doormat"},
+ {id:8,a:876,b:1017,light:"day",vo:"So a reporter takes a frying pan outside, cracks an egg on the pavement, and it sizzles.",
+  pic:"The reporter (lanyard, rolled sleeves) crouches with a pan in the beam spot. Cracks the egg; it sizzles with steam.",
+  cam:"Low medium shot. Drops to an egg insert on “cracks”. Push on “sizzles”.",
+  lens:"cInf 13, focus on the egg",fx:["steam","sizzle sparks"],draw:"egg"},
+ {id:9,a:1017,b:1110,light:"day",vo:"Spot readings on that street hit a hundred and seventeen degrees.",
+  pic:"A cartoon thermometer card (no numbers) shoots up and pops its top. Behind it, the reporter fans herself. Heat shimmer over the pavement.",
+  cam:"Tilts up with the thermometer. Kick on the pop.",
+  lens:"cInf 12",fx:["thermometer card","heat shimmer","kick"],draw:"thermo"},
+ {id:10,a:1110,b:1171,light:"day",vo:"Luckily, London is famous for cloudy weather.",xfade:true,
+  pic:"Rooftops under a thick grey blanket of cloud. Office workers below hold umbrellas and look calm.",
+  cam:"Crossfade in (8 frames). Slow crane up.",lens:"Sharp",fx:["drizzle"],draw:"clouds"},
+ {id:11,a:1171,b:1231,light:"day",vo:"Unluckily, that week, the sun showed up.",
+  pic:"The clouds slide apart and the sun pops out. The tower flares. The umbrella crowd squints in unison.",
+  cam:"Same framing. A small push and kick on “showed up”.",lens:"Sharp, sun bloom",fx:["sun glint","kick"],draw:"sun"},
+ {id:12,a:1231,b:1332,light:"golden",vo:"You see, a flat window bounces sunlight back and spreads it out.",xfade:true,
+  pic:"Golden light, quiet back street. A flat shop window. Ray cards bounce off it in parallel and land as a soft, wide glow on the wall.",
+  cam:"Crossfade in. Follows a ray from the sun down to the window and out to the wall.",lens:"cInf 7",fx:["ray cards"],draw:"flat"},
+ {id:13,a:1332,b:1441,light:"golden",vo:"But a window curved inward bounces it all toward the same small spot.",
+  pic:"The same street with a curved window. The rays converge to one hot white dot on the cobbles. A pigeon steps into it and launches straight up.",
+  cam:"Same framing, glides in. Push on “small spot”.",lens:"cInf 7, focus on the spot",fx:["ray cards","pigeon"],draw:"curved"},
+ {id:14,a:1441,b:1506,light:"golden",vo:"Ever burned a leaf with a magnifying glass?",
+  pic:"A kid in a park holds a magnifying glass over a leaf. A thin wisp of smoke, and the kid looks delighted.",
+  cam:"Close medium shot, push on “leaf”. Foreground grass.",lens:"cInf 13, focus on the kid's eyes",fx:["smoke wisp"],draw:"kid"},
+ {id:15,a:1506,b:1615,light:"golden",vo:"Same idea, except this magnifying glass is a hundred and sixty metres tall.",
+  pic:"Match move: the camera rises through the lens circle and pulls back. The magnifying glass is replaced by the tower, in the same place in the frame.",
+  cam:"A continuous 40-frame pull-back and tilt-up, no cut. Lands on the tower at “tall”.",lens:"From cInf 13 to sharp",fx:[],draw:"match"},
+ {id:16,a:1615,b:1764,light:"day",vo:"The owners paid for the car repairs, then bolted a giant sunshade of metal fins across the glass.",
+  pic:"The driver gets a fixed, shiny car back with a thumbs-up. The camera tilts up to workers on a cradle, ratcheting horizontal fins across the glass.",
+  cam:"Medium shot on the driver, then a 30-frame tilt up the facade. A kick on each fin clunk.",lens:"cInf 10, then sharp",fx:["ratchet","kick"],draw:"fins"},
+ {id:17,a:1764,b:1865,light:"day",vo:"Two years later, it was voted the worst new building in Britain.",
+  pic:"A tiny podium at the tower's foot. Two judges in cardigans hand over a lumpy, ugly trophy. Thumbs down. A pigeon sits on the trophy.",
+  cam:"Low wide with the tower filling the top. A slow push on “worst”.",lens:"cInf 5",fx:["confetti (sad)"],draw:"award"},
+ {id:18,a:1865,b:2031,light:"desert",vo:"And the architect? His curved hotel in Las Vegas had been singeing sunbathers' hair by the pool, three years earlier.",xfade:true,
+  pic:"Crossfade to Las Vegas. A curved hotel tower, palm trees and a pool. A beam hits a sunbather; her hair starts smoking and she leaps into the pool. Splash on the last word.",
+  cam:"Crossfade in. Glides down the curved face, following the beam to the pool. Kick on the splash, and the video ends there.",
+  lens:"Sharp, then cInf 11 on the sunbather",fx:["beam","smoke","splash"],draw:"vegas"},
+];
+const BEATS={1:"Hook",2:"Setting",4:"Action",10:"Deadpan double line",12:"Explanation",16:"Consequence",18:"Callback twist"};
+
+// ---------- drawing kit (270x480 design space) ----------
+const INK="#0b0a0c",PLUM="#241726",W=270,H=480;
+function mk(c,w,h){const d=Math.min(2,window.devicePixelRatio||1)*2;c.width=w*d;c.height=h*d;const x=c.getContext("2d");x.scale(d,d);x.lineJoin="round";x.lineCap="round";return x}
+const LOOK={
+ day:{top:"#3e7fd2",hor:"#b8d0ec",ground:"#b9b2a4",shade:"#4a4d6b"},
+ golden:{top:"#ffc47c",hor:"#d79a86",ground:"#c9a27a",shade:"#444380"},
+ desert:{top:"#2f86d8",hor:"#f3d7a6",ground:"#e3c08b",shade:"#5a4f7a"},
+ grey:{top:"#8c95a3",hor:"#c4c9cf",ground:"#9e9a92",shade:"#55596a"}};
+function sky(x,l,y=480){const g=x.createLinearGradient(0,0,0,y);g.addColorStop(0,l.top);g.addColorStop(1,l.hor);x.fillStyle=g;x.fillRect(0,0,W,y)}
+function poly(x,pts,fill,lw=2.2,st=INK){x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(lw){x.lineWidth=lw;x.strokeStyle=st;x.stroke()}}
+function rect(x,a,b,w,h,fill,lw=2){poly(x,[[a,b],[a+w,b],[a+w,b+h],[a,b+h]],fill,lw)}
+function ground(x,y,c){x.fillStyle=c;x.fillRect(0,y,W,H-y);x.lineWidth=2;x.strokeStyle=INK;x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke()}
+function houses(x,y,arr){let cx=arr.x0||-6;for(const[h,w,c] of arr.list){rect(x,cx,y-h,w,h,c,2);
+  x.fillStyle="#2a3550";for(let r=y-h+10;r<y-14;r+=18)for(let k=cx+6;k<cx+w-10;k+=14)x.fillRect(k,r,7,10);
+  rect(x,cx-2,y-h-4,w+4,5,"#7a6a5a",1.5);cx+=w}}
+// the tower: trapezoid widening upward with curved mullions; side = profile view shows concave face
+function tower(x,cx,base,h,wb,wt,o={}){
+  const top=base-h;const L=[cx-wb/2,base],R=[cx+wb/2,base],TL=[cx-wt/2,top],TR=[cx+wt/2,top];
+  x.save();x.beginPath();x.moveTo(L[0],L[1]);x.quadraticCurveTo(cx-wb/2-(wt-wb)*0.05,base-h*0.5,TL[0],TL[1]);x.lineTo(TR[0],TR[1]);x.quadraticCurveTo(cx+wb/2+(wt-wb)*0.05,base-h*0.5,R[0],R[1]);x.closePath();
+  const g=x.createLinearGradient(cx-wt/2,0,cx+wt/2,0);g.addColorStop(0,o.g1||"#5d86ad");g.addColorStop(.55,o.g2||"#a9c6df");g.addColorStop(1,o.g3||"#46698f");x.fillStyle=g;x.fill();
+  x.clip();x.strokeStyle="rgba(20,30,50,.35)";x.lineWidth=1;
+  for(let i=1;i<10;i++){const f=i/10;x.beginPath();x.moveTo(cx-wb/2+wb*f,base);x.quadraticCurveTo(cx-wb/2+wb*f+(f-.5)*(wt-wb)*.4,base-h*.5,cx-wt/2+wt*f,top);x.stroke()}
+  for(let r=top+8;r<base;r+=7){x.beginPath();x.moveTo(0,r);x.lineTo(W,r);x.stroke()}
+  if(o.fins){x.strokeStyle="#c9ced6";x.lineWidth=2.4;for(let r=top+30;r<base-o.finsFrom;r+=5){x.beginPath();x.moveTo(0,r);x.lineTo(W,r);x.stroke()}}
+  if(o.glint){const rg=x.createRadialGradient(cx+wt*.1,top+h*.35,2,cx+wt*.1,top+h*.35,h*.5);rg.addColorStop(0,"rgba(255,240,200,.9)");rg.addColorStop(1,"rgba(255,240,200,0)");x.fillStyle=rg;x.fillRect(0,0,W,H)}
+  x.restore();x.lineWidth=2.4;x.strokeStyle=INK;x.beginPath();x.moveTo(L[0],L[1]);x.quadraticCurveTo(cx-wb/2-(wt-wb)*0.05,base-h*0.5,TL[0],TL[1]);x.lineTo(TR[0],TR[1]);x.quadraticCurveTo(cx+wb/2+(wt-wb)*0.05,base-h*0.5,R[0],R[1]);x.stroke();
+  rect(x,TL[0]-2,top-7,wt+4,7,"#6f8b6a",2); // sky garden crown
+}
+function beam(x,x1,y1,x2,y2,w1,w2,a=.55){x.save();const g=x.createLinearGradient(x1,y1,x2,y2);g.addColorStop(0,`rgba(255,200,90,${a*.5})`);g.addColorStop(1,`rgba(255,170,40,${a})`);
+  const ang=Math.atan2(y2-y1,x2-x1)+Math.PI/2;const c=Math.cos(ang),s=Math.sin(ang);
+  x.beginPath();x.moveTo(x1+c*w1,y1+s*w1);x.lineTo(x2+c*w2,y2+s*w2);x.lineTo(x2-c*w2,y2-s*w2);x.lineTo(x1-c*w1,y1-s*w1);x.closePath();x.fillStyle=g;x.fill();
+  const rg=x.createRadialGradient(x2,y2,1,x2,y2,w2*2.4);rg.addColorStop(0,"rgba(255,250,220,.95)");rg.addColorStop(1,"rgba(255,190,60,0)");x.fillStyle=rg;x.beginPath();x.arc(x2,y2,w2*2.4,0,7);x.fill();x.restore()}
+function sun(x,a,b,r){const g=x.createRadialGradient(a,b,r*.4,a,b,r*3);g.addColorStop(0,"rgba(255,245,210,1)");g.addColorStop(.35,"rgba(255,220,150,.55)");g.addColorStop(1,"rgba(255,220,150,0)");x.fillStyle=g;x.beginPath();x.arc(a,b,r*3,0,7);x.fill();x.fillStyle="#fff6dc";x.beginPath();x.arc(a,b,r,0,7);x.fill()}
+function cloud(x,a,b,s,c="#dfe3e8"){x.fillStyle=c;x.strokeStyle=INK;x.lineWidth=2;x.beginPath();x.arc(a,b,14*s,Math.PI*.5,Math.PI*1.5);x.arc(a+16*s,b-12*s,16*s,Math.PI,Math.PI*1.9);x.arc(a+38*s,b-6*s,13*s,Math.PI*1.2,Math.PI*.1);x.arc(a+42*s,b+4*s,10*s,Math.PI*1.6,Math.PI*.5);x.closePath();x.fill();x.stroke()}
+function car(x,a,b,s,o={}){x.save();x.translate(a,b);x.scale(s*(o.flip?-1:1),s);
+  const body=o.wavy?[[-60,0],[-62,-16],[-40,-20],[-22,-36],[18,-37],[34,-21],[58,-18],[62,0]]:[[-60,0],[-60,-17],[-40,-20],[-22,-36],[18,-36],[34,-21],[60,-18],[62,0]];
+  poly(x,body,o.color||"#1d2026",2.4);
+  poly(x,[[-36,-21],[-20,-33],[-2,-33],[-2,-21]],"#8fb2d0",1.6);poly(x,[[2,-21],[2,-33],[16,-33],[29,-21]],"#8fb2d0",1.6);
+  x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=1.5;x.beginPath();if(o.wavy){x.moveTo(-54,-9);for(let i=-54;i<56;i+=8)x.quadraticCurveTo(i+4,-13+((i/8)%2?4:-4),i+8,-9)}else{x.moveTo(-54,-10);x.lineTo(56,-10)}x.stroke();
+  for(const wx of[-38,38]){x.fillStyle="#222";x.beginPath();x.arc(wx,0,10,0,7);x.fill();x.lineWidth=2;x.strokeStyle=INK;x.stroke();x.fillStyle="#9aa";x.beginPath();x.arc(wx,0,4,0,7);x.fill()}
+  if(o.melt){x.fillStyle="#1d2026";x.strokeStyle=INK;x.lineWidth=1.6;x.beginPath();x.moveTo(-26,-30);x.quadraticCurveTo(-34,-24,-31,-12);x.quadraticCurveTo(-28,-10,-27,-14);x.quadraticCurveTo(-25,-22,-21,-27);x.closePath();x.fill();x.stroke()}
+  else{rect(x,-26,-30,6,5,"#1d2026",1.4)}
+  x.restore()}
+function blob(x,a,b,rx,ry){x.fillStyle="rgba(30,30,50,.28)";x.beginPath();x.ellipse(a,b,rx,ry,0,0,7);x.fill()}
+// bean-head character: footY baseline, h total height
+function guy(x,a,foot,h,o={}){
+  const hh=h/3.5,hw=hh/0.94,legs=hh*1.4,torsoH=h-hh-legs,lw=Math.max(1.6,hw*.055);
+  blob(x,a,foot,hw*.55,hw*.12);
+  x.strokeStyle=PLUM;x.lineWidth=lw;
+  const hip=foot-legs, sh=hip-torsoH+hh*.1;
+  // legs
+  const st=o.step||0;x.beginPath();x.moveTo(a-hw*.12,hip);x.lineTo(a-hw*.18-st,foot);x.moveTo(a+hw*.12,hip);x.lineTo(a+hw*.18+st,foot);x.stroke();
+  x.fillStyle=PLUM;for(const s of[-1,1]){x.beginPath();x.ellipse(a+s*(hw*.18+(s>0?st:-st))+s*hw*.05,foot,hw*.12,hw*.06,0,0,7);x.fill()}
+  // torso
+  const tw=hw*.62;x.beginPath();x.moveTo(a-tw/2,hip);x.lineTo(a-tw/2*.9,sh);x.quadraticCurveTo(a,sh-hh*.15,a+tw/2*.9,sh);x.lineTo(a+tw/2,hip);x.closePath();x.fillStyle=o.shirt||"#5b7fa8";x.fill();x.lineWidth=lw*1.2;x.strokeStyle=PLUM;x.stroke();
+  if(o.apron){poly(x,[[a-tw*.32,sh+hh*.2],[a+tw*.32,sh+hh*.2],[a+tw*.4,hip+2],[a-tw*.4,hip+2]],o.apron,lw,PLUM)}
+  if(o.lanyard){x.strokeStyle="#c03";x.lineWidth=lw*.8;x.beginPath();x.moveTo(a-tw*.2,sh);x.lineTo(a,sh+torsoH*.45);x.lineTo(a+tw*.2,sh);x.stroke();rect(x,a-3,sh+torsoH*.45,6,8,"#fff",1)}
+  // arms
+  x.strokeStyle=PLUM;x.lineWidth=lw;const arm=hh*1.15;
+  for(const[s,ang] of[[-1,o.armL??200],[1,o.armR??-20]]){const r=ang*Math.PI/180;const ex=a+s*tw*.45+Math.cos(r)*arm,ey=sh+hh*.12+Math.sin(r)*-arm;
+    x.beginPath();x.moveTo(a+s*tw*.45,sh+hh*.12);x.lineTo(ex,ey);x.stroke();x.fillStyle=PLUM;x.beginPath();x.arc(ex,ey,lw*1.4,0,7);x.fill();
+    if(s<0)o._hl=[ex,ey];else o._hr=[ex,ey]}
+  // head (bean)
+  const hy=sh-hh*.5;x.beginPath();x.moveTo(a,hy-hh*.52);x.bezierCurveTo(a+hw*.56,hy-hh*.5,a+hw*.52,hy+hh*.3,a+hw*.2,hy+hh*.48);x.quadraticCurveTo(a,hy+hh*.53,a-hw*.2,hy+hh*.48);x.bezierCurveTo(a-hw*.52,hy+hh*.3,a-hw*.56,hy-hh*.5,a,hy-hh*.52);
+  x.fillStyle=o.skin||"#f3d9c0";x.fill();x.lineWidth=lw*1.3;x.strokeStyle=PLUM;x.stroke();
+  if(o.hair){x.fillStyle=o.hair;x.beginPath();x.moveTo(a-hw*.46,hy-hh*.12);x.bezierCurveTo(a-hw*.5,hy-hh*.55,a+hw*.5,hy-hh*.6,a+hw*.46,hy-hh*.12);x.quadraticCurveTo(a,hy-hh*.3,a-hw*.46,hy-hh*.12);x.fill();x.stroke();
+    if(o.bun){x.beginPath();x.arc(a+hw*.3,hy-hh*.42,hh*.15,0,7);x.fill();x.stroke()}}
+  if(o.hat){x.fillStyle=o.hat;x.beginPath();x.ellipse(a,hy-hh*.3,hw*.48,hh*.3,0,Math.PI,0);x.fill();x.stroke();rect(x,a-hw*.52,hy-hh*.32,hw*1.04,hh*.08,o.hat,lw)}
+  if(o.shades){x.fillStyle=PLUM;x.fillRect(a-hw*.32,hy-hh*.06,hw*.26,hh*.12);x.fillRect(a+hw*.06,hy-hh*.06,hw*.26,hh*.12)}
+  // face
+  const ex=hw*.13,eyY=hy-hh*.02;x.fillStyle=PLUM;
+  if(!o.shades){if(o.mood==="squint"||o.mood==="happy"){x.lineWidth=lw;x.beginPath();x.moveTo(a-ex-4,eyY);x.lineTo(a-ex+3,eyY+(o.mood==="happy"?-2:0));x.moveTo(a+ex-3,eyY+(o.mood==="happy"?-2:0));x.lineTo(a+ex+4,eyY);x.stroke()}
+   else{const er=o.mood==="shock"?hh*.075:hh*.055;x.beginPath();x.arc(a-ex,eyY,er,0,7);x.arc(a+ex,eyY,er,0,7);x.fill()}}
+  x.lineWidth=lw;x.beginPath();const my=hy+hh*.22;
+  if(o.mood==="shock"){x.ellipse(a,my,hw*.07,hh*.08,0,0,7);x.fill()}
+  else if(o.mood==="sad"){x.arc(a,my+hh*.08,hw*.1,Math.PI*1.15,Math.PI*1.85);x.stroke()}
+  else if(o.mood==="flat"||o.mood==="squint"){x.moveTo(a-hw*.08,my);x.lineTo(a+hw*.08,my);x.stroke()}
+  else{x.arc(a,my-hh*.05,hw*.12,Math.PI*.15,Math.PI*.85);x.stroke()}
+  return o}
+function smoke(x,a,b,s=1){x.strokeStyle="rgba(90,90,100,.75)";x.lineWidth=3*s;x.beginPath();x.moveTo(a,b);x.bezierCurveTo(a-8*s,b-10*s,a+8*s,b-18*s,a,b-28*s);x.bezierCurveTo(a-8*s,b-36*s,a+6*s,b-44*s,a+2*s,b-52*s);x.stroke()}
+function arrowDash(x,x1,y1,x2,y2){const c=getComputedStyle(document.documentElement).getPropertyValue("--note").trim()||"#c2307a";x.save();x.strokeStyle="#d23b8a";x.fillStyle="#d23b8a";x.lineWidth=2.4;x.setLineDash([7,5]);x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();x.setLineDash([]);const a=Math.atan2(y2-y1,x2-x1);x.beginPath();x.moveTo(x2,y2);x.lineTo(x2-12*Math.cos(a-.45),y2-12*Math.sin(a-.45));x.lineTo(x2-12*Math.cos(a+.45),y2-12*Math.sin(a+.45));x.closePath();x.fill();x.restore()}
+function endFrame(x,m){x.save();x.strokeStyle="#d23b8a";x.lineWidth=2;x.setLineDash([6,5]);x.strokeRect(m,m*16/9,W-2*m,H-2*m*16/9);x.restore()}
+function lensBlur(x,y0,y1){x.save();x.fillStyle="rgba(255,255,255,.18)";x.fillRect(0,y0,W,y1-y0);x.restore()}
+function grade(x,c,a){x.save();x.globalCompositeOperation="multiply";x.fillStyle=c;x.globalAlpha=a;x.fillRect(0,0,W,H);x.restore()}
+function kick(x){x.save();x.strokeStyle="#d23b8a";x.lineWidth=2;for(const[a,b,c,d] of[[10,20,24,34],[260,20,246,34],[10,460,24,446],[260,460,246,446]]){x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke()}x.restore()}
+function rays(x,pts,col="rgba(255,190,60,.95)"){x.save();x.strokeStyle=col;x.lineWidth=3;for(const p of pts){x.beginPath();x.moveTo(p[0],p[1]);for(let i=2;i<p.length;i+=2)x.lineTo(p[i],p[i+1]);x.stroke()}x.restore()}
+function pigeon(x,a,b,s=1,fly){x.save();x.translate(a,b);x.scale(s,s);poly(x,[[-10,0],[0,-8],[12,-6],[14,-2],[8,4],[-6,4]],"#8d93a6",1.6);x.fillStyle=INK;x.beginPath();x.arc(9,-4,1.3,0,7);x.fill();poly(x,[[14,-3],[18,-2],[14,-1]],"#e0a030",1);if(fly){poly(x,[[-2,-4],[-12,-22],[6,-6]],"#a7adbf",1.4)}x.restore()}
+
+// ---------- shots ----------
+const D={
+hook(x){sky(x,LOOK.day);sun(x,40,40,12);tower(x,170,330,300,70,150,{glint:1});houses(x,330,{x0:-4,list:[[70,60,"#b06a4e"],[55,50,"#d8c7a3"],[80,50,"#c99a4b"],[60,60,"#b06a4e"],[70,70,"#d8c7a3"]]});ground(x,330,LOOK.day.ground);
+  beam(x,175,110,110,400,26,14,.7);car(x,110,410,1.15,{melt:1,wavy:1});x.fillStyle="#1d2026";for(const[a,b] of[[70,418],[140,420]]){x.beginPath();x.ellipse(a,b,10,3,0,0,7);x.fill()}
+  smoke(x,96,368,.8);arrowDash(x,40,440,40,120);},
+aerial(x){sky(x,LOOK.day);cloud(x,180,70,.9,"#eef2f7");x.fillStyle="#9fb7d0";x.fillRect(0,250,W,230);
+  x.fillStyle="#5f8fbf";x.beginPath();x.moveTo(0,420);x.quadraticCurveTo(140,380,270,410);x.lineTo(270,450);x.quadraticCurveTo(140,420,0,460);x.fill();x.lineWidth=2;x.strokeStyle=INK;x.stroke();
+  const rows=[[300,"#c99a4b"],[330,"#b06a4e"],[360,"#d8c7a3"],[390,"#b9a07c"]];for(const[y,c] of rows)for(let i=-10;i<W;i+=26+((i*7)%9))rect(x,i,y-14,22,14+((i*3)%10),c,1.4);
+  poly(x,[[50,300],[56,250],[62,300]],"#d8d0bf",1.6);poly(x,[[220,300],[225,262],[230,300]],"#d8d0bf",1.6);
+  tower(x,140,320,240,52,110,{glint:1});endFrame(x,26);arrowDash(x,240,420,240,300)},
+profile(x){sky(x,LOOK.day);sun(x,230,60,11);
+  x.save();x.beginPath();x.moveTo(90,440);x.lineTo(80,90);x.lineTo(205,90);x.quadraticCurveTo(120,260,150,440);x.closePath();const g=x.createLinearGradient(80,0,205,0);g.addColorStop(0,"#4c709a");g.addColorStop(1,"#b7d1e8");x.fillStyle=g;x.fill();x.clip();
+  x.strokeStyle="rgba(20,30,50,.35)";for(let r=96;r<440;r+=8){x.beginPath();x.moveTo(0,r);x.lineTo(W,r);x.stroke()}x.restore();
+  x.lineWidth=2.6;x.strokeStyle=INK;x.beginPath();x.moveTo(90,440);x.lineTo(80,90);x.lineTo(205,90);x.quadraticCurveTo(120,260,150,440);x.stroke();rect(x,78,82,130,8,"#6f8b6a",2);
+  ground(x,440,LOOK.day.ground);beam(x,165,240,240,452,18,8,.65);
+  // bowl fx card
+  x.save();x.translate(212,300);x.rotate(-.35);x.beginPath();x.arc(0,0,26,0,Math.PI);x.closePath();x.fillStyle="#f2f6fb";x.fill();x.lineWidth=2.4;x.strokeStyle=PLUM;x.stroke();x.restore();
+  arrowDash(x,30,380,30,250)},
+park(x){sky(x,LOOK.day,300);tower(x,140,150,260,90,200,{});houses(x,330,{x0:-10,list:[[180,90,"#c99a4b"],[200,95,"#d8c7a3"],[170,110,"#b06a4e"]]});
+  rect(x,10,270,70,60,"#7a2f2a",2);rect(x,20,282,50,34,"#e9d9a8",1.5);ground(x,330,LOOK.day.ground);x.fillStyle="#d7d1c4";x.fillRect(0,330,W,40);x.strokeStyle=INK;x.beginPath();x.moveTo(0,370);x.lineTo(W,370);x.stroke();
+  car(x,175,440,1.3,{});x.strokeStyle="#ffd34d";x.lineWidth=2;for(const a of[-.6,0,.6]){x.beginPath();x.moveTo(110+Math.cos(a-1.57)*14,400+Math.sin(a-1.57)*14);x.lineTo(110+Math.cos(a-1.57)*22,400+Math.sin(a-1.57)*22);x.stroke()}
+  guy(x,90,450,130,{shirt:"#6a6e78",mood:"happy",armR:20,hair:"#3b2a20"});rect(x,108,400,14,10,"#5a3a24",1.4);
+  rect(x,240,0,10,480,"#2c3036",2);lensBlur(x,0,330);endFrame(x,22)},
+mirror(x){sky(x,LOOK.day,280);houses(x,300,{x0:-10,list:[[200,100,"#d8c7a3"],[220,100,"#b06a4e"],[190,100,"#c99a4b"]]});ground(x,300,"#d7d1c4");lensBlur(x,0,300);
+  x.fillStyle="#1d2026";x.fillRect(0,330,W,150);x.lineWidth=2.4;x.strokeStyle=INK;x.strokeRect(-2,330,W+4,160);poly(x,[[0,330],[120,250],[270,250],[270,330]],"#8fb2d0",2.4);
+  // drooping mirror
+  x.fillStyle="#1d2026";x.beginPath();x.moveTo(150,300);x.bezierCurveTo(110,300,95,330,100,380);x.quadraticCurveTo(105,400,112,385);x.bezierCurveTo(118,350,150,335,170,322);x.closePath();x.fill();x.lineWidth=2.6;x.stroke();
+  x.fillStyle="#a8c2d8";x.beginPath();x.ellipse(118,345,9,22,.4,0,7);x.fill();x.stroke();
+  x.fillStyle="#1d2026";x.beginPath();x.moveTo(106,395);x.quadraticCurveTo(101,410,106,418);x.quadraticCurveTo(111,410,106,395);x.fill();x.stroke();
+  beam(x,250,0,120,350,40,30,.35);endFrame(x,40)},
+panels(x){sky(x,LOOK.day,250);houses(x,260,{x0:-10,list:[[160,100,"#b06a4e"],[180,90,"#d8c7a3"],[150,100,"#c99a4b"]]});ground(x,260,"#d7d1c4");
+  x.fillStyle="#1d2026";x.beginPath();x.moveTo(-5,300);for(let i=0;i<=W;i+=30)x.quadraticCurveTo(i+15,300+((i/30)%2?14:-14),i+30,300);x.lineTo(W+5,420);x.lineTo(-5,420);x.closePath();x.fill();x.lineWidth=2.6;x.strokeStyle=INK;x.stroke();
+  x.strokeStyle="rgba(190,205,230,.6)";x.lineWidth=2.2;for(const y of[330,355,380]){x.beginPath();x.moveTo(0,y);for(let i=0;i<W;i+=18)x.quadraticCurveTo(i+9,y+((i/18)%2?7:-7),i+18,y);x.stroke()}
+  x.fillStyle="#c0c4cc";x.beginPath();x.ellipse(200,348,18,9,0,0,7);x.fill();x.strokeStyle=INK;x.lineWidth=2;x.stroke();x.beginPath();x.moveTo(190,355);x.quadraticCurveTo(196,380,204,372);x.quadraticCurveTo(210,366,212,354);x.fillStyle="#c0c4cc";x.fill();x.stroke();
+  ground(x,420,"#8c8a85");guy(x,70,470,170,{shirt:"#6a6e78",mood:"shock",armR:-60,armL:250,hair:"#3b2a20"});
+  x.save();x.translate(108,452);x.rotate(.8);rect(x,-6,-9,12,18,"#e9e2d4",1.6);x.restore();x.fillStyle="rgba(120,80,40,.6)";x.beginPath();x.ellipse(118,470,16,4,0,0,7);x.fill();kick(x)},
+doormat(x){sky(x,LOOK.day,200);houses(x,330,{x0:-10,list:[[260,140,"#c99a4b"],[230,150,"#b06a4e"]]});rect(x,30,215,90,115,"#355a45",2.2);rect(x,44,230,62,100,"#5e8a6a",1.6);
+  ground(x,330,"#d7d1c4");rect(x,32,334,90,16,"#9a6a3a",1.8);smoke(x,60,330,1);smoke(x,90,330,.8);
+  beam(x,200,0,75,342,40,22,.45);guy(x,140,380,150,{shirt:"#e8e0d0",apron:"#2f6a9a",mood:"shock",armL:160,armR:40,hair:"#7a4a2a",step:6});
+  // bike seat fg (blurred big)
+  x.save();x.globalAlpha=.9;x.strokeStyle=INK;x.lineWidth=6;x.beginPath();x.moveTo(190,480);x.lineTo(215,400);x.stroke();x.fillStyle="#2a2a2e";x.beginPath();x.moveTo(170,395);x.quadraticCurveTo(215,382,262,392);x.quadraticCurveTo(262,420,250,436);x.quadraticCurveTo(244,410,215,412);x.quadraticCurveTo(190,414,178,430);x.quadraticCurveTo(168,410,170,395);x.fill();x.lineWidth=2.6;x.stroke();x.restore();
+  arrowDash(x,250,170,40,170)},
+egg(x){sky(x,LOOK.day,220);houses(x,240,{x0:-10,list:[[180,120,"#d8c7a3"],[200,170,"#b06a4e"]]});ground(x,240,"#d7d1c4");lensBlur(x,0,240);
+  beam(x,240,0,140,400,50,40,.4);
+  guy(x,85,430,190,{shirt:"#f0f0f0",lanyard:1,mood:"happy",armR:-35,armL:230,hair:"#2a1a14",bun:1,skin:"#e7c09a"});
+  x.fillStyle="#2a2a30";x.beginPath();x.ellipse(165,420,46,13,0,0,7);x.fill();x.lineWidth=2.4;x.strokeStyle=INK;x.stroke();x.lineWidth=5;x.beginPath();x.moveTo(120,418);x.lineTo(118,410);x.stroke();
+  x.fillStyle="#fff";x.beginPath();x.ellipse(165,416,24,8,0,0,7);x.fill();x.lineWidth=1.6;x.stroke();x.fillStyle="#f4b400";x.beginPath();x.arc(168,415,6,0,7);x.fill();x.stroke();
+  x.strokeStyle="rgba(255,255,255,.9)";x.lineWidth=2.4;for(const a of[145,165,185]){x.beginPath();x.moveTo(a,400);x.bezierCurveTo(a-6,390,a+6,382,a,372);x.stroke()}
+  x.fillStyle="#ffd34d";for(const[a,b] of[[132,402],[200,404],[190,396],[140,394]]){x.beginPath();x.arc(a,b,2,0,7);x.fill()}endFrame(x,30)},
+thermo(x){sky(x,LOOK.day,260);houses(x,280,{x0:-10,list:[[180,110,"#c99a4b"],[160,90,"#d8c7a3"],[200,90,"#b06a4e"]]});ground(x,280,"#d7d1c4");lensBlur(x,0,280);
+  guy(x,190,440,170,{shirt:"#f0f0f0",lanyard:1,mood:"squint",armL:150,armR:-20,hair:"#2a1a14",bun:1,skin:"#e7c09a"});
+  x.strokeStyle="rgba(255,255,255,.55)";x.lineWidth=1.6;for(let y=300;y<470;y+=14){x.beginPath();x.moveTo(0,y);for(let i=0;i<W;i+=16)x.quadraticCurveTo(i+8,y-4,i+16,y);x.stroke()}
+  rect(x,62,90,36,280,"#f8f8f8",2.6);x.fillStyle="#e03024";x.fillRect(70,100,20,262);x.beginPath();x.arc(80,380,26,0,7);x.fill();x.lineWidth=2.6;x.strokeStyle=INK;x.stroke();
+  x.fillStyle="#e03024";for(const[a,b,r] of[[70,70,6],[92,58,5],[80,42,4]]){x.beginPath();x.arc(a,b,r,0,7);x.fill();x.stroke()}
+  x.save();x.translate(102,82);x.rotate(.6);rect(x,-10,-5,20,10,"#f8f8f8",2);x.restore();kick(x)},
+clouds(x){sky(x,LOOK.grey);for(const[a,b,s] of[[-20,80,1.6],[90,60,1.8],[170,110,1.5],[30,150,1.3],[150,170,1.4]])cloud(x,a,b,s,"#aeb4bd");
+  tower(x,150,330,220,60,120,{g1:"#6e7f90",g2:"#9fadba",g3:"#5d6c7c"});houses(x,330,{x0:-6,list:[[60,60,"#8e6a58"],[70,70,"#b3a68e"],[50,60,"#a68a5a"],[64,90,"#8e6a58"]]});ground(x,330,LOOK.grey.ground);
+  for(const[a,c] of[[50,"#c03030"],[120,"#2a2a2a"],[190,"#2f5f9a"]]){guy(x,a,440,95,{shirt:"#556",mood:"flat",armR:70});x.fillStyle=c;x.beginPath();x.arc(a+10,375,26,Math.PI,0);x.closePath();x.fill();x.lineWidth=2;x.strokeStyle=INK;x.stroke();x.beginPath();x.moveTo(a+10,375);x.lineTo(a+10,402);x.stroke()}
+  x.strokeStyle="rgba(255,255,255,.55)";x.lineWidth=1;for(let i=0;i<40;i++){const a=(i*53)%W,b=(i*97)%330;x.beginPath();x.moveTo(a,b);x.lineTo(a-3,b+10);x.stroke()}arrowDash(x,240,420,240,330)},
+sun(x){sky(x,LOOK.day);cloud(x,-60,90,1.8,"#c8ced6");cloud(x,200,110,1.6,"#c8ced6");sun(x,140,70,18);
+  tower(x,150,330,220,60,120,{glint:1});houses(x,330,{x0:-6,list:[[60,60,"#b06a4e"],[70,70,"#d8c7a3"],[50,60,"#c99a4b"],[64,90,"#b06a4e"]]});ground(x,330,LOOK.day.ground);
+  for(const[a,c] of[[50,"#c03030"],[120,"#2a2a2a"],[190,"#2f5f9a"]]){guy(x,a,440,95,{shirt:"#556",mood:"squint",armR:70,armL:120});x.fillStyle=c;x.beginPath();x.arc(a+10,375,26,Math.PI,0);x.closePath();x.fill();x.lineWidth=2;x.strokeStyle=INK;x.stroke()}
+  x.strokeStyle="#fff";x.lineWidth=3;for(const a of[0,1.2,2.4,3.6,4.8]){x.beginPath();x.moveTo(150+Math.cos(a)*14,200+Math.sin(a)*14);x.lineTo(150+Math.cos(a)*26,200+Math.sin(a)*26);x.stroke()}kick(x)},
+flat(x){sky(x,LOOK.golden);sun(x,40,60,14);houses(x,360,{x0:-10,list:[[260,140,"#b8805e"],[240,150,"#8e6a58"]]});
+  rect(x,140,170,110,150,"#8fb2d0",2.6);x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=2;x.beginPath();x.moveTo(150,300);x.lineTo(180,190);x.stroke();
+  ground(x,360,LOOK.golden.ground);rays(x,[[40,60,160,200,40,330],[40,60,190,230,70,360],[40,60,220,260,100,390]]);
+  x.fillStyle="rgba(255,220,150,.45)";x.beginPath();x.ellipse(70,365,70,24,0,0,7);x.fill();grade(x,"#e8b88a",.12);arrowDash(x,30,100,140,230)},
+curved(x){sky(x,LOOK.golden);sun(x,40,60,14);houses(x,360,{x0:-10,list:[[260,140,"#b8805e"],[240,150,"#8e6a58"]]});
+  x.beginPath();x.moveTo(140,170);x.quadraticCurveTo(205,245,140,320);x.lineTo(250,320);x.lineTo(250,170);x.closePath();x.fillStyle="#8e6a58";x.fill();
+  x.beginPath();x.moveTo(140,170);x.quadraticCurveTo(205,245,140,320);x.lineTo(250,320);x.quadraticCurveTo(185,245,250,170);x.closePath();x.fillStyle="#8fb2d0";x.fill();x.lineWidth=2.6;x.strokeStyle=INK;x.stroke();
+  ground(x,360,LOOK.golden.ground);rays(x,[[40,60,200,200,90,395],[40,60,188,245,90,395],[40,60,200,290,90,395]]);
+  const rg=x.createRadialGradient(90,395,1,90,395,26);rg.addColorStop(0,"rgba(255,255,240,1)");rg.addColorStop(1,"rgba(255,200,80,0)");x.fillStyle=rg;x.beginPath();x.arc(90,395,26,0,7);x.fill();
+  pigeon(x,96,340,1.4,1);x.strokeStyle="#d23b8a";x.setLineDash([4,4]);x.lineWidth=1.6;x.beginPath();x.moveTo(92,390);x.lineTo(96,350);x.stroke();x.setLineDash([]);smoke(x,92,395,.5);grade(x,"#e8b88a",.12);endFrame(x,30)},
+kid(x){sky(x,LOOK.golden,300);sun(x,220,50,12);x.fillStyle="#7f9a55";x.fillRect(0,260,W,220);x.lineWidth=2;x.strokeStyle=INK;x.beginPath();x.moveTo(0,260);x.lineTo(W,260);x.stroke();
+  x.fillStyle="#5d7a3e";for(const[a,b,r] of[[30,250,40],[230,240,50]]){x.beginPath();x.arc(a,b,r,0,7);x.fill();x.stroke()}lensBlur(x,0,280);
+  const o=guy(x,110,450,200,{shirt:"#e3a02a",mood:"happy",armR:-50,armL:220,hair:"#4a2a1a",skin:"#c99772"});
+  const[hx,hy]=o._hr;x.lineWidth=5;x.strokeStyle="#6b4a2a";x.beginPath();x.moveTo(hx,hy);x.lineTo(hx+22,hy+10);x.stroke();x.fillStyle="rgba(200,230,255,.6)";x.beginPath();x.arc(hx+38,hy+18,18,0,7);x.fill();x.lineWidth=3;x.strokeStyle=INK;x.stroke();
+  x.fillStyle="#b5472a";x.beginPath();x.ellipse(hx+44,446,16,7,.2,0,7);x.fill();x.lineWidth=1.6;x.stroke();x.fillStyle="#fff7c8";x.beginPath();x.arc(hx+44,446,3,0,7);x.fill();smoke(x,hx+44,442,.6);
+  x.strokeStyle="rgba(255,190,60,.8)";x.lineWidth=2;x.beginPath();x.moveTo(hx+38,hy+18);x.lineTo(hx+44,446);x.stroke();
+  x.fillStyle="#4c6a30";for(let i=0;i<W;i+=7){x.beginPath();x.moveTo(i,480);x.lineTo(i+3,452-((i*13)%20));x.lineTo(i+6,480);x.fill()}grade(x,"#e8b88a",.1);endFrame(x,28)},
+match(x){sky(x,LOOK.golden);sun(x,60,60,14);tower(x,150,420,330,70,140,{glint:1,g1:"#7a6f8f",g2:"#e9c49a",g3:"#5c5a85"});ground(x,420,"#7f9a55");
+  x.save();x.strokeStyle="rgba(255,255,255,.75)";x.setLineDash([5,5]);x.lineWidth=2;x.beginPath();x.arc(150,180,60,0,7);x.stroke();x.restore();
+  x.lineWidth=7;x.strokeStyle="rgba(107,74,42,.5)";x.beginPath();x.moveTo(190,230);x.lineTo(230,290);x.stroke();
+  arrowDash(x,30,440,30,140);grade(x,"#e8b88a",.1)},
+fins(x){sky(x,LOOK.day);tower(x,135,330,300,80,180,{fins:1,finsFrom:150});
+  x.fillStyle="#d8dde4";x.fillRect(180,170,70,12);x.strokeStyle=INK;x.lineWidth=2;x.strokeRect(180,170,70,12);x.beginPath();x.moveTo(190,170);x.lineTo(196,40);x.moveTo(240,170);x.lineTo(234,40);x.stroke();
+  for(const a of[198,228]){guy(x,a,170,50,{shirt:"#f2a516",mood:"happy",armL:120,armR:60,hat:"#f5e24a"})}
+  ground(x,330,LOOK.day.ground);car(x,180,430,1.1,{color:"#1b2230"});x.strokeStyle="#fff";x.lineWidth=2;x.beginPath();x.moveTo(160,385);x.lineTo(166,378);x.moveTo(200,388);x.lineTo(207,382);x.stroke();
+  guy(x,70,460,130,{shirt:"#6a6e78",mood:"happy",armR:60,hair:"#3b2a20"});rect(x,22,380,22,14,"#f4f0e2",1.5);arrowDash(x,250,440,250,220)},
+award(x){sky(x,LOOK.day);tower(x,135,300,320,100,220,{});ground(x,300,LOOK.day.ground);
+  rect(x,95,380,80,30,"#7a2f2a",2);rect(x,105,372,60,8,"#a33c35",1.6);
+  x.fillStyle="#9a8f5a";x.beginPath();x.moveTo(122,372);x.quadraticCurveTo(110,330,128,325);x.quadraticCurveTo(140,300,152,330);x.quadraticCurveTo(162,345,148,372);x.closePath();x.fill();x.lineWidth=2.2;x.strokeStyle=INK;x.stroke();
+  x.beginPath();x.arc(132,340,4,0,7);x.arc(145,350,5,0,7);x.stroke();pigeon(x,140,322,.9,0);
+  guy(x,50,460,130,{shirt:"#8a6f9a",mood:"flat",armR:10,hair:"#ddd"});guy(x,220,460,125,{shirt:"#6f8a5a",mood:"flat",armL:170,hair:"#555",shades:0});
+  for(const[a,b] of[[72,392],[198,394]]){x.fillStyle=PLUM;x.beginPath();x.arc(a,b,5,0,7);x.fill();x.fillRect(a-1.5,b,3,10)}
+  x.fillStyle="#9aa";for(let i=0;i<12;i++){x.fillRect((i*41)%W,140+(i*67)%200,4,7)}endFrame(x,24)},
+vegas(x){sky(x,LOOK.desert);sun(x,230,40,14);
+  x.save();x.beginPath();x.moveTo(40,300);x.lineTo(30,60);x.quadraticCurveTo(130,140,230,60);x.lineTo(220,300);x.quadraticCurveTo(130,230,40,300);x.closePath();
+  const g=x.createLinearGradient(30,0,230,0);g.addColorStop(0,"#5d86ad");g.addColorStop(.5,"#d5e6f3");g.addColorStop(1,"#5d86ad");x.fillStyle=g;x.fill();x.clip();x.strokeStyle="rgba(20,30,50,.3)";x.lineWidth=1;
+  for(let r=60;r<300;r+=8){x.beginPath();x.moveTo(0,r);x.quadraticCurveTo(130,r+60,W,r);x.stroke()}x.restore();
+  x.lineWidth=2.6;x.strokeStyle=INK;x.beginPath();x.moveTo(40,300);x.lineTo(30,60);x.quadraticCurveTo(130,140,230,60);x.lineTo(220,300);x.stroke();
+  ground(x,300,LOOK.desert.ground);
+  x.fillStyle="#3fb2d8";x.beginPath();x.ellipse(170,400,110,40,0,0,7);x.fill();x.lineWidth=2.4;x.stroke();x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=2;for(const[a,b] of[[140,395],[190,410],[210,388]]){x.beginPath();x.moveTo(a,b);x.quadraticCurveTo(a+8,b-4,a+16,b);x.stroke()}
+  for(const a of[16,250]){x.strokeStyle="#8a5a2a";x.lineWidth=6;x.beginPath();x.moveTo(a,300);x.quadraticCurveTo(a+6,230,a,180);x.stroke();x.fillStyle="#3f8a3a";x.strokeStyle=INK;x.lineWidth=1.8;for(const r of[0,1.2,2.4,3.6,4.8]){x.beginPath();x.ellipse(a+Math.cos(r)*16,180+Math.sin(r)*8,18,6,r,0,7);x.fill();x.stroke()}}
+  beam(x,130,150,70,410,22,14,.6);
+  rect(x,26,420,90,14,"#f3f0e6",2);guy(x,72,412,90,{shirt:"#e05a7a",mood:"shock",armL:120,armR:60,hair:"#e8c050",skin:"#e7c09a"});smoke(x,64,330,.6);smoke(x,80,330,.5);
+  x.fillStyle="#fff";for(const[a,b,r] of[[150,380,6],[165,370,4],[178,382,5]]){x.beginPath();x.arc(a,b,r,0,7);x.fill();x.strokeStyle=INK;x.lineWidth=1.4;x.stroke()}
+  arrowDash(x,250,110,250,300)}
+};
+
+// ---------- cast ----------
+const CAST=[
+ ["Driver",{shirt:"#6a6e78",mood:"happy",hair:"#3b2a20",armR:-20},"Grey suit, briefcase, coffee. Proud of his car for 20 seconds."],
+ ["Reporter",{shirt:"#f0f0f0",lanyard:1,mood:"happy",hair:"#2a1a14",bun:1,skin:"#e7c09a",armR:-35},"Rolled sleeves, lanyard, frying pan. Takes it in her stride."],
+ ["Shopkeeper",{shirt:"#e8e0d0",apron:"#2f6a9a",mood:"shock",hair:"#7a4a2a",armL:160,armR:40},"Blue apron. Stamping out his doormat."],
+ ["Kid",{shirt:"#e3a02a",mood:"happy",hair:"#4a2a1a",skin:"#c99772",armR:-50},"Magnifying glass. The everyday example."],
+ ["Fin fitter",{shirt:"#f2a516",mood:"happy",hat:"#f5e24a",armL:120,armR:60},"Hi-vis and hard hat, one of a pair on the cradle."],
+ ["Judge",{shirt:"#8a6f9a",mood:"flat",hair:"#ddd"},"Cardigan, clipboard, unimpressed. One of two."],
+ ["Sunbather",{shirt:"#e05a7a",mood:"shock",hair:"#e8c050",skin:"#e7c09a",armL:120,armR:60},"Las Vegas pool. The last laugh."],
+];
+
+// ---------- render ----------
+const fmt=f=>{const s=f/30;return s.toFixed(1)+" s"};
+const byId=Object.fromEntries(SHOTS.map(s=>[s.id,s]));
+const acts=document.getElementById("acts");
+for(const act of ACTS){
+  const sec=document.createElement("div");sec.className="act";
+  sec.innerHTML=`<div class="act-head"><h3>${act.name}</h3><span>${act.note}</span></div><div class="board"></div>`;
+  const board=sec.querySelector(".board");
+  for(const id of act.ids){const s=byId[id];const el=document.createElement("article");el.className="shot";
+    const lc=s.light==="golden"?"gold":"day";
+    el.innerHTML=`<canvas role="img" aria-label="Sketch of shot ${s.id}: ${s.pic.replace(/"/g,"")}"></canvas>
+    <div class="meta"><div class="tc"><b>Shot ${s.id}</b><span>f ${s.a}–${s.b} · ${fmt(s.a)}–${fmt(s.b)}</span></div>
+    <p class="vo">${s.vo}</p>
+    <dl><dt>Picture</dt><dd>${s.pic}</dd><dt>Camera</dt><dd>${s.cam}</dd><dt>Lens</dt><dd>${s.lens}</dd></dl>
+    <div class="chips"><span class="chip ${lc}">${s.light}</span>${s.xfade?'<span class="chip">crossfade in</span>':''}${s.id===1?'<span class="chip fx">white flash after</span>':''}${s.fx.map(f=>`<span class="chip fx">${f}</span>`).join("")}</div></div>`;
+    board.appendChild(el);const c=el.querySelector("canvas");const x=mk(c,W,H);x.save();D[s.draw](x);x.restore();
+    x.lineWidth=3;x.strokeStyle=INK;x.strokeRect(0,0,W,H)}
+  acts.appendChild(sec)}
+const cast=document.getElementById("cast");
+for(const[n,o,d] of CAST){const f=document.createElement("figure");f.innerHTML=`<canvas role="img" aria-label="${n}"></canvas><figcaption><b>${n}</b>${d}</figcaption>`;cast.appendChild(f);
+  const x=mk(f.querySelector("canvas"),150,200);x.fillStyle="#f4f6f8";x.fillRect(0,0,150,200);guy(x,75,188,170,{...o})}
+const scr=document.getElementById("script");
+for(const s of SHOTS){if(BEATS[s.id]){const b=document.createElement("p");b.innerHTML=`<span></span><span class="beat">${BEATS[s.id]}</span>`;scr.appendChild(b)}
+  const p=document.createElement("p");p.innerHTML=`<span class="t">${(s.a/30).toFixed(1)}</span><span>${s.vo}</span>`;scr.appendChild(p)}
+</script>
