@@ -188,7 +188,7 @@ export const CAMS: Record<number, Key[]> = {
   17: [{ f: 1786, s: P([0.6, 1.0, -0.6], [0, 2.4, -10.5], 1786, 0.0022, Fw(61.1), 54, 0.03) }],
   18: [
     { f: 1877, s: P([VEGAS[0] + 55, 22, VEGAS[2] + 175], [VEGAS[0], 70, VEGAS[2] - 30], 1877, 0.0012, -1, 50) },
-    { f: Fw(65.3), dur: 40, s: P([VEGAS[0] - 4.5, 2.0, VEGAS[2] + 74], [VEGAS[0] - 7.4, 1.1, VEGAS[2] + 44], Fw(65.3) + 40, 0.0025, -1, 40) },
+    { f: Fw(65.3), dur: 40, s: P([VEGAS[0] - 6.0, 1.7, VEGAS[2] + 53], [VEGAS[0] - 7.6, 1.2, VEGAS[2] + 42.4], Fw(65.3) + 40, 0.0025, -1, 42) },
   ],
 };
 /** impact flip-shakes: frame, strength (radians of roll / metres) */
