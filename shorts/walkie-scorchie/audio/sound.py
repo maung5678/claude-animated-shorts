@@ -4,16 +4,28 @@
 import json, os
 import numpy as np
 from scipy import signal
+from dsp import widen as _widen
 from dsp import SR, TAU, ns, tt, rng, lp, hp, bp, colored, smooth_noise, fades, phase, modal, pan, st, place, widen, make_ir, convolve_st, \
     integrated, true_peak, read_wav, write_wav, dbg, shape, momentary_max
 import instruments as I
 import sfx_gen as G
+def widen(x, r, ms=11.0, amount=0.5):
+    x = np.asarray(x)
+    return x if x.ndim == 2 else _widen(x, r, ms, amount)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FPS, TOTAL = 30, 2060
 DUR = TOTAL / FPS
 N = ns(DUR)
 W = json.load(open(os.path.join(HERE, "../voice/words.json")))
+
+def S(*xs):
+    xs = [np.asarray(x, float) for x in xs]; n = max(x.shape[-1] for x in xs)
+    st2 = any(x.ndim == 2 for x in xs); out = np.zeros((2, n) if st2 else n)
+    for x in xs:
+        if st2 and x.ndim == 1: x = np.stack([x, x])
+        out[..., : x.shape[-1]] += x
+    return out
 
 # ---------------------------------------------------------------- voice
 v, vsr = read_wav(os.path.join(HERE, "../voice/voice.wav"))
@@ -44,7 +56,7 @@ def bar_block(t0, bars, vel=0.7, mel=True, brass=False, chords=LOOP):
         if mel:
             for (bt, m, ln) in MEL:
                 if (b % 2) * 4 <= bt < (b % 2) * 4 + 4:
-                    place(tracks["mel"], pan(I.pluck(F(m), vel * 0.7, R, 0.6, 0.8) + 0.5 * I.glock(F(m + 12), vel * 0.25, R, 0.6), 0.05), tb + (bt - (b % 2) * 4) * B)
+                    place(tracks["mel"], pan(S(I.pluck(F(m), vel * 0.7, R, 0.6, 0.8), 0.5 * I.glock(F(m + 12), vel * 0.25, R, 0.6)), 0.05), tb + (bt - (b % 2) * 4) * B)
         if brass:
             for beat in [1, 3]: place(tracks["brass"], pan(I.brass(F(ch[1] + 12), B * 0.5, vel * 0.5, R, kind="stab"), -0.3), tb + beat * B)
 
@@ -88,7 +100,7 @@ def ratchet(r, dur, rate=14): out = np.zeros(ns(dur));
 for _ in []: pass
 def amb_city(dur, r):
     n = ns(dur); rumble = lp(colored(n, r, 1.2), 300) * 0.5; air = G.breeze(dur, r, 0.6)
-    return st(rumble) * 0.6 + widen(air, r, 13, 0.8) * 0.5
+    return S(st(rumble) * 0.6, widen(air, r, 13, 0.8) * 0.5)
 r = rng(7)
 # beds
 for (a, b, kind) in [(0, 36.5, "city"), (53.8, 62.66, "city")]:
@@ -105,14 +117,14 @@ ev(3.3, G.clink(r, 2600, 0.1) * 0.5, "drip plink", 0.6, 0.3); ev(3.9, G.clink(r,
 ev(4.35, G.whoosh(0.5, r, peak=0.35) , "whoosh into the flash", 0.7)
 # setting
 ev(8.4, G.whoosh(1.2, r, peak=0.6, f_lo=200, f_hi=1400, tail=0.4), "aerial glide whoosh", 0.6)
-ev(13.18, I.glock(F(96), 0.7, r, 0.8) + G.clink(r, 3200, 0.2) * 0.4, "glass bowl ting", 0.6)
+ev(13.18, S(I.glock(F(96), 0.7, r, 0.8), G.clink(r, 3200, 0.2) * 0.4), "glass bowl ting", 0.6)
 # park / return
 ev(15.84, np.concatenate([beep(2300), np.zeros(ns(0.06)), beep(2300)]), "key fob chirp-chirp", 0.6, 0.3)
 for k in range(5): ev(18.2 + k * 0.45, G.stroll_step(r, 0.6) * 0.6, "footstep", 0.6, -0.2)
 ev(20.25, G.whoosh(0.25, r, peak=0.08, f_lo=600, f_hi=3000), "cut whoosh to the mirror", 0.4)
 ev(21.0, gliss(700, 180, 0.7, 0.03, 9), "melting mirror bloop", 0.55)
 ev(21.75, G.clink(r, 2100, 0.12) * 0.6, "candle drip", 0.6)
-ev(22.64, thud(r, 180, 0.2) * 0.6 + G.clink(r, 1800, 0.08) * 0.3, "coffee cup clatter", 0.7, -0.3)
+ev(22.64, S(thud(r, 180, 0.2) * 0.6, G.clink(r, 1800, 0.08) * 0.3), "coffee cup clatter", 0.7, -0.3)
 ev(22.9, G.bubbles(0.35, r, 300, 300, 1800) * 0.6, "coffee splash", 0.6, -0.3)
 ev(23.6, gliss(220, 260, 1.0, 0.12, 11, "saw") * 0.25, "rubbery panel warble", 0.6)
 ev(24.56, thud(r, 60, 0.3), "kick: wavy", 0.8)
@@ -122,8 +134,8 @@ ev(26.2, sizzle(1.4, r, 0.7), "doormat smoulder", 0.7, -0.2)
 for k in range(5): ev(26.3 + k * 0.33, thud(r, 90, 0.18) * 0.6, "stamp", 0.6, -0.2)
 ev(28.2, gliss(160, 90, 0.5, 0.05, 14, "saw") * 0.3, "bike seat squish", 0.6, 0.3)
 # egg
-ev(29.9, G.clink(r, 900, 0.3) + thud(r, 120, 0.2) * 0.3, "pan clank", 0.6)
-ev(31.14, G.clink(r, 3000, 0.08) + bp(r.standard_normal(ns(0.06)), 1500, 6000, 1) * np.exp(-tt(0.06) / 0.01), "egg crack", 0.7)
+ev(29.9, S(G.clink(r, 900, 0.3), thud(r, 120, 0.2) * 0.3), "pan clank", 0.6)
+ev(31.14, S(G.clink(r, 3000, 0.08), bp(r.standard_normal(ns(0.06)), 1500, 6000, 1) * np.exp(-tt(0.06) / 0.01)), "egg crack", 0.7)
 ev(32.7, sizzle(3.7, r, 1.2), "egg sizzle", 0.9)
 ev(33.6, gliss(500, 1800, 1.28, 0.01, 6) * 0.35, "thermometer slide-whistle up", 0.6, -0.3)
 ev(34.9, pop(r), "thermometer pop (kick)", 0.8, -0.3)
@@ -132,14 +144,14 @@ ev(39.95, G.whoosh(0.4, r, peak=0.1, f_lo=1500, f_hi=6000, tail=0.3), "sun glint
 # explanation
 for i, tp in enumerate([41.66, 41.9, 42.14]): ev(tp, I.glock(F(88 + i), 0.5, r, 0.5), "flat window ray ping", 0.45, -0.3 + 0.3 * i)
 for i, tp in enumerate([44.72, 44.9, 45.08]): ev(tp, I.glock(F(84 + 3 * i), 0.5, r, 0.5), "curved window ray ping", 0.45, -0.3 + 0.3 * i)
-ev(46.24, gliss(2400, 600, 0.25) * 0.5 + sizzle(0.4, r), "zap: rays meet", 0.7)
+ev(46.24, S(gliss(2400, 600, 0.25) * 0.5, sizzle(0.4, r)), "zap: rays meet", 0.7)
 ev(46.3, bp(r.standard_normal(ns(0.5)), 300, 2500, 1) * (np.sin(TAU * 12 * tt(0.5)) > 0) * np.exp(-tt(0.5) / 0.25) * 0.5, "pigeon flap", 0.6, -0.2)
 ev(47.6, sizzle(1.0, r, 0.5), "leaf smoulders", 0.6)
 ev(49.4, G.whoosh(1.6, r, peak=0.7, f_lo=150, f_hi=1100, tail=0.5), "pull back up to the tower", 0.7)
 # consequence
 ev(54.0, G.whoosh(0.5, r, peak=0.25), "crossfade whoosh", 0.4)
 for k in range(10): ev(56.3 + k * 0.22, G.clink(r, 1400 + 200 * (k % 3), 0.06) * 0.7, "ratchet click", 0.45, 0.3)
-for tp in (58.12, 58.6): ev(tp, thud(r, 80, 0.3) + G.clink(r, 800, 0.2) * 0.5, "fin clunk (kick)", 0.7, 0.3)
+for tp in (58.12, 58.6): ev(tp, S(thud(r, 80, 0.3), G.clink(r, 800, 0.2) * 0.5), "fin clunk (kick)", 0.7, 0.3)
 ev(61.2, bp(r.standard_normal(ns(0.3)), 400, 3000, 1) * np.exp(-tt(0.3) / 0.08) * 0.3, "sad confetti pff", 0.5)
 ev(62.6, G.whoosh(0.6, r, peak=0.3), "crossfade to Las Vegas", 0.5)
 ev(66.1, sizzle(1.2, r, 0.8), "hair singeing", 0.8, -0.2)
