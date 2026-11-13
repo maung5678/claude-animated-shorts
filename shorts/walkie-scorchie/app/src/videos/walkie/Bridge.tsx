@@ -60,7 +60,12 @@ const Inner: React.FC<{ id: number; kit: Kit }> = ({ id, kit }) => {
     grade: new GradeEffect(GRADES.day, GRADE_STRENGTH.day),
     grain: new GrainEffect({ amount: 0.025, cellPx: 1.5 }), // film grain, OFF by default (inputProps post.grain): the reference measures no grain and it quadruples the file size
   }), [camera, scene]);
-  useEffect(() => () => fx.ink.dispose(), [fx]);
+  const { gl } = useThree();
+  useEffect(() => () => {
+    (fx.ink as unknown as { dispose?: () => void }).dispose?.();
+    // a crossfade layer goes away: free its whole WebGL context (software GL keeps every texture in RAM)
+    try { gl.dispose(); gl.forceContextLoss(); } catch { /* already gone */ }
+  }, [fx, gl]);
   const post = useMemo(() => (
     <EffectComposer multisampling={4}>
       {on.ink ? <primitive object={fx.ink} dispose={null} /> : null}
