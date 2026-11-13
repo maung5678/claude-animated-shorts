@@ -67,7 +67,7 @@ const Inner: React.FC<{ id: number; kit: Kit }> = ({ id, kit }) => {
     try { gl.dispose(); gl.forceContextLoss(); } catch { /* already gone */ }
   }, [fx, gl]);
   const post = useMemo(() => (
-    <EffectComposer multisampling={4}>
+    <EffectComposer multisampling={(getInputProps() as { post?: { msaa?: number } }).post?.msaa ?? 2}>
       {on.ink ? <primitive object={fx.ink} dispose={null} /> : null}
       {on.lens && on.pre ? <primitive object={fx.lens.pre} dispose={null} /> : null}
       {on.lens ? <primitive object={fx.lens.main} dispose={null} /> : null}

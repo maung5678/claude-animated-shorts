@@ -123,7 +123,7 @@ export class World {
     for (const m of [this.sunDisc, this.sunHalo]) { m.frustumCulled = false; m.layers.set(NOINK); R.add(m); }
     this.hemi = new THREE.HemisphereLight("#cfe6ff", "#6c5c8c", 1.1);
     this.sun = new THREE.DirectionalLight("#fff0d6", 2.6);
-    this.sun.castShadow = true; this.sun.shadow.mapSize.set(4096, 4096);
+    this.sun.castShadow = true; this.sun.shadow.mapSize.set(2048, 2048);
     R.add(this.hemi, this.sun, this.sun.target);
     const grey = { lit: "#c9ced5", mid: "#aeb4bd", shade: "#8e95a1" };
     this.cloudMaps = { day: [0, 1, 2, 3].map((k) => cloudHD(k, LOOK.day.cloud)), golden: [0, 1, 2, 3].map((k) => cloudHD(k, LOOK.golden.cloud)),

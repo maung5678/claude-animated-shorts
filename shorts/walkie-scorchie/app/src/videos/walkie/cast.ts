@@ -261,11 +261,11 @@ export const stage = (id: number, t: number, st: State, cam: CamInfo): Stage => 
     }
     case 6: {
       const drop = t >= 22.64 - LEAD;
-      one(cam, 1, DRIVER, "drv", cx - 2.6, 0, cz + 1.75, { mode: "stand", expr: drop ? "shock" : "nervous", prop: drop ? null : "coffee", armsUp: W(t, 24.56) }, t, out);
+      one(cam, 1, DRIVER, "drv", cx - 1.3, 0, cz + 1.75, { mode: "stand", expr: drop ? "shock" : "nervous", prop: drop ? null : "coffee", armsUp: W(t, 24.56) }, t, out);
       if (drop) {
         const u = clamp01((t - 22.64) / 0.35), y = 1.0 - 0.95 * u * u;
-        if (u < 1) fxq(out, "cup", 120, 200, (p) => { p.poly([[25, 30], [95, 30], [85, 190], [35, 190]], "#f4efe4", 6); p.poly([[20, 10], [100, 10], [100, 32], [20, 32]], "#3b2a20", 6); }, cx - 2.3, y, cz + 2.0, 0.12, 0.2, { rot: u * 2 });
-        else fxq(out, "coffeePuddle", 300, 150, (p) => { p.ell(150, 75, 140, 60, "#7a4a24", 0); p.ell(120, 60, 50, 16, "#a8723f", 0); }, cx - 2.3, 0.02, cz + 2.0, 0.6, 0.3, { flat: true });
+        if (u < 1) fxq(out, "cup", 120, 200, (p) => { p.poly([[25, 30], [95, 30], [85, 190], [35, 190]], "#f4efe4", 6); p.poly([[20, 10], [100, 10], [100, 32], [20, 32]], "#3b2a20", 6); }, cx - 1.0, y, cz + 2.0, 0.12, 0.2, { rot: u * 2 });
+        else fxq(out, "coffeePuddle", 300, 150, (p) => { p.ell(150, 75, 140, 60, "#7a4a24", 0); p.ell(120, 60, 50, 16, "#a8723f", 0); }, cx - 1.0, 0.02, cz + 2.0, 0.6, 0.3, { flat: true });
       }
       drips(out, t, [[cx + 2.55, 0.6, cz], [cx + 1.0, 0.9, cz + 0.98], [cx - 1.0, 1.1, cz + 0.98]]);
       if (t > 23.6) { const u = loop(t, 0.5); fxq(out, `wob${u}`, 400, 200, (p) => fxWobble(p, u), cx, 1.7, cz + 1.2, 2.2, 1.1, { soft: true }); }
@@ -308,6 +308,7 @@ export const stage = (id: number, t: number, st: State, cam: CamInfo): Stage => 
         const x = 6 + i * 1.5 + (hh(i) - 0.5) * 0.4, z = 5.2 + (i % 2) * 1.0;
         one(cam, 30 + i, OFFICE(i), `off${i}`, x, 0.14, z, { mode: "stand", expr: sun ? (i % 2 ? "shock" : "pained") : "neutral", prop: "umbrella", umbrellaCol: cols[i], facing: i < 3 ? 1 : -1 }, t, out);
       }
+      if (id === 11 && t >= 39.86 && t < 40.7) { const u = q((t - 39.86) / 0.84, 20); fxq(out, `glint${u}`, 500, 500, (p) => fxBurst(p, u, "#fff6d0", 12, 40, 240), 140, 48, 30, 40, 40); }
       if (id === 10) { const u = loop(t, 0.8); fxq(out, `drz${u}`, 400, 600, (p) => fxDrizzle(p, u), 4, 2.6, 2.6, 3.4, 5.1, { soft: true }); }
       break;
     }
